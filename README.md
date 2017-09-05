@@ -4,22 +4,12 @@
 
 Get started
 Android
-
 1、将android/react-native-ilive拷贝到自己项目的android目录下
-
-
 2、在android/settings.gradle文件中新增：':react-native-ilive'依赖
-
-
 3、在android/app/build.gradle文件的dependencies中添加：
 compile project(path: ':react-native-ilive')
-
 4、在android/app/src/main/AndroidMainfest.xml中：
-
-
-    
 权限添加：
-
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -45,9 +35,7 @@ compile project(path: ':react-native-ilive')
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-application
-下添加：
-
+application下添加：
 <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.tencent.qcloud.suixinbo.fileProvider"
@@ -57,36 +45,19 @@ application
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
     </provider>
-5
-、MainApplication.java文件：
 
+5、MainApplication.java文件：
+  a、extends QavsdkApplication
+  b、getPackages()方法中添加new ILivePackage()
 
-  a
-、
-extends QavsdkApplication
+6、将react-native-ilive.git/src下的ILiveView、index、RtcEngine三个文件拷贝到你的项目相应目录下
 
-  b
-、getPackages()方法中添加
- new ILivePackage()
-
-6
-、将react-native-ilive.git/src下的ILiveView、index、RtcEngine三个文件拷贝到你的项目相应目录下
-
-
-7
-、在你项目的直播功能js文件中：
-
-
-  a
-、导入
+7、在你项目的直播功能js文件中：
+  a、导入
 import {RtcEngine, ILiveView} from './src/index';
 
-  b
-、componentWillMount中初始化直播引擎：
-
-
-  //
-初始化
+  b、componentWillMount中初始化直播引擎：
+  //初始化
 iLive
 
         const options = {
@@ -241,4 +212,5 @@ iOS
 
 3
 、
+
 
