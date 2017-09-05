@@ -3,11 +3,11 @@
 2、封装android&amp;iOS两大平台
 
 Get started<br>
-Android
-1、将android/react-native-ilive拷贝到自己项目的android目录下
-2、在android/settings.gradle文件中新增：':react-native-ilive'依赖
-3、在android/app/build.gradle文件的dependencies中添加：compile project(path: ':react-native-ilive')
-4、在android/app/src/main/AndroidMainfest.xml中：
+Android<br>
+1、将android/react-native-ilive拷贝到自己项目的android目录下<br>
+2、在android/settings.gradle文件中新增：':react-native-ilive'依赖<br>
+3、在android/app/build.gradle文件的dependencies中添加：compile project(path: ':react-native-ilive')<br>
+4、在android/app/src/main/AndroidMainfest.xml中：<br>
 	
 	权限添加：
 	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -46,32 +46,32 @@ Android
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
     </provider>
-5、MainApplication.java文件：
-  	a、extends QavsdkApplication
-  	b、getPackages()方法中添加 new ILivePackage()
-6、将react-native-ilive.git/src下的ILiveView、index、RtcEngine三个文件拷贝到你的项目相应目录下
-7、在你项目的直播功能js文件中：
-  	a、导入import {RtcEngine, ILiveView} from './src/index';
-  	b、componentWillMount中初始化直播引擎：
-  		//初始化iLive
-        const options = {
-            appid: '1400027849',// 腾讯后台获取
-            accountType: '11656',// 腾讯后台获取
-            hostId: 'ruby',
-            roomNum: '6015711',//自己服务器动态分配，规则自己服务器定
-            userRole: '1'//角色，1：主播、0：观众
+5、MainApplication.java文件：<br>
+  	a、extends QavsdkApplication<br>
+  	b、getPackages()方法中添加 new ILivePackage()<br>
+6、将react-native-ilive.git/src下的ILiveView、index、RtcEngine三个文件拷贝到你的项目相应目录下<br>
+7、在你项目的直播功能js文件中：<br>
+  	a、导入import {RtcEngine, ILiveView} from './src/index';<br>
+  	b、componentWillMount中初始化直播引擎：<br>
+  		//初始化iLive<br>
+        const options = {<br>
+            appid: '1400027849',// 腾讯后台获取<br>
+            accountType: '11656',// 腾讯后台获取<br>
+            hostId: 'ruby',<br>
+            roomNum: '6015711',//自己服务器动态分配，规则自己服务器定<br>
+            userRole: '1'//角色，1：主播、0：观众<br>
         };
-        RtcEngine.init(options);
-  	// 自己创建直播间 hostId=自己的id,roomNum=自己的房间号,userRole=1
-    // 加入别人的房间 hostId=主播的id,roomNum=主播的房间号,userRole=0
-	c、componentDidMount中先登录腾讯的TLS系统,use id&&sig（自己服务器端生成）
+        RtcEngine.init(options);<br>
+  	// 自己创建直播间 hostId=自己的id,roomNum=自己的房间号,userRole=1<br>
+    // 加入别人的房间 hostId=主播的id,roomNum=主播的房间号,userRole=0<br>
+	c、componentDidMount中先登录腾讯的TLS系统,use id&&sig（自己服务器端生成）<br>
 		RtcEngine.iLiveLogin('learnta01', 'eJxlj1FrwjAYRd-7K0JfHeNLamor*JCWbsqcQyeKTyVr0hrbxi5GcY79921VWGH39Rzu5X46CCF3OX2951m2P2qb2o9GumiIXHDv-mDTKJFym3pG-IPy3CgjU55baVqIKaUEoOsoIbVVuboZleRGWw64oxxEmbY7147*TwEZBP2wq6iihc-JPJ5Ep-wNs22xrh4f7CJcDWJ1Ee961hASllmPLYrC7Hrr3XzlM8Wsp7mZPtHsxZIZw8toXAfHOAmToN56EE-OwWZMywqiDRuNOpNW1fJ2Cjzq*wBBh56kOai9bgUCmGLiwW9c58v5Blc5XRk_');
-		//所有的原生通知统一管理
+		//所有的原生通知统一管理<br>
 		RtcEngine.eventEmitter({
             onLoginTLS: (data) => {
                 var result = data.code === '1000';
                 this.setState({isLoginSuccess: result});
-                // TLS登录成功
+                // TLS登录成功<br>
                 if (result) {
                     console.log("登录腾讯TLS系统成功 iLiveJoinChannle>>>>>>");
                     RtcEngine.iLiveJoinChannle();
@@ -82,7 +82,7 @@ Android
             },
             onCreateRoom: (data) => {
                 console.log(data);
-                // 创建房间
+                // 创建房间<br>
                 var result = (data.code === '1000' || data.code === '1003');
                 console.log("创建房间>>>>>>:" + result);
                 this.setState({
@@ -124,12 +124,12 @@ Android
                 // 错误!
             }
         })
-	d、页面销毁退出直播间，移除回调
+	d、页面销毁退出直播间，移除回调<br>
 	componentWillUnmount() {
         RtcEngine.startExitRoom();
         RtcEngine.removeEmitter()
     }
-	e、退出房间、切换摄像头、开关声麦方法如下
+	e、退出房间、切换摄像头、开关声麦方法如下<br>
     handlerCancel = () => {
         RtcEngine.startExitRoom();
     };
@@ -144,7 +144,7 @@ Android
 	f、render()中添加直播component
 	<ILiveView showVideoView={true}/>
 	
-iOS
-1、将ios/RCTILive拷贝到自己项目中
-2、运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库
-3、
+iOS<br>
+1、将ios/RCTILive拷贝到自己项目中<br>
+2、运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库<br>
+3、<br>
