@@ -1,0 +1,39 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 25
+    buildToolsVersion '25.0.0'
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 24
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+            assets.srcDirs = ['src/main/assets', 'src/main/assets/']
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.tencent.ilivesdk:ilivesdk:1.6.2'
+    compile 'com.tencent.livesdk:livesdk:1.1.4'
+    compile 'com.tencent.rtmpsdk:rtmpsdk:1.0.1'
+    compile 'com.tencent.ilivefilter:ilivefilter:1.1.14'
+    compile 'com.tencent.iliveptufilter:iliveptufilter:1.0.3'
+    compile 'com.facebook.react:react-native:0.47.2'
+}
