@@ -5,7 +5,7 @@
 //  Copyright © 2017年 Learnta Inc. All rights reserved.
 //
 
-#import "RCTViewManager.h"
+#import <React/RCTViewManager.h>
 
 @interface RCTILiveViewManager : RCTViewManager
 
