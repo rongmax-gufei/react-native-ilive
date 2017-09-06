@@ -25,11 +25,6 @@
 #import <TILLiveSDK/TILLiveSDK.h>
 
 #import "ConstHeader.h"
-//#import "CustomUIHeader.h"
-//#import "AppDelegate.h"
-//#import "WebServiceHeader.h"
-//#import "CategoryHeader.h"
-//#import "UserViewManager.h"
-//#import "LiveCallView.h"
+#import "AppDelegate.h"
 
 #endif /* TILLiveSDKShow_Prefix_pch */

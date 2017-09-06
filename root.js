@@ -127,26 +127,6 @@ export default class ReactNativeILive extends Component {
             return (
                 <View style={styles.container}>
                     <ILiveView style={styles.localView} showVideoView={true}/>
-                    <View style={styles.absView}>
-                        <View>
-                            <VideoOperateButton
-                                style={{alignSelf: 'center'}}
-                                onPress={this.handlerCancel}
-                                imgStyle={{width: 60, height: 60}}
-                                source={require('./images/icon_exit_live.png')}
-                            />
-                            <View style={styles.bottomView}>
-                                <VideoOperateButton
-                                    onPress={this.handlerToggleMic}
-                                    source={ bMicOn ? require('./images/icon_mic_close.png') : require('./images/icon_mic_open.png')}
-                                />
-                                <VideoOperateButton
-                                    onPress={this.handlerSwitchCamera}
-                                    source={require('./images/icon_switch_camera.png')}
-                                />
-                            </View>
-                        </View>
-                    </View>
                 </View>
             );
         } else if (userRole === 0) {
