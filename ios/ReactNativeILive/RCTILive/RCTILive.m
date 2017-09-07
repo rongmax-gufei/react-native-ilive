@@ -6,12 +6,14 @@
 //
 #import "RCTILive.h"
 #import "ILiveConst.h"
+#import "RCTILive+AVListener.h"
+
 #import <React/RCTEventDispatcher.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTView.h>
 
-@interface RCTILive ()<QAVLocalVideoDelegate, QAVRemoteVideoDelegate, ILiveRoomDisconnectListener, ILVLiveAVListener>
+@interface RCTILive ()<QAVLocalVideoDelegate, ILiveRoomDisconnectListener>
 
 @end
 
@@ -37,26 +39,11 @@ RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
     [ILiveConst share].hostId = options[@"hostId"];
     [ILiveConst share].roomId = options[@"roomNum"];
     [ILiveConst share].userRole = options[@"userRole"];
-  
-    TIMManager *manager = [[ILiveSDK getInstance] getTIMManager];
-    NSNumber *evn = [[NSUserDefaults standardUserDefaults] objectForKey:kEnvParam];
-    [manager setEnv:[evn intValue]];
-  
-    NSNumber *logLevel = [[NSUserDefaults standardUserDefaults] objectForKey:kLogLevel];
-    //默认debug等级
-    if (!logLevel) {
-        [[NSUserDefaults standardUserDefaults] setObject:@(TIM_LOG_DEBUG) forKey:kLogLevel];
-        logLevel = @(TIM_LOG_DEBUG);
-    }
-    [manager initLogSettings:YES logPath:[manager getLogPath]];
-    [manager setLogLevel:(TIMLogLevel)[logLevel integerValue]];
-  
-    [[ILiveSDK getInstance] initSdk:[[[ILiveConst share] sdkAppid] intValue] accountType:[[[ILiveConst share] sdkAccountType]  intValue]];
-    #if !kIsAppstoreVersion
-    [[ILiveSDK getInstance] setConsoleLogPrint:YES];
-    #endif
-  
-    [[ILiveRoomManager getInstance] setRemoteVideoDelegate:self];
+    // 初始化iLive模块
+    [[ILiveSDK getInstance] initSdk:[[ILiveConst share].sdkAppid intValue] accountType:[[ILiveConst share].sdkAccountType intValue]];
+    // 添加AVListener
+    TILLiveManager *manager = [TILLiveManager getInstance];
+    [manager setAVListener:self];
 }
 
 // 托管模式登录
@@ -80,6 +67,7 @@ RCT_EXPORT_METHOD(iLiveLogout) {
 
 // 开始进入房间
 RCT_EXPORT_METHOD(startEnterRoom) {
+    _videoCount = 0;
     NSLog(@"开始进入房间");
     NSString *role = [ILiveConst share].userRole;
     RoomOptionType _roomOptionType = [role isEqualToString:@"1"] ? RoomOptionType_CrateRoom:RoomOptionType_JoinRoom;
@@ -97,22 +85,41 @@ RCT_EXPORT_METHOD(startEnterRoom) {
 
 // 开始退出房间
 RCT_EXPORT_METHOD(startExitRoom) {
-  
+  [[TILLiveManager getInstance] quitRoom:^{
+      [self commentEvent:@"startExitRoom" code:kSuccess msg:@"退出房间成功"];
+  } failed:^(NSString *module, int errId, NSString *errMsg) {
+      [self commentEvent:@"startExitRoom" code:errId msg:errMsg];
+  }];
+  [[TILLiveManager getInstance] removeAllAVRenderViews];
 }
 
 //切换前置/后置摄像头
 RCT_EXPORT_METHOD(switchCamera) {
-  
+  [[ILiveRoomManager getInstance] switchCamera:^{
+      [self commentEvent:@"switchCamera" code:kSuccess msg:@"切换摄像头成功"];
+  } failed:^(NSString *module, int errId, NSString *errMsg) {
+      [self commentEvent:@"switchCamera" code:errId msg:errMsg];
+  }];
 }
 
 // 打开/关闭摄像头
 RCT_EXPORT_METHOD(toggleCamera) {
-  
+  _bCameraOn = !_bCameraOn;
+  [[ILiveRoomManager getInstance] enableCamera:CameraPosFront enable:_bCameraOn succ:^{
+      [self commentEvent:@"toogleCamera" code:kSuccess msg:@"打开/关闭摄像头成功"];
+  } failed:^(NSString *module, int errId, NSString *errMsg) {
+      [self commentEvent:@"toogleCamera" code:errId msg:errMsg];
+  }];
 }
 
 // 打开/关闭声麦
 RCT_EXPORT_METHOD(toggleMic) {
-  
+  _bMicOn = !_bMicOn;
+  [[ILiveRoomManager getInstance] enableMic:_bMicOn succ:^{
+      [self commentEvent:@"toogleMic" code:kSuccess msg:@"打开/关闭声麦成功"];
+  } failed:^(NSString *module, int errId, NSString *errMsg) {
+      [self commentEvent:@"toogleMic" code:errId msg:errMsg];
+  }];
 }
 
 //销毁引擎实例
@@ -122,8 +129,12 @@ RCT_EXPORT_METHOD(destroy) {
 
 // 创建房间
 - (void)createRoom {
+    #if kIsPreview
+    _frameDispatcher = [[ILiveRoomManager getInstance] getFrameDispatcher];
+    [_frameDispatcher startDisplay];
+    [self startPreview];
+    #endif
     __weak typeof(self) ws = self;
-  
     TILLiveRoomOption *option = [TILLiveRoomOption defaultHostLiveOption];
     option.controlRole = [[ILiveConst share] hostId];
     option.avOption.autoHdAudio = YES;//使用高音质模式，可以传背景音乐
@@ -160,16 +171,29 @@ RCT_EXPORT_METHOD(destroy) {
     }];
 }
 
-- (void)OnVideoPreview:(QAVVideoFrame *)frameData {
-}
-
+#pragma mark - local video delegate
+//需要预览才设置local delegate
 - (void)OnLocalVideoPreview:(QAVVideoFrame *)frameData {
+  frameData.identifier = [[ILiveLoginManager getInstance] getLoginId];
+  [_frameDispatcher dispatchVideoFrame:frameData];
 }
 
 - (void)OnLocalVideoPreProcess:(QAVVideoFrame *)frameData {
 }
 
 - (void)OnLocalVideoRawSampleBuf:(CMSampleBufferRef)buf result:(CMSampleBufferRef *)ret {
+}
+
+//开始预览
+- (void)startPreview {
+  QAVContext *context = [[ILiveSDK getInstance] getAVContext];
+  [context.videoCtrl setLocalVideoDelegate:self];
+  [[ILiveRoomManager getInstance] enableCamera:CameraPosFront enable:YES succ:^{
+    NSString *loginId = [[ILiveLoginManager getInstance] getLoginId];
+    [[TILLiveManager getInstance] addAVRenderView:[UIScreen mainScreen].bounds forIdentifier:loginId srcType:QAVVIDEO_SRC_TYPE_CAMERA];
+  } failed:^(NSString *module, int errId, NSString *errMsg) {
+    NSLog(@"enable camera fail. m=%@,errid=%d,msg=%@",module,errId,errMsg);
+  }];
 }
 
 - (BOOL)onRoomDisconnect:(int)reason {
@@ -180,7 +204,6 @@ RCT_EXPORT_METHOD(destroy) {
 
 - (NSArray<NSString *> *)supportedEvents {
   return @[@"iLiveEvent"];
-//    return @[@"onLoginTLS", @"onLogoutTLS",@"onCreateRoom",@"onJoinRoom",@"onExitRoom",@"onRoomDisconnect", @"onSwitchCamera", @"onToggleCamera", @"onToggleMic", @"onError"];
 }
 
 - (void)commentEvent:(NSString *)type code:(int )code msg:(NSString *)msg {
@@ -189,7 +212,6 @@ RCT_EXPORT_METHOD(destroy) {
     params[kCode] = [NSString stringWithFormat:@"%d", code];
     params[kMsg] = msg;
     NSLog(@"返回commentEvent%@", params );
-//    [_bridge.eventDispatcher sendDeviceEventWithName:@"iLiveEvent" body:params];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self sendEventWithName:@"iLiveEvent" body:params];
     });

@@ -33,8 +33,8 @@ export default class ReactNativeILive extends Component {
         const options = {
             appid: '1400027849',
             accountType: '11656',
-            hostId: 'ruby',
-            roomNum: '6015711',
+            hostId: 'learnta01',//test0258//63072
+            roomNum: '63072',
             userRole: '1'
         };
         RtcEngine.init(options);
@@ -42,8 +42,8 @@ export default class ReactNativeILive extends Component {
 
     componentDidMount() {
         // 先登录腾讯的TLS系统,use id&&sig
-        //RtcEngine.iLiveLogin('learnta01', 'eJxlj1FrwjAYRd-7K0JfHeNLamor*JCWbsqcQyeKTyVr0hrbxi5GcY79921VWGH39Rzu5X46CCF3OX2951m2P2qb2o9GumiIXHDv-mDTKJFym3pG-IPy3CgjU55baVqIKaUEoOsoIbVVuboZleRGWw64oxxEmbY7147*TwEZBP2wq6iihc-JPJ5Ep-wNs22xrh4f7CJcDWJ1Ee961hASllmPLYrC7Hrr3XzlM8Wsp7mZPtHsxZIZw8toXAfHOAmToN56EE-OwWZMywqiDRuNOpNW1fJ2Cjzq*wBBh56kOai9bgUCmGLiwW9c58v5Blc5XRk_');
-        RtcEngine.iLiveLogin('ruby', 'eJxlj0tPg0AUhff8CsLamJnh2SYuFIkU0dJSWuOGIHOhI*HhMLVQ439XsYmTeLffd3LO-VBUVdU2YXyZ5Xl7aEQqxg40da5qSLv4g13HaJqJVOf0H4ShYxzSrBDAJ4hN0yQIyQ6j0AhWsLPBDy*jRHtapVPFb9z4zhLbMWaywsoJPniJu1i5fe5u9pT621V-8rtwGR4HBHEdjgP1o92SWF7VR-r9-nVdLkqKb*3Ho3XD34qKr*PEAD*IbGzVJxeCp*cg2e4o96rru6G9kioFq*H8D9JnDsKOPOgdeM-aZhIIwiYmOvo5TflUvgApXF2f')
+        RtcEngine.iLiveLogin('learnta01', 'eJxlj1FrwjAYRd-7K0JfHeNLamor*JCWbsqcQyeKTyVr0hrbxi5GcY79921VWGH39Rzu5X46CCF3OX2951m2P2qb2o9GumiIXHDv-mDTKJFym3pG-IPy3CgjU55baVqIKaUEoOsoIbVVuboZleRGWw64oxxEmbY7147*TwEZBP2wq6iihc-JPJ5Ep-wNs22xrh4f7CJcDWJ1Ee961hASllmPLYrC7Hrr3XzlM8Wsp7mZPtHsxZIZw8toXAfHOAmToN56EE-OwWZMywqiDRuNOpNW1fJ2Cjzq*wBBh56kOai9bgUCmGLiwW9c58v5Blc5XRk_');
+        // RtcEngine.iLiveLogin('ruby', 'eJxlj0tPg0AUhff8CsLamJnh2SYuFIkU0dJSWuOGIHOhI*HhMLVQ439XsYmTeLffd3LO-VBUVdU2YXyZ5Xl7aEQqxg40da5qSLv4g13HaJqJVOf0H4ShYxzSrBDAJ4hN0yQIyQ6j0AhWsLPBDy*jRHtapVPFb9z4zhLbMWaywsoJPniJu1i5fe5u9pT621V-8rtwGR4HBHEdjgP1o92SWF7VR-r9-nVdLkqKb*3Ho3XD34qKr*PEAD*IbGzVJxeCp*cg2e4o96rru6G9kioFq*H8D9JnDsKOPOgdeM-aZhIIwiYmOvo5TflUvgApXF2f')
         //所有的原生通知统一管理
         RtcEngine.eventEmitter({
             onLoginTLS: (data) => {
@@ -123,19 +123,9 @@ export default class ReactNativeILive extends Component {
 
     render() {
         const {bMicOn, isJoinSuccess, userRole} = this.state;
-        if (userRole === 1) {
             return (
-                <View style={styles.container}>
-                    <ILiveView style={styles.localView} showVideoView={true}/>
-                </View>
+                   <ILiveView style={styles.localView} showVideoView={true}/>
             );
-        } else if (userRole === 0) {
-            return (
-                <View style={styles.container}>
-                    <ILiveView style={styles.localView} showVideoView={true}/>
-                </View>
-            );
-        }
     }
 }
 
@@ -155,30 +145,8 @@ const VideoOperateButton = ({onPress, source, style, imgStyle = {width: 50, heig
 };
 
 const styles = StyleSheet.create({
-    container: {
+    localView: {
         flex: 1,
         backgroundColor: '#F4F4F4'
-    },
-    absView: {
-        position: 'absolute',
-        top: 20,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        justifyContent: 'space-between'
-    },
-    videoView: {
-        padding: 5,
-        flexWrap: 'wrap',
-        flexDirection: 'row',
-        zIndex: 100
-    },
-    localView: {
-        flex: 1
-    },
-    bottomView: {
-        padding: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-around'
     }
 });

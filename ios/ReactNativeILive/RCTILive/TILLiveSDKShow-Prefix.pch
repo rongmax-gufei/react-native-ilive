@@ -24,7 +24,13 @@
 #import <ILiveSDK/ILiveSpeedTestManager.h>
 #import <TILLiveSDK/TILLiveSDK.h>
 
+#import "LoadView.h"
 #import "ConstHeader.h"
 #import "AppDelegate.h"
+
+#import "CategoryHeader.h"
+
+#import "LiveCallView.h"
+#import "UserViewManager.h"
 
 #endif /* TILLiveSDKShow_Prefix_pch */

@@ -15,8 +15,6 @@
 @property (nonatomic, copy) NSString *hostId;
 @property (nonatomic, copy) NSString *roomId;
 @property (nonatomic, copy) NSString *userRole;
-@property (nonatomic, assign) BOOL bCameraOn;
-@property (nonatomic, assign) BOOL bMicOn;
 
 + (instancetype)share;
 

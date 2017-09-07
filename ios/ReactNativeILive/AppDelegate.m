@@ -15,9 +15,21 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
+  TIMManager *manager = [[ILiveSDK getInstance] getTIMManager];
+  NSNumber *evn = [[NSUserDefaults standardUserDefaults] objectForKey:kEnvParam];
+  [manager setEnv:[evn intValue]];//环境
+  NSNumber *logLevel = [[NSUserDefaults standardUserDefaults] objectForKey:kLogLevel];//log 等级(默认debug)
+  if (!logLevel)
+  {
+    [[NSUserDefaults standardUserDefaults] setObject:@(TIM_LOG_DEBUG) forKey:kLogLevel];
+    logLevel = @(TIM_LOG_DEBUG);
+  }
+  [manager initLogSettings:YES logPath:[manager getLogPath]];
+  [manager setLogLevel:(TIMLogLevel)[logLevel integerValue]];
+  
   NSURL *jsCodeLocation;
 
- jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+  jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
 //  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"index.ios" withExtension:@"jsbundle"];
   
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation

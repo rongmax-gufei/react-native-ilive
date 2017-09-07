@@ -7,7 +7,7 @@
 
 #import "RCTILiveVideoView.h"
 
-@interface RCTILiveVideoView ()<ILVLiveAVListener>
+@interface RCTILiveVideoView ()
 @end
 
 @implementation RCTILiveVideoView
@@ -19,13 +19,8 @@
 }
 
 - (void)setShowVideoView:(BOOL)showVideoView {
-    NSLog(@"setShowVideoView");
     if (showVideoView) {
-      NSLog(@"setShowVideoView true");
-      TILLiveManager *manager = [TILLiveManager getInstance];
-      [manager setAVListener:self];
-      UIView *renderView = [[UIView alloc] init];
-      [manager setAVRootView:renderView];
+      [[TILLiveManager getInstance] setAVRootView:self];
     }
 }
 
