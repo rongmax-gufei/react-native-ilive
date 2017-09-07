@@ -32,10 +32,10 @@ RCT_EXPORT_MODULE();
  *  @return 0 when executed successfully. return negative value if failed.
  */
 RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
-    [ILiveConst share].appid = options[@"appid"];
-    [ILiveConst share].accountType = options[@"accountType"];
-    [ILiveConst share].hostid = options[@"hostId"];
-    [ILiveConst share].roomid = options[@"roomNum"];
+    [ILiveConst share].sdkAppid = options[@"appid"];
+    [ILiveConst share].sdkAccountType = options[@"accountType"];
+    [ILiveConst share].hostId = options[@"hostId"];
+    [ILiveConst share].roomId = options[@"roomNum"];
     [ILiveConst share].userRole = options[@"userRole"];
   
     TIMManager *manager = [[ILiveSDK getInstance] getTIMManager];
@@ -51,7 +51,7 @@ RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
     [manager initLogSettings:YES logPath:[manager getLogPath]];
     [manager setLogLevel:(TIMLogLevel)[logLevel integerValue]];
   
-    [[ILiveSDK getInstance] initSdk:[[[ILiveConst share] appid] intValue] accountType:[[[ILiveConst share] accountType]  intValue]];
+    [[ILiveSDK getInstance] initSdk:[[[ILiveConst share] sdkAppid] intValue] accountType:[[[ILiveConst share] sdkAccountType]  intValue]];
     #if !kIsAppstoreVersion
     [[ILiveSDK getInstance] setConsoleLogPrint:YES];
     #endif
@@ -125,12 +125,12 @@ RCT_EXPORT_METHOD(destroy) {
     __weak typeof(self) ws = self;
   
     TILLiveRoomOption *option = [TILLiveRoomOption defaultHostLiveOption];
-    option.controlRole = [[ILiveConst share] hostid];
+    option.controlRole = [[ILiveConst share] hostId];
     option.avOption.autoHdAudio = YES;//使用高音质模式，可以传背景音乐
     option.roomDisconnectListener = self;
     option.imOption.imSupport = YES;
-    NSLog(@"创建房间 开始s1, %@",[[ILiveConst share] roomid]);
-    [[TILLiveManager getInstance] createRoom:[[[ILiveConst share] roomid] intValue] option:option succ:^{
+    NSLog(@"创建房间 开始s1, %@",[[ILiveConst share] roomId]);
+    [[TILLiveManager getInstance] createRoom:[[[ILiveConst share] roomId] intValue] option:option succ:^{
         NSLog(@"创建房间成功s2");
         [ws initAudio];
         NSLog(@"创建房间 初始化音频s3");
@@ -151,7 +151,7 @@ RCT_EXPORT_METHOD(destroy) {
     TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
     option.controlRole = kSxbRole_GuestHD;
     NSLog(@"加入房间开始s2");
-    [[TILLiveManager getInstance] joinRoom:[[[ILiveConst share] roomid] intValue] option:option succ:^{
+    [[TILLiveManager getInstance] joinRoom:[[[ILiveConst share] roomId] intValue] option:option succ:^{
         NSLog(@"加入房间成功s3");
         [self commentEvent:@"onJoinRoom" code:kSuccess msg:@"加入房间成功"];
     } failed:^(NSString *module, int errId, NSString *errMsg) {

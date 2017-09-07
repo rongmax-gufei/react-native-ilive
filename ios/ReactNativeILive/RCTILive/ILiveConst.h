@@ -10,10 +10,10 @@
 
 @interface ILiveConst : NSObject
 
-@property (nonatomic, copy) NSString *appid;
-@property (nonatomic, copy) NSString *accountType;
-@property (nonatomic, copy) NSString *hostid;
-@property (nonatomic, copy) NSString *roomid;
+@property (nonatomic, copy) NSString *sdkAppid;
+@property (nonatomic, copy) NSString *sdkAccountType;
+@property (nonatomic, copy) NSString *hostId;
+@property (nonatomic, copy) NSString *roomId;
 @property (nonatomic, copy) NSString *userRole;
 @property (nonatomic, assign) BOOL bCameraOn;
 @property (nonatomic, assign) BOOL bMicOn;
