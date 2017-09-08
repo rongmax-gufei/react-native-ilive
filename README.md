@@ -156,7 +156,7 @@ f、render()中添加直播component
 
 3、修改工程配置
 
-  将下载好的SDK复制到工程目录下，工程目录右键，Add Files to " you projectname",在demo中如下图所示：
+  将下载好的SDK复制到工程目录下，工程目录右键，Add Files to " you projectname"
 
   Build Settings/Linking/Other Linker Flags，增加 -ObjC 配置
 
@@ -208,4 +208,4 @@ f、render()中添加直播component
   ........
 }
 
-6、react-native部分代码参照#Android集成的第七步，无需修改
+6、react-native部分代码参照ndroid集成的第七步，无需修改
