@@ -59,14 +59,17 @@ RCT_EXPORT_METHOD(iLiveLogout) {
     }];
 }
 
+// 添加AVListener，此方法必须在rn的willAmount方法中执行，render()之前执行
+RCT_EXPORT_METHOD(doAVListener) {
+  TILLiveManager *manager = [TILLiveManager getInstance];
+  [manager setAVListener:self];
+}
+
 // 进入房间
 RCT_EXPORT_METHOD(joinChannel:(NSString *)hostId roomId:(int)roomId userRole:(int)userRole) {
     [ILiveConst share].hostId = hostId;
     [ILiveConst share].roomId = roomId;
     [ILiveConst share].userRole = userRole;
-    // 添加AVListener
-    TILLiveManager *manager = [TILLiveManager getInstance];
-    [manager setAVListener:self];
     BOOL isHost = userRole == 1;
     RoomOptionType _roomOptionType = isHost ? RoomOptionType_CrateRoom:RoomOptionType_JoinRoom;
     switch (_roomOptionType) {

@@ -31,6 +31,10 @@ export default {
     iLiveLeaveChannel() {
         ILive.leaveChannel();
     },
+    // 添加互动直播监听器
+    iLiveSetAVListener() {
+        ILive.doAVListener();
+    },
     // 切换摄像头
     iLiveSwitchCamera() {
         ILive.switchCamera();
