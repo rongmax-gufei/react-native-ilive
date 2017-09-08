@@ -24,23 +24,23 @@ export default {
         ILive.iLiveLogin(id, sig);
     },
     // 进入房间
-    iLiveJoinChannle(){
+    iLiveJoinChannle() {
         ILive.startEnterRoom();
     },
     // 离开房间
-    iLiveLeaveChannle(){
+    iLiveLeaveChannle() {
         ILive.startExitRoom();
     },
     // 切换摄像头
-    iLiveSwitchCamera(){
+    iLiveSwitchCamera() {
         ILive.switchCamera();
     },
     // 打开or关闭摄像头
-    iLiveToggleCamera(){
+    iLiveToggleCamera() {
         ILive.toggleCamera();
     },
     // 打卡or关闭声麦
-    iLiveToggleMic(){
+    iLiveToggleMic() {
         ILive.toggleMic();
     },
     eventEmitter(fnConf) {
