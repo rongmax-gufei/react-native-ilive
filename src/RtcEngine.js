@@ -26,6 +26,10 @@ export default {
         console.log("iLiveJoinChannle>>>>>>");
         ILive.startEnterRoom();
     },
+    iLiveLeaveChannle(){
+        console.log("iLiveLeaveChannle>>>>>>");
+        ILive.startExitRoom();
+    },
     eventEmitter(fnConf) {
         //there are no `removeListener` for NativeAppEventEmitter & DeviceEventEmitter
         this.listener && this.listener.remove();

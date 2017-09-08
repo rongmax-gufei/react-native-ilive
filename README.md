@@ -3,11 +3,16 @@
 2、封装android、iOS两大平台
 
 Get started
+
 #Android
+
 1、将android/react-native-ilive拷贝到自己项目的android目录下
+
 2、在android/settings.gradle文件中新增：':react-native-ilive'依赖
+
 3、在android/app/build.gradle文件的dependencies中添加：
 compile project(path: ':react-native-ilive')
+
 4、在android/app/src/main/AndroidMainfest.xml中：
 权限添加：
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -50,109 +55,11 @@ application下添加：
   a、extends QavsdkApplication
   b、getPackages()方法中添加new ILivePackage()
 
-6、将react-native-ilive.git/src下的ILiveView、index、RtcEngine三个文件拷贝到你的项目相应目录下
-
-7、在你项目的直播功能js文件中：
-  a、导入import {RtcEngine, ILiveView} from './src/index';
-  b、componentWillMount中初始化直播引擎：
-  //初始化iLive
-        const options = {
-            appid: '1400027849',// 腾讯后台获取
-            accountType: '11656',// 腾讯后台获取
-            hostId: 'ruby',
-            roomNum: '6015711',//自己服务器动态分配，规则自己服务器定
-            userRole: '1'//角色，1：主播、0：观众
-        };
-        RtcEngine.init(options);
-  // 自己创建直播间 hostId=自己的id,roomNum=自己的房间号,userRole=1
-    // 加入别人的房间 hostId=主播的id,roomNum=主播的房间号,userRole=0
-c、componentDidMount中先登录腾讯的TLS系统,use id&&sig（自己服务器端生成）
-
-RtcEngine.iLiveLogin('learnta01', 'eJxlj1FrwjAYRd-7K0JfHeNLamor*JCWbsqcQyeKTyVr0hrbxi5GcY79921VWGH39Rzu5X46CCF3OX2951m2P2qb2o9GumiIXHDv-mDTKJFym3pG-IPy3CgjU55baVqIKaUEoOsoIbVVuboZleRGWw64oxxEmbY7147*TwEZBP2wq6iihc-JPJ5Ep-wNs22xrh4f7CJcDWJ1Ee961hASllmPLYrC7Hrr3XzlM8Wsp7mZPtHsxZIZw8toXAfHOAmToN56EE-OwWZMywqiDRuNOpNW1fJ2Cjzq*wBBh56kOai9bgUCmGLiwW9c58v5Blc5XRk_');
-//所有的原生通知统一管理
-RtcEngine.eventEmitter({
-            onLoginTLS: (data) => {
-                var result = data.code === '1000';
-                this.setState({isLoginSuccess: result});
-                // TLS登录成功
-                if (result) {
-                    console.log("登录腾讯TLS系统成功iLiveJoinChannle>>>>>>");
-                    RtcEngine.iLiveJoinChannle();
-                }
-            },
-            onLogoutTLS: (data) => {
-                console.log(data);
-            },
-            onCreateRoom: (data) => {
-                console.log(data);
-                // 创建房间
-                var result = (data.code === '1000' || data.code === '1003');
-                console.log("创建房间>>>>>>:" + result);
-                this.setState({
-                    isJoinSuccess: result,
-                    userRole: 1,
-                });
-            },
-            onJoinRoom: (data) => {
-                console.log(data);
-                // 加入房间1000不在房间内，1003已经在房间里面
-                var result = (data.code === '1000' || data.code === '1003');
-                console.log("加入房间>>>>>>:" + result);
-                this.setState({
-                    isJoinSuccess: result,
-                    userRole: 0,
-                });
-            },
-            onExitRoom: (data) => {
-                console.log(data);
-            },
-            onRoomDisconnect: (data) => {
-                console.log(data);
-            },
-            onSwitchCamera: (data) => {
-                console.log(data);
-            },
-            onToggleCamera: (data) => {
-                console.log(data);
-            },
-            onToggleMic: (data) => {
-                console.log(data);
-                var result = data.result === 'true';
-                this.setState({
-                    bMicOn: result
-                });
-            },
-            onError: (data) => {
-                console.log(data);
-                // 错误!
-            }
-        })
-d、页面销毁退出直播间，移除回调
-componentWillUnmount() {
-        RtcEngine.startExitRoom();
-        RtcEngine.removeEmitter()
-    }
-e、退出房间、切换摄像头、开关声麦方法如下
-
-    handlerCancel = () => {
-        RtcEngine.startExitRoom();
-    };
-
-    handlerSwitchCamera = () => {
-        RtcEngine.switchCamera();
-    };
-
-    handlerToggleMic = () => {
-        RtcEngine.toggleMic();
-    };
-f、render()中添加直播component
-<ILiveView showVideoView={true}/>
-
 #iOS
 
 1、将ios/RCTILive拷贝到自己项目中
 
-2、运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，保留AVSDK、ILiveSDK、IMSDK
+2、运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，仅保留AVSDK、ILiveSDK、IMSDK三个文件夹（！！多余的文件/文件夹删除）
 
 3、修改工程配置
 
@@ -210,4 +117,102 @@ f、render()中添加直播component
   ........
 }
 
-7、react-native部分代码参照ndroid集成的第七步，无需修改
+
+#react-native代码配置如下：
+
+1、将react-native-ilive.git/src下的ILiveView、index、RtcEngine三个文件拷贝到你的项目相应目录下
+
+2、在你项目的直播功能js文件中：
+
+  a、导入import {RtcEngine, ILiveView} from './src/index';
+
+  b、componentWillMount中初始化直播引擎：
+  //初始化iLive
+        const options = {
+            appid: '1400027849',// 腾讯后台获取
+            accountType: '11656',// 腾讯后台获取
+            hostId: 'ruby',
+            roomNum: '6015711',//自己服务器动态分配，规则自己服务器定
+            userRole: '1'//角色，1：主播、0：观众
+        };
+        RtcEngine.init(options);
+  // 自己创建直播间 hostId=自己的id,roomNum=自己的房间号,userRole=1
+    // 加入别人的房间 hostId=主播的id,roomNum=主播的房间号,userRole=0
+
+c、componentDidMount中先登录腾讯的TLS系统,use id&&sig（自己服务器端生成）
+
+RtcEngine.iLiveLogin('learnta01', 'eJxlj1FrwjAYRd-7K0JfHeNLamor*JCWbsqcQyeKTyVr0hrbxi5GcY79921VWGH39Rzu5X46CCF3OX2951m2P2qb2o9GumiIXHDv-mDTKJFym3pG-IPy3CgjU55baVqIKaUEoOsoIbVVuboZleRGWw64oxxEmbY7147*TwEZBP2wq6iihc-JPJ5Ep-wNs22xrh4f7CJcDWJ1Ee961hASllmPLYrC7Hrr3XzlM8Wsp7mZPtHsxZIZw8toXAfHOAmToN56EE-OwWZMywqiDRuNOpNW1fJ2Cjzq*wBBh56kOai9bgUCmGLiwW9c58v5Blc5XRk_');
+//所有的原生通知统一管理
+RtcEngine.eventEmitter({
+            onLoginTLS: (data) => {
+                var result = data.code === '1000';
+                this.setState({isLoginSuccess: result});
+                // TLS登录成功
+                if (result) {
+                    console.log("登录腾讯TLS系统成功iLiveJoinChannle>>>>>>");
+                    RtcEngine.iLiveJoinChannle();
+                }
+            },
+            onLogoutTLS: (data) => {
+                console.log(data);
+            },
+            onCreateRoom: (data) => {
+                console.log(data);
+                // 创建房间
+                var result = (data.code === '1000' || data.code === '1003');
+                console.log("创建房间>>>>>>:" + result);
+            },
+            onJoinRoom: (data) => {
+                console.log(data);
+                // 加入房间1000不在房间内，1003已经在房间里面
+                var result = (data.code === '1000' || data.code === '1003');
+                console.log("加入房间>>>>>>:" + result);
+            },
+            onExitRoom: (data) => {
+                console.log(data);
+            },
+            onRoomDisconnect: (data) => {
+                console.log(data);
+            },
+            onSwitchCamera: (data) => {
+                console.log(data);
+            },
+            onToggleCamera: (data) => {
+                console.log(data);
+            },
+            onToggleMic: (data) => {
+                console.log(data);
+                var result = data.result === 'true';
+                this.setState({
+                    bMicOn: result
+                });
+            },
+            onError: (data) => {
+                console.log(data);
+                // 错误!
+            }
+        })
+
+d、页面销毁退出直播间，移除回调
+componentWillUnmount() {
+        RtcEngine.startExitRoom();
+        RtcEngine.removeEmitter()
+    }
+
+e、退出房间、切换摄像头、开关声麦方法如下
+
+    handlerCancel = () => {
+        RtcEngine.startExitRoom();
+    };
+
+    handlerSwitchCamera = () => {
+        RtcEngine.switchCamera();
+    };
+
+    handlerToggleMic = () => {
+        RtcEngine.toggleMic();
+    };
+
+f、render()中添加直播component
+    <ILiveView showVideoView={true}/>
+

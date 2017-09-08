@@ -105,7 +105,7 @@ export default class ReactNativeILive extends Component {
     }
 
     componentWillUnmount() {
-        RtcEngine.startExitRoom();
+        RtcEngine.iLiveLeaveChannle();
         RtcEngine.removeEmitter()
     }
 
