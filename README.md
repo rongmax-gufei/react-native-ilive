@@ -3,7 +3,7 @@
 2、封装android、iOS两大平台
 
 Get started
-Android
+#Android
 1、将android/react-native-ilive拷贝到自己项目的android目录下
 2、在android/settings.gradle文件中新增：':react-native-ilive'依赖
 3、在android/app/build.gradle文件的dependencies中添加：
@@ -148,9 +148,64 @@ e、退出房间、切换摄像头、开关声麦方法如下
 f、render()中添加直播component
 <ILiveView showVideoView={true}/>
 
-iOS
+#iOS
+
 1、将ios/RCTILive拷贝到自己项目中
-2、运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库
-3、
+
+2、运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，保留AVSDK、ILiveSDK、IMSDK
+
+3、修改工程配置
+
+  将下载好的SDK复制到工程目录下，工程目录右键，Add Files to " you projectname",在demo中如下图所示：
+
+  Build Settings/Linking/Other Linker Flags，增加 -ObjC 配置
+
+  Build Settings/Linking/Bitcode，增加 Bitcode 配置，设置为NO
+
+  iOS10及以上系统，需在Info.plist中增加设备访问权限配置
+  http://mc.qcloudimg.com/static/img/e7b7897cb79a5cb9a984938dd4b3fda3/image.png
 
 
+4 添加系统库
+    需要增加的系统库
+    libc++.tbd
+    libstdc++.tbd
+    libstdc++.6.tbd
+    libz.tbd
+    libbz2.tbd
+    libiconv.tbd
+    libresolv.tbd
+    libsqlite3.tbd
+    libprotobuf.tbd
+    UIKit.framework
+    CoreVideo.framework
+    CoreMedia.framework
+    Accelerate.framework
+    Foundation.framework
+    AVFoundation.framework
+    VideoToolbox.framework
+    CoreGraphics.framework
+    CoreTelephony.framework
+    SystemConfiguration.framework
+
+5、ReactNativeILive/AppDelegate.m文件修改：
+
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+  // start 腾讯互动直播环境初始化
+  TIMManager *manager = [[ILiveSDK getInstance] getTIMManager];
+  NSNumber *evn = [[NSUserDefaults standardUserDefaults] objectForKey:kEnvParam];
+  [manager setEnv:[evn intValue]];//环境
+  NSNumber *logLevel = [[NSUserDefaults standardUserDefaults] objectForKey:kLogLevel];//log 等级(默认debug)
+  if (!logLevel)
+  {
+    [[NSUserDefaults standardUserDefaults] setObject:@(TIM_LOG_DEBUG) forKey:kLogLevel];
+    logLevel = @(TIM_LOG_DEBUG);
+  }
+  [manager initLogSettings:YES logPath:[manager getLogPath]];
+  [manager setLogLevel:(TIMLogLevel)[logLevel integerValue]];
+  // end
+  ........
+}
+
+6、react-native部分代码参照#Android集成的第七步，无需修改

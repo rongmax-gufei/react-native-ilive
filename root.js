@@ -33,9 +33,9 @@ export default class ReactNativeILive extends Component {
         const options = {
             appid: '1400027849',
             accountType: '11656',
-            hostId: 'learnta01',//test0258//63072
-            roomNum: '63072',
-            userRole: '1'
+            hostId: 'ruby',//test0258//63072
+            roomNum: '630721',
+            userRole: '0'
         };
         RtcEngine.init(options);
     }
