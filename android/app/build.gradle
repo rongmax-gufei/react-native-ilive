@@ -89,7 +89,14 @@ def enableProguardInReleaseBuilds = false
 android {
     compileSdkVersion 25
     buildToolsVersion '25.0.2'
-
+    signingConfigs {
+        release {
+            storeFile file(getRootDir().absolutePath + "/keystores/ilive_release.jks")
+            storePassword "abcd1234"
+            keyAlias "ilive"
+            keyPassword "abcd1234"
+        }
+    }
     defaultConfig {
         applicationId "com.tencent.qcloud.suixinbo"
         minSdkVersion 17
@@ -104,6 +111,7 @@ android {
     }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
