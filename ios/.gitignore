@@ -14,6 +14,6 @@ UserInterface.xcuserstate
 
 /build/
 *.bin
-Frameworks/
+*.framework
 *.xcscheme
 *.pbxproj
