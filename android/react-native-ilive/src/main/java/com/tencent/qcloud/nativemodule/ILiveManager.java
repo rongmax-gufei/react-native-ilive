@@ -27,9 +27,6 @@ import static com.tencent.qcloud.utils.Constants.HOST;
 import static com.tencent.qcloud.utils.Constants.HOST_AUTH;
 import static com.tencent.qcloud.utils.Constants.KEY_ACCOUNT_TYPE;
 import static com.tencent.qcloud.utils.Constants.KEY_APPID;
-import static com.tencent.qcloud.utils.Constants.KEY_HOSTID;
-import static com.tencent.qcloud.utils.Constants.KEY_ROOM_NUMBER;
-import static com.tencent.qcloud.utils.Constants.KEY_USER_ROLE;
 import static com.tencent.qcloud.utils.Constants.MEMBER;
 import static com.tencent.qcloud.utils.Constants.NORMAL_MEMBER_AUTH;
 import static com.tencent.qcloud.utils.Constants.SD_GUEST;
@@ -46,8 +43,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener {
 
     private AVRootView rootView;
     private String hostId;
-    private int roomNumber;
-    private int userRole;
+    private int roomId;
     private boolean bCameraOn = false;
     private boolean bMicOn = false;
 
@@ -66,15 +62,6 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener {
         }
         if (options.hasKey(KEY_ACCOUNT_TYPE)) {
             Constants.ACCOUNT_TYPE = Integer.valueOf(options.getString(KEY_ACCOUNT_TYPE));
-        }
-        if (options.hasKey(KEY_USER_ROLE)) {
-            userRole = Integer.valueOf(options.getString(KEY_USER_ROLE));
-        }
-        if (options.hasKey(KEY_HOSTID)) {
-            hostId = options.getString(KEY_HOSTID);
-        }
-        if (options.hasKey(KEY_ROOM_NUMBER)) {
-            roomNumber = Integer.valueOf(options.getString(KEY_ROOM_NUMBER));
         }
     }
 
@@ -160,7 +147,9 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener {
     /**
      * 进入房间
      */
-    public void startEnterRoom() {
+    public void joinChannel(String hostId, int roomId, int userRole) {
+        this.hostId = hostId;
+        this.roomId = roomId;
         switch (userRole) {
             case HOST:
                 createRoom();
@@ -183,7 +172,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener {
                 .authBits(HOST_AUTH)
                 .cameraId(ILiveConstants.FRONT_CAMERA)
                 .videoRecvMode(AVRoomMulti.VIDEO_RECV_MODE_SEMI_AUTO_RECV_CAMERA_VIDEO);
-        int ret = ILVLiveManager.getInstance().createRoom(roomNumber, hostOption, new ILiveCallBack() {
+        int ret = ILVLiveManager.getInstance().createRoom(roomId, hostOption, new ILiveCallBack() {
             @Override
             public void onSuccess(Object data) {
                 bCameraOn = true;
@@ -212,7 +201,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener {
                 .authBits(NORMAL_MEMBER_AUTH)
                 .videoRecvMode(AVRoomMulti.VIDEO_RECV_MODE_SEMI_AUTO_RECV_CAMERA_VIDEO)
                 .autoMic(false);
-        int ret = ILVLiveManager.getInstance().joinRoom(roomNumber, memberOption, new ILiveCallBack() {
+        int ret = ILVLiveManager.getInstance().joinRoom(roomId, memberOption, new ILiveCallBack() {
             @Override
             public void onSuccess(Object data) {
                 rootView.getViewByIndex(0).setVisibility(GLView.VISIBLE);
@@ -250,7 +239,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener {
     /**
      * 退出房间
      */
-    public void startExitRoom() {
+    public void leaveChannel() {
         ILiveSDK.getInstance().getAvVideoCtrl().setLocalVideoPreProcessCallback(null);
         ILVLiveManager.getInstance().quitRoom(new ILiveCallBack() {
             @Override

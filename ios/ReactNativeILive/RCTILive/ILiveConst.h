@@ -13,8 +13,8 @@
 @property (nonatomic, copy) NSString *sdkAppid;
 @property (nonatomic, copy) NSString *sdkAccountType;
 @property (nonatomic, copy) NSString *hostId;
-@property (nonatomic, copy) NSString *roomId;
-@property (nonatomic, copy) NSString *userRole;
+@property (nonatomic, assign) int roomId;
+@property (nonatomic, assign) int userRole;
 
 + (instancetype)share;
 

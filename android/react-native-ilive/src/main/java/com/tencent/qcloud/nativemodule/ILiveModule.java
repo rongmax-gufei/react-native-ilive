@@ -180,18 +180,18 @@ public class ILiveModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startEnterRoom() {
+    public void joinChannel(final String hostId, final int roomId, final int userRole) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ILiveManager.getInstance().startEnterRoom();
+                ILiveManager.getInstance().joinChannel(hostId, roomId, userRole);
             }
         });
     }
 
     @ReactMethod
-    public void startExitRoom() {
-        ILiveManager.getInstance().startExitRoom();
+    public void leaveChannel() {
+        ILiveManager.getInstance().leaveChannel();
     }
 
     @ReactMethod

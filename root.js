@@ -27,16 +27,11 @@ export default class ReactNativeILive extends Component {
         };
     }
 
-    // 自己创建直播间 hostId=自己的id,roomNum=自己的房间号,userRole=1
-    // 加入别人的房间 hostId=主播的id,roomNum=主播的房间号,userRole=0
     componentWillMount() {
         //初始化iLive
         const options = {
             appid: '1400027849',
-            accountType: '11656',
-            hostId: 'learnta01',//test0258//63072
-            roomNum: '6301',
-            userRole: '1'
+            accountType: '11656'
         };
         RtcEngine.init(options);
     }
@@ -52,7 +47,9 @@ export default class ReactNativeILive extends Component {
                 this.setState({isLoginSuccess: result});
                 // TLS登录成功
                 if (result) {
-                    RtcEngine.iLiveJoinChannel();
+                    // 自己创建直播间 hostId=自己的id,roomNum=自己的房间号,userRole=1
+                    // 加入别人的房间 hostId=主播的id,roomNum=主播的房间号,userRole=0
+                    RtcEngine.iLiveJoinChannel('learnta01', 600129, 1);
                 }
             },
             onLogoutTLS: (data) => {
@@ -94,13 +91,15 @@ export default class ReactNativeILive extends Component {
         })
     }
 
-    componentWillUnmount() {
+    handerLeavelRoom = () => {
+        // 通知腾讯TLS服务器
         RtcEngine.iLiveLeaveChannel();
+        // 移除监听事件
         RtcEngine.removeEmitter()
     }
 
     handlerCancel = () => {
-        RtcEngine.iLiveLeaveChannle();
+        RtcEngine.iLiveLeaveChannel();
     };
 
     handlerSwitchCamera = () => {

@@ -36,9 +36,6 @@ RCT_EXPORT_MODULE();
 RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
     [ILiveConst share].sdkAppid = options[@"appid"];
     [ILiveConst share].sdkAccountType = options[@"accountType"];
-    [ILiveConst share].hostId = options[@"hostId"];
-    [ILiveConst share].roomId = options[@"roomNum"];
-    [ILiveConst share].userRole = options[@"userRole"];
     // 初始化iLive模块
     [[ILiveSDK getInstance] initSdk:[[ILiveConst share].sdkAppid intValue] accountType:[[ILiveConst share].sdkAccountType intValue]];
 }
@@ -62,14 +59,16 @@ RCT_EXPORT_METHOD(iLiveLogout) {
     }];
 }
 
-// 开始进入房间
-RCT_EXPORT_METHOD(startEnterRoom) {
+// 进入房间
+RCT_EXPORT_METHOD(joinChannel:(NSString *)hostId roomId:(int)roomId userRole:(int)userRole) {
+    [ILiveConst share].hostId = hostId;
+    [ILiveConst share].roomId = roomId;
+    [ILiveConst share].userRole = userRole;
     // 添加AVListener
     TILLiveManager *manager = [TILLiveManager getInstance];
     [manager setAVListener:self];
-    NSLog(@"开始进入房间");
-    NSString *role = [ILiveConst share].userRole;
-    RoomOptionType _roomOptionType = [role isEqualToString:@"1"] ? RoomOptionType_CrateRoom:RoomOptionType_JoinRoom;
+    BOOL isHost = userRole == 1;
+    RoomOptionType _roomOptionType = isHost ? RoomOptionType_CrateRoom:RoomOptionType_JoinRoom;
     switch (_roomOptionType) {
         case RoomOptionType_CrateRoom:
                 NSLog(@"开始创建房间");
@@ -82,8 +81,8 @@ RCT_EXPORT_METHOD(startEnterRoom) {
     }
 }
 
-// 开始退出房间
-RCT_EXPORT_METHOD(startExitRoom) {
+// 退出房间
+RCT_EXPORT_METHOD(leaveChannel) {
   __weak typeof(self) ws = self;
   [ws onClose];
 }
@@ -136,7 +135,7 @@ RCT_EXPORT_METHOD(destroy) {
     option.avOption.autoHdAudio = YES;//使用高音质模式，可以传背景音乐
     option.roomDisconnectListener = self;
     option.imOption.imSupport = YES;
-    [[TILLiveManager getInstance] createRoom:[[[ILiveConst share] roomId] intValue] option:option succ:^{
+    [[TILLiveManager getInstance] createRoom:[[ILiveConst share] roomId] option:option succ:^{
         NSLog(@"创建房间成功");
         [ws initAudio];
         [self commentEvent:@"onCreateRoom" code:kSuccess msg:@"创建房间成功"];
@@ -152,7 +151,7 @@ RCT_EXPORT_METHOD(destroy) {
 - (void)joinRoom {
     TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
     option.controlRole = kSxbRole_GuestHD;
-    [[TILLiveManager getInstance] joinRoom:[[[ILiveConst share] roomId] intValue] option:option succ:^{
+    [[TILLiveManager getInstance] joinRoom:[[ILiveConst share] roomId] option:option succ:^{
         NSLog(@"加入房间成功");
         [self commentEvent:@"onJoinRoom" code:kSuccess msg:@"加入房间成功"];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
@@ -176,9 +175,9 @@ RCT_EXPORT_METHOD(destroy) {
 
 //开始预览
 - (void)startPreview {
-  QAVContext *context = [[ILiveSDK getInstance] getAVContext];
-  [context.videoCtrl setLocalVideoDelegate:self];
-  [[ILiveRoomManager getInstance] enableCamera:CameraPosFront enable:YES succ:^{
+    QAVContext *context = [[ILiveSDK getInstance] getAVContext];
+    [context.videoCtrl setLocalVideoDelegate:self];
+    [[ILiveRoomManager getInstance] enableCamera:CameraPosFront enable:YES succ:^{
     NSString *loginId = [[ILiveLoginManager getInstance] getLoginId];
     [[TILLiveManager getInstance] addAVRenderView:[UIScreen mainScreen].bounds forIdentifier:loginId srcType:QAVVIDEO_SRC_TYPE_CAMERA];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
