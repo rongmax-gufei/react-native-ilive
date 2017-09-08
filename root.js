@@ -110,15 +110,19 @@ export default class ReactNativeILive extends Component {
     }
 
     handlerCancel = () => {
-        RtcEngine.startExitRoom();
+        RtcEngine.iLiveLeaveChannle();
     };
 
     handlerSwitchCamera = () => {
-        RtcEngine.switchCamera();
+        RtcEngine.iLiveSwitchCamera();
+    };
+
+    handlerToggleCamera = () => {
+        RtcEngine.iLiveToggleCamera();
     };
 
     handlerToggleMic = () => {
-        RtcEngine.toggleMic();
+        RtcEngine.iLiveToggleMic();
     };
 
     render() {

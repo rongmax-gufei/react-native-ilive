@@ -199,18 +199,22 @@ componentWillUnmount() {
         RtcEngine.removeEmitter()
     }
 
-e、退出房间、切换摄像头、开关声麦方法如下
+e、退出房间、切换摄像头、开关摄像头、开关声麦方法如下
 
     handlerCancel = () => {
-        RtcEngine.startExitRoom();
+        RtcEngine.iLiveLeaveChannle();
     };
 
     handlerSwitchCamera = () => {
-        RtcEngine.switchCamera();
+        RtcEngine.iLiveSwitchCamera();
+    };
+
+    handlerToggleCamera = () => {
+        RtcEngine.iLiveToggleCamera();
     };
 
     handlerToggleMic = () => {
-        RtcEngine.toggleMic();
+        RtcEngine.iLiveToggleMic();
     };
 
 f、render()中添加直播component

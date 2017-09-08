@@ -19,16 +19,29 @@ export default {
         this.listener && this.listener.remove();
         ILive.init(options);
     },
+    // 登录腾讯互动直播TLS系统
     iLiveLogin(id, sig) {
         ILive.iLiveLogin(id, sig);
     },
+    // 进入房间
     iLiveJoinChannle(){
-        console.log("iLiveJoinChannle>>>>>>");
         ILive.startEnterRoom();
     },
+    // 离开房间
     iLiveLeaveChannle(){
-        console.log("iLiveLeaveChannle>>>>>>");
         ILive.startExitRoom();
+    },
+    // 切换摄像头
+    iLiveSwitchCamera(){
+        ILive.switchCamera();
+    },
+    // 打开or关闭摄像头
+    iLiveToggleCamera(){
+        ILive.toggleCamera();
+    },
+    // 打卡or关闭声麦
+    iLiveToggleMic(){
+        ILive.toggleMic();
     },
     eventEmitter(fnConf) {
         //there are no `removeListener` for NativeAppEventEmitter & DeviceEventEmitter
