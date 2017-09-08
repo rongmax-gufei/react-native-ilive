@@ -41,9 +41,6 @@ RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
     [ILiveConst share].userRole = options[@"userRole"];
     // 初始化iLive模块
     [[ILiveSDK getInstance] initSdk:[[ILiveConst share].sdkAppid intValue] accountType:[[ILiveConst share].sdkAccountType intValue]];
-    // 添加AVListener
-    TILLiveManager *manager = [TILLiveManager getInstance];
-    [manager setAVListener:self];
 }
 
 // 托管模式登录
@@ -67,7 +64,9 @@ RCT_EXPORT_METHOD(iLiveLogout) {
 
 // 开始进入房间
 RCT_EXPORT_METHOD(startEnterRoom) {
-    _videoCount = 0;
+    // 添加AVListener
+    TILLiveManager *manager = [TILLiveManager getInstance];
+    [manager setAVListener:self];
     NSLog(@"开始进入房间");
     NSString *role = [ILiveConst share].userRole;
     RoomOptionType _roomOptionType = [role isEqualToString:@"1"] ? RoomOptionType_CrateRoom:RoomOptionType_JoinRoom;
@@ -85,12 +84,8 @@ RCT_EXPORT_METHOD(startEnterRoom) {
 
 // 开始退出房间
 RCT_EXPORT_METHOD(startExitRoom) {
-  [[TILLiveManager getInstance] quitRoom:^{
-      [self commentEvent:@"startExitRoom" code:kSuccess msg:@"退出房间成功"];
-  } failed:^(NSString *module, int errId, NSString *errMsg) {
-      [self commentEvent:@"startExitRoom" code:errId msg:errMsg];
-  }];
-  [[TILLiveManager getInstance] removeAllAVRenderViews];
+  __weak typeof(self) ws = self;
+  [ws onClose];
 }
 
 //切换前置/后置摄像头
@@ -124,7 +119,8 @@ RCT_EXPORT_METHOD(toggleMic) {
 
 //销毁引擎实例
 RCT_EXPORT_METHOD(destroy) {
-  
+  __weak typeof(self) ws = self;
+  [ws onClose];
 }
 
 // 创建房间
@@ -140,15 +136,11 @@ RCT_EXPORT_METHOD(destroy) {
     option.avOption.autoHdAudio = YES;//使用高音质模式，可以传背景音乐
     option.roomDisconnectListener = self;
     option.imOption.imSupport = YES;
-    NSLog(@"创建房间 开始s1, %@",[[ILiveConst share] roomId]);
     [[TILLiveManager getInstance] createRoom:[[[ILiveConst share] roomId] intValue] option:option succ:^{
-        NSLog(@"创建房间成功s2");
+        NSLog(@"创建房间成功");
         [ws initAudio];
-        NSLog(@"创建房间 初始化音频s3");
         [self commentEvent:@"onCreateRoom" code:kSuccess msg:@"创建房间成功"];
-        NSLog(@"创建房间 返回结果s4");
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"创建房间 失败s5");
         [self commentEvent:@"onCreateRoom" code:errId msg:errMsg];
   }];
 }
@@ -158,15 +150,13 @@ RCT_EXPORT_METHOD(destroy) {
 }
 
 - (void)joinRoom {
-    NSLog(@"加入房间s1");
     TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
     option.controlRole = kSxbRole_GuestHD;
-    NSLog(@"加入房间开始s2");
     [[TILLiveManager getInstance] joinRoom:[[[ILiveConst share] roomId] intValue] option:option succ:^{
-        NSLog(@"加入房间成功s3");
+        NSLog(@"加入房间成功");
         [self commentEvent:@"onJoinRoom" code:kSuccess msg:@"加入房间成功"];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        NSLog(@"加入房间失败s4");
+        NSLog(@"加入房间失败");
         [self commentEvent:@"onJoinRoom" code:errId msg:errMsg];
     }];
 }
@@ -196,8 +186,18 @@ RCT_EXPORT_METHOD(destroy) {
   }];
 }
 
+- (void)onClose {
+  [[TILLiveManager getInstance] quitRoom:^{
+    [self commentEvent:@"startExitRoom" code:kSuccess msg:@"退出房间成功"];
+  } failed:^(NSString *module, int errId, NSString *errMsg) {
+    [self commentEvent:@"startExitRoom" code:errId msg:errMsg];
+  }];
+  [[UserViewManager shareInstance] releaseManager];
+}
+
 - (BOOL)onRoomDisconnect:(int)reason {
     __weak typeof(self) ws = self;
+    [ws onClose];
     [ws commentEvent:@"onRoomDisconnect" code:kSuccess msg:@"房间失去连接"];
     return YES;
 }

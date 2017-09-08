@@ -21,9 +21,7 @@
 @property (nonatomic, strong) UILabel  *noCameraDatatalabel;//对方没有打开相机时的提示
 @property (nonatomic, assign) BOOL  isCameraEvent;//noCameraDatatalabel需要延迟显示，isNoCameraEvent用来判断是否收到了camera事件
 
-
 //business data
-@property (nonatomic, assign) NSInteger videoCount;
 @property (nonatomic, assign) ILiveFrameDispatcher *frameDispatcher;
-
+- (void)onClose;
 @end

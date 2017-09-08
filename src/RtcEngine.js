@@ -24,11 +24,11 @@ export default {
         ILive.iLiveLogin(id, sig);
     },
     // 进入房间
-    iLiveJoinChannle() {
+    iLiveJoinChannel() {
         ILive.startEnterRoom();
     },
     // 离开房间
-    iLiveLeaveChannle() {
+    iLiveLeaveChannel() {
         ILive.startExitRoom();
     },
     // 切换摄像头

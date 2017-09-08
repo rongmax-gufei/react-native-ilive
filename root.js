@@ -52,7 +52,7 @@ export default class ReactNativeILive extends Component {
                 this.setState({isLoginSuccess: result});
                 // TLS登录成功
                 if (result) {
-                    RtcEngine.iLiveJoinChannle();
+                    RtcEngine.iLiveJoinChannel();
                 }
             },
             onLogoutTLS: (data) => {
@@ -95,7 +95,7 @@ export default class ReactNativeILive extends Component {
     }
 
     componentWillUnmount() {
-        RtcEngine.iLiveLeaveChannle();
+        RtcEngine.iLiveLeaveChannel();
         RtcEngine.removeEmitter()
     }
 

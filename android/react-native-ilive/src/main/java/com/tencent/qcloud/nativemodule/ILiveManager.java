@@ -18,11 +18,9 @@ import com.tencent.ilivesdk.view.AVRootView;
 import com.tencent.ilivesdk.view.AVVideoView;
 import com.tencent.livesdk.ILVLiveManager;
 import com.tencent.livesdk.ILVLiveRoomOption;
-import com.tencent.qcloud.app.InitBusinessHelper;
 import com.tencent.qcloud.interfacev1.IRtcEngineEventHandler;
 import com.tencent.qcloud.utils.Constants;
 import com.tencent.qcloud.utils.SxbLog;
-import com.tencent.qcloud.utils.SxbLogImpl;
 
 import static com.tencent.qcloud.utils.Constants.HD_ROLE;
 import static com.tencent.qcloud.utils.Constants.HOST;
@@ -63,10 +61,6 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener {
     public void init(Context context, IRtcEngineEventHandler rtcEventHandler, ReadableMap options) {
         this.context = context;
         this.rtcEventHandler = rtcEventHandler;
-        if (null == ILiveSDK.getInstance().getAVContext()) {
-            SxbLogImpl.init(context);
-            InitBusinessHelper.initApp(context);
-        }
         if (options.hasKey(KEY_APPID)) {
             Constants.SDK_APPID = Integer.valueOf(options.getString(KEY_APPID));
         }
