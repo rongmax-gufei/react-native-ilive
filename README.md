@@ -188,7 +188,9 @@ f、render()中添加直播component
     CoreTelephony.framework
     SystemConfiguration.framework
 
-5、ReactNativeILive/AppDelegate.m文件修改：
+5、Build Settings/PrefixHeader/your_projectname/RCTILive/TILLiveSDKShow-Prefix.pch
+
+6、ReactNativeILive/AppDelegate.m文件修改：
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -208,4 +210,4 @@ f、render()中添加直播component
   ........
 }
 
-6、react-native部分代码参照ndroid集成的第七步，无需修改
+7、react-native部分代码参照ndroid集成的第七步，无需修改
