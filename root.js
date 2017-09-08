@@ -98,10 +98,6 @@ export default class ReactNativeILive extends Component {
         RtcEngine.removeEmitter()
     }
 
-    handlerCancel = () => {
-        RtcEngine.iLiveLeaveChannel();
-    };
-
     handlerSwitchCamera = () => {
         RtcEngine.iLiveSwitchCamera();
     };
@@ -123,7 +119,7 @@ export default class ReactNativeILive extends Component {
                         <View>
                             <VideoOperateButton
                                 style={{alignSelf: 'center'}}
-                                onPress={this.handlerCancel}
+                                onPress={this.handerLeavelRoom}
                                 imgStyle={{width: 60, height: 60}}
                                 source={require('./images/icon_exit_live.png')}
                             />
