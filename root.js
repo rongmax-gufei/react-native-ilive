@@ -40,8 +40,8 @@ export default class ReactNativeILive extends Component {
 
     componentDidMount() {
         // 先登录腾讯的TLS系统,use id&&sig
-        // RtcEngine.iLiveLogin('learnta01', 'eJxlj1FrwjAYRd-7K0JfHeNLamor*JCWbsqcQyeKTyVr0hrbxi5GcY79921VWGH39Rzu5X46CCF3OX2951m2P2qb2o9GumiIXHDv-mDTKJFym3pG-IPy3CgjU55baVqIKaUEoOsoIbVVuboZleRGWw64oxxEmbY7147*TwEZBP2wq6iihc-JPJ5Ep-wNs22xrh4f7CJcDWJ1Ee961hASllmPLYrC7Hrr3XzlM8Wsp7mZPtHsxZIZw8toXAfHOAmToN56EE-OwWZMywqiDRuNOpNW1fJ2Cjzq*wBBh56kOai9bgUCmGLiwW9c58v5Blc5XRk_');
-        RtcEngine.iLiveLogin('ruby', 'eJxlj0tPg0AUhff8CsLamJnh2SYuFIkU0dJSWuOGIHOhI*HhMLVQ439XsYmTeLffd3LO-VBUVdU2YXyZ5Xl7aEQqxg40da5qSLv4g13HaJqJVOf0H4ShYxzSrBDAJ4hN0yQIyQ6j0AhWsLPBDy*jRHtapVPFb9z4zhLbMWaywsoJPniJu1i5fe5u9pT621V-8rtwGR4HBHEdjgP1o92SWF7VR-r9-nVdLkqKb*3Ho3XD34qKr*PEAD*IbGzVJxeCp*cg2e4o96rru6G9kioFq*H8D9JnDsKOPOgdeM-aZhIIwiYmOvo5TflUvgApXF2f')
+        RtcEngine.iLiveLogin('learnta011', 'eJxlj1FrwjAYRd-7K0JfHeNLamor*JCWbsqcQyeKTyVr0hrbxi5GcY79921VWGH39Rzu5X46CCF3OX2951m2P2qb2o9GumiIXHDv-mDTKJFym3pG-IPy3CgjU55baVqIKaUEoOsoIbVVuboZleRGWw64oxxEmbY7147*TwEZBP2wq6iihc-JPJ5Ep-wNs22xrh4f7CJcDWJ1Ee961hASllmPLYrC7Hrr3XzlM8Wsp7mZPtHsxZIZw8toXAfHOAmToN56EE-OwWZMywqiDRuNOpNW1fJ2Cjzq*wBBh56kOai9bgUCmGLiwW9c58v5Blc5XRk_');
+        // RtcEngine.iLiveLogin('ruby', 'eJxlj0tPg0AUhff8CsLamJnh2SYuFIkU0dJSWuOGIHOhI*HhMLVQ439XsYmTeLffd3LO-VBUVdU2YXyZ5Xl7aEQqxg40da5qSLv4g13HaJqJVOf0H4ShYxzSrBDAJ4hN0yQIyQ6j0AhWsLPBDy*jRHtapVPFb9z4zhLbMWaywsoJPniJu1i5fe5u9pT621V-8rtwGR4HBHEdjgP1o92SWF7VR-r9-nVdLkqKb*3Ho3XD34qKr*PEAD*IbGzVJxeCp*cg2e4o96rru6G9kioFq*H8D9JnDsKOPOgdeM-aZhIIwiYmOvo5TflUvgApXF2f')
         //所有的原生通知统一管理
         RtcEngine.eventEmitter({
             onLoginTLS: (data) => {
@@ -51,7 +51,7 @@ export default class ReactNativeILive extends Component {
                 if (result) {
                     // 自己创建直播间 hostId=自己的id,roomNum=自己的房间号,userRole=1
                     // 加入别人的房间 hostId=主播的id,roomNum=主播的房间号,userRole=0
-                    RtcEngine.iLiveJoinChannel('learnta01', 9307909, 0);
+                    RtcEngine.iLiveJoinChannel('learnta01', 9307909, 1);
                 }
             },
             onLogoutTLS: (data) => {

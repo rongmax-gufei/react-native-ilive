@@ -46,6 +46,7 @@ RCT_EXPORT_METHOD(iLiveLogin:(NSString *)id sig:(NSString *)sig) {
         NSLog(@"iLiveLogin 腾讯登录成功");
         [self commentEvent:@"onLoginTLS" code:kSuccess msg:@"登录腾讯TLS系统成功"];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
+        NSLog(@"iLiveLogin 腾讯登录失败");
         [self commentEvent:@"onLoginTLS" code:errId msg:errMsg];
     }];
 }
