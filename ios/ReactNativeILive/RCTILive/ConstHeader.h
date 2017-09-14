@@ -193,6 +193,9 @@ typedef NS_ENUM(NSInteger, RoomOptionType)
 
 /******************** appstore **********************/
 #define kSuccess 1000
+#define kMaxLimit 5000
+#define kUpVideoReqSuccess 5001
+#define kDownVideoReqSuccess 5002
 
 #define kIsAppstoreVersion 0
 

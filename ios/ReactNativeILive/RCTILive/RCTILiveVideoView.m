@@ -12,16 +12,28 @@
 
 @implementation RCTILiveVideoView
 
-- (instancetype) init {
-    if (self == [super init]) {
+static RCTILiveVideoView *instance = nil;
+
++ (RCTILiveVideoView *)getInstance{
+  @synchronized(self) {
+    if (instance == nil){
+      instance = [[RCTILiveVideoView alloc]init];
     }
-    return self;
+  }
+  return instance;
+}
+
+- (instancetype) init {
+  if (self == [super init]) {
+  }
+  return self;
 }
 
 - (void)setShowVideoView:(BOOL)showVideoView {
-    if (showVideoView) {
-      [[TILLiveManager getInstance] setAVRootView:self];
-    }
+  if (showVideoView) {
+    self.rootView = self;
+    [[TILLiveManager getInstance] setAVRootView:self];
+  }
 }
 
 @end

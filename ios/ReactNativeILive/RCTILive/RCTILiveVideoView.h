@@ -10,6 +10,12 @@
 
 @interface RCTILiveVideoView : UIView
 
-@property (nonatomic) BOOL showVideoView;
+/**
+ * 获取单例
+ * @return 单例
+ */
++ (instancetype)getInstance;
 
+@property (nonatomic) BOOL showVideoView;
+@property (nonatomic, strong) UIView  *rootView;
 @end

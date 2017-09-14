@@ -13,6 +13,22 @@
 
 @implementation AppDelegate
 
++ (instancetype)sharedAppDelegate {
+  return (AppDelegate *)[UIApplication sharedApplication].delegate;
+}
+
++ (UIAlertController *)showAlert:(UIViewController *)rootVC title:(NSString *)title message:(NSString *)msg okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(ActionHandle)succ cancel:(ActionHandle)fail {
+  UIAlertController *alert = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+  if (cancelTitle) {
+    [alert addAction:[UIAlertAction actionWithTitle:cancelTitle style:UIAlertActionStyleCancel handler:fail]];
+  }
+  if (okTitle) {
+    [alert addAction:[UIAlertAction actionWithTitle:okTitle style:UIAlertActionStyleDefault handler:succ]];
+  }
+  [rootVC presentViewController:alert animated:YES completion:nil];
+  return alert;
+}
+
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   TIMManager *manager = [[ILiveSDK getInstance] getTIMManager];

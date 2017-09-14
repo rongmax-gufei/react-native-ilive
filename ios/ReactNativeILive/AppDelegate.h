@@ -13,4 +13,8 @@
 
 @property (nonatomic, strong) UIWindow *window;
 
++ (instancetype)sharedAppDelegate;
+
++ (UIAlertController *)showAlert:(UIViewController *)rootVC title:(NSString *)title message:(NSString *)msg okTitle:(NSString *)okTitle cancelTitle:(NSString *)cancelTitle ok:(ActionHandle)succ cancel:(ActionHandle)fail;
+
 @end
