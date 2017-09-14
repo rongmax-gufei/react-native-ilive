@@ -40,9 +40,9 @@ RCT_EXPORT_METHOD(init:(NSDictionary *)options) {
   [[ILiveSDK getInstance] initSdk:[[ILiveConst share].sdkAppid intValue] accountType:[[ILiveConst share].sdkAccountType intValue]];
 }
 
-// 托管模式登录
-RCT_EXPORT_METHOD(iLiveLogin:(NSString *)id sig:(NSString *)sig) {
-  [[ILiveLoginManager getInstance] iLiveLogin:id sig:sig succ:^{
+// 独立模式登录
+RCT_EXPORT_METHOD(iLiveLogin:(NSString *)uid sig:(NSString *)sig) {
+  [[ILiveLoginManager getInstance] iLiveLogin:uid sig:sig succ:^{
       NSLog(@"iLiveLogin 腾讯登录成功");
       [self commentEvent:@"onLoginTLS" code:kSuccess msg:@"登录腾讯TLS系统成功"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
@@ -114,7 +114,7 @@ RCT_EXPORT_METHOD(upVideo:(NSString *)hostId) {
   if ([UserViewManager shareInstance].total >= kMaxUserViewCount) {
     NSString *message = [NSString stringWithFormat:@"连麦画面不能超过%d路,可以先取消一路连麦",kMaxUserViewCount+1];
     NSLog(@"%@", message);
-    [self commentEvent:@"upVideo" code:kMaxLimit msg:message];
+    [self commentEvent:@"onUpVideo" code:kMaxLimit msg:message];
     return;
   }
   ILVLiveCustomMessage *video = [[ILVLiveCustomMessage alloc] init];
@@ -123,7 +123,7 @@ RCT_EXPORT_METHOD(upVideo:(NSString *)hostId) {
   video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Host_Invite;
   [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
     NSLog(@"连麦请求已发出");
-    [self commentEvent:@"upVideo" code:kUpVideoReqSuccess msg:@"连麦请求已发出"];
+    [self commentEvent:@"onUpVideo" code:kUpVideoReqSuccess msg:@"连麦请求已发出"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
     NSLog(@"login fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
   }];
@@ -140,7 +140,7 @@ RCT_EXPORT_METHOD(downVideo:(NSString *)hostId) {
   video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
   [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
     NSLog(@"下麦请求已发出");
-    [self commentEvent:@"downVideo" code:kDownVideoReqSuccess msg:@"下麦请求已发出"];
+    [self commentEvent:@"onDownVideo" code:kDownVideoReqSuccess msg:@"下麦请求已发出"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
     NSLog(@"login fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
   }];
@@ -149,9 +149,9 @@ RCT_EXPORT_METHOD(downVideo:(NSString *)hostId) {
 //切换前置/后置摄像头
 RCT_EXPORT_METHOD(switchCamera) {
   [[ILiveRoomManager getInstance] switchCamera:^{
-      [self commentEvent:@"switchCamera" code:kSuccess msg:@"切换摄像头成功"];
+      [self commentEvent:@"onSwitchCamera" code:kSuccess msg:@"切换摄像头成功"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
-      [self commentEvent:@"switchCamera" code:errId msg:errMsg];
+      [self commentEvent:@"onSwitchCamera" code:errId msg:errMsg];
   }];
 }
 
@@ -159,9 +159,9 @@ RCT_EXPORT_METHOD(switchCamera) {
 RCT_EXPORT_METHOD(toggleCamera) {
   _bCameraOn = !_bCameraOn;
   [[ILiveRoomManager getInstance] enableCamera:CameraPosFront enable:_bCameraOn succ:^{
-      [self commentEvent:@"toogleCamera" code:kSuccess msg:@"打开/关闭摄像头成功"];
+      [self commentEvent:@"onToggleCamera" code:kSuccess msg:@"打开/关闭摄像头成功"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
-      [self commentEvent:@"toogleCamera" code:errId msg:errMsg];
+      [self commentEvent:@"onToggleCamera" code:errId msg:errMsg];
   }];
 }
 
@@ -169,9 +169,9 @@ RCT_EXPORT_METHOD(toggleCamera) {
 RCT_EXPORT_METHOD(toggleMic) {
   _bMicOn = !_bMicOn;
   [[ILiveRoomManager getInstance] enableMic:_bMicOn succ:^{
-    [self commentEvent:@"toogleMic" code:kSuccess msg:@"打开/关闭声麦成功"];
+    [self commentEvent:@"onToggleMic" code:kSuccess msg:@"打开/关闭声麦成功"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
-    [self commentEvent:@"toogleMic" code:errId msg:errMsg];
+    [self commentEvent:@"onToggleMic" code:errId msg:errMsg];
   }];
 }
 
@@ -206,7 +206,7 @@ RCT_EXPORT_METHOD(destroy) {
   [[TILLiveManager getInstance] createRoom:[[ILiveConst share] roomId] option:option succ:^{
     NSLog(@"创建房间成功");
     [ws initAudio];
-    [self commentEvent:@"onCreateRoom" code:kSuccess msg:@"创建房间成功"];
+    [self commentEvent:@"onCreateRoom" code:kSuccess msg:@""];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
     [self commentEvent:@"onCreateRoom" code:errId msg:errMsg];
   }];
@@ -275,9 +275,9 @@ RCT_EXPORT_METHOD(destroy) {
 // 退出房间操作
 - (void)onClose {
   [[TILLiveManager getInstance] quitRoom:^{
-    [self commentEvent:@"startExitRoom" code:kSuccess msg:@"退出房间成功"];
+    [self commentEvent:@"onExitRoom" code:kSuccess msg:@"退出房间成功"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
-    [self commentEvent:@"startExitRoom" code:errId msg:errMsg];
+    [self commentEvent:@"onExitRoom" code:errId msg:errMsg];
   }];
   [[UserViewManager shareInstance] releaseManager];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kCancelConnect_Notification object:nil];
@@ -289,7 +289,7 @@ RCT_EXPORT_METHOD(destroy) {
  */
 - (void)onGotupDelete:(NSNotification *)noti  {
   [self onClose];
-  [self commentEvent:@"onHostLeave" code:kSuccess msg:@"主播已经离开房间"];
+  [self commentEvent:@"onLeaveRoom" code:kSuccess msg:@"主播已经离开房间"];
 }
 
 - (BOOL)onRoomDisconnect:(int)reason {
@@ -309,10 +309,16 @@ RCT_EXPORT_METHOD(destroy) {
   params[kType] = type;
   params[kCode] = [NSString stringWithFormat:@"%d", code];
   params[kMsg] = msg;
+  params[kRoomId] = [NSString stringWithFormat:@"%d", [[ILiveConst share] roomId]];
   NSLog(@"返回commentEvent%@", params );
   dispatch_async(dispatch_get_main_queue(), ^{
       [self sendEventWithName:@"iLiveEvent" body:params];
   });
+}
+
+// RCT必须的方法体，不可删除，否则所有暴露的RCT_EXPORT_METHOD不在主线程执行
+- (dispatch_queue_t)methodQueue {
+  return dispatch_get_main_queue();
 }
 @end
 

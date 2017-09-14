@@ -35,6 +35,14 @@ export default {
     iLiveSetAVListener() {
         ILive.doAVListener();
     },
+    // 上麦
+    iLiveUpVideo(hostId) {
+        ILive.upVideo(hostId);
+    },
+    // 下麦
+    iLiveDownVideo(hostId) {
+        ILive.downVideo(hostId);
+    },
     // 切换摄像头
     iLiveSwitchCamera() {
         ILive.switchCamera();

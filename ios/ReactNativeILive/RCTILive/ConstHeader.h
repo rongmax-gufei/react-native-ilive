@@ -190,6 +190,7 @@ typedef NS_ENUM(NSInteger, RoomOptionType)
 #define kCode @"code"
 #define kType @"type"
 #define kMsg @"msg"
+#define kRoomId @"roomId"
 
 /******************** appstore **********************/
 #define kSuccess 1000
