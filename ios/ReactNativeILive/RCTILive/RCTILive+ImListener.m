@@ -12,21 +12,8 @@
 
 static __weak UIAlertController *_promptAlert = nil;
 
-- (void)onTextMessage:(ILVLiveTextMessage *)msg
-{
-//    [self onMessage:msg];
-}
-
 - (void)onCustomMessage:(ILVLiveCustomMessage *)msg
 {
-    if (msg.type == ILVLIVE_IMTYPE_GROUP)
-    {
-        //非当前直播间的群消息，不处理
-        if (![_liveItem.info.groupid isEqualToString:msg.recvId])
-        {
-            return;
-        }
-    }
     int cmd = msg.cmd;
     if (msg.type == ILVLIVE_IMTYPE_C2C)
     {
@@ -80,26 +67,6 @@ static __weak UIAlertController *_promptAlert = nil;
               });
             }
                 break;
-            case ILVLIVE_IMCMD_LINKROOM_REQ:
-            {
-                [self recvLinkRoomReq:msg.sendId];
-            }
-                break;
-            case ILVLIVE_IMCMD_LINKROOM_ACCEPT:
-            {
-                [self recvLinkRoomAccept:msg];
-            }
-                break;
-            case ILVLIVE_IMCMD_LINKROOM_REFUSE:
-            {
-                [self recvLinkRoomRefuse:msg.sendId];
-            }
-                break;
-            case ILVLIVE_IMCMD_LINKROOM_LIMIT:
-            {
-                [self recvLinkRoomLimit:msg.sendId];
-            }
-                break;
             default:
                 break;
         }
@@ -117,7 +84,6 @@ static __weak UIAlertController *_promptAlert = nil;
                 }
                 break;
             case AVIMCMD_EnterLive:
-//                [self onMessage:msg];
                 break;
             case AVIMCMD_ExitLive:
                 [[NSNotificationCenter defaultCenter] postNotificationName:kGroupDelete_Notification object:nil];
@@ -128,101 +94,9 @@ static __weak UIAlertController *_promptAlert = nil;
     }
 }
 
-- (void)recvLinkRoomReq:(NSString *)fromId
-{
-    //界面上已经有3个画面了 或 自己不是主播，则回复拒绝
-    NSString *loginUser = [[ILiveLoginManager getInstance] getLoginId];
-    if ([UserViewManager shareInstance].total >= kMaxUserViewCount || ![self.liveItem.uid isEqualToString:loginUser])
-    {
-        [[TILLiveManager getInstance] refuseLinkRoom:fromId succ:^{
-            NSLog(@"refuse");
-        } failed:^(NSString *module, int errId, NSString *errMsg) {
-            NSLog(@"refuse");
-        }];
-        return;
-    }
-    
-    NSString *title = [NSString stringWithFormat:@"收到来自%@的跨房连麦邀请",fromId];
-    AlertActionHandle accpetBlock = ^(UIAlertAction * _Nonnull action){
-        [[TILLiveManager getInstance] acceptLinkRoom:fromId succ:^{
-            NSLog(@"accpet");
-        } failed:^(NSString *module, int errId, NSString *errMsg) {
-            NSLog(@"accpet");
-        }];
-    };
-    AlertActionHandle refuseBlock = ^(UIAlertAction * _Nonnull action){
-        [[TILLiveManager getInstance] refuseLinkRoom:fromId succ:^{
-            NSLog(@"refuse");
-        } failed:^(NSString *module, int errId, NSString *errMsg) {
-            NSLog(@"refuse");
-        }];
-    };
-    [AlertHelp alertWith:title message:nil funBtns:@{@"拒绝":refuseBlock, @"同意":accpetBlock} cancelBtn:nil alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
-}
-
-- (void)recvLinkRoomAccept:(ILVLiveCustomMessage *)msg
-{
-//    if (!msg.data)//无房间号，不在房间中
-//    {
-//        NSString *title = [NSString stringWithFormat:@"%@不在房间中",msg.sendId];
-//        [AlertHelp alertWith:title message:nil cancelBtn:@"算了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
-//        return;
-//    }
-//    //界面上已经有3个画面了，则回复拒绝
-//    if ([UserViewManager shareInstance].total >= kMaxUserViewCount)
-//    {
-//        NSString *msgInfo = [NSString stringWithFormat:@"%@同意了你的跨房连麦请求，但是你本身的界面视图已经达到视图显示个数的上限了",msg.sendId];
-//        [AlertHelp alertWith:@"超出视图个数" message:msgInfo cancelBtn:@"好的" alertStyle:UIAlertControllerStyleAlert cancelAction:^(UIAlertAction * _Nonnull action) {
-//            ILVLiveCustomMessage *overLimitMsg = [[ILVLiveCustomMessage alloc] init];
-//            overLimitMsg.type = ILVLIVE_IMTYPE_C2C;
-//            overLimitMsg.cmd = ILVLIVE_IMCMD_LINKROOM_LIMIT;
-//            overLimitMsg.recvId = msg.sendId;
-//            [[TILLiveManager getInstance] sendOnlineCustomMessage:overLimitMsg succ:nil failed:nil];
-//        }];
-//        return;
-//    }
-//    AlertActionHandle linkBlock = ^(UIAlertAction * _Nonnull action){
-//        NSString *roomId = [[NSString alloc] initWithData:msg.data encoding:NSUTF8StringEncoding];
-//        LinkRoomSigRequest *linkSigReq = [[LinkRoomSigRequest alloc] initWithHandler:^(BaseRequest *request) {
-//            LinkRoomSigResponseData *sigData = (LinkRoomSigResponseData *)request.response.data;
-//            NSLog(@"code=%ld,errmsg=%@",(long)request.response.errorCode,request.response.errorInfo);
-//            [[TILLiveManager getInstance] linkRoom:[roomId intValue] identifier:msg.sendId authBuff:sigData.linksig succ:^{
-//                [AlertHelp tipWith:@"连接成功" wait:0.5];
-//            } failed:^(NSString *module, int errId, NSString *errMsg) {
-//                NSString *msg = [NSString stringWithFormat:@"Module=%@,code=%d,Msg=%@",module,errId,errMsg];
-//                [AlertHelp alertWith:@"跨房连麦失败" message:msg cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
-//            }];
-//        } failHandler:^(BaseRequest *request) {
-//            NSString *errLog = [NSString stringWithFormat:@"获取sig失败.code=%ld,msg=%@",(long)request.response.errorCode,request.response.errorInfo];
-//            [AlertHelp tipWith:errLog wait:1];
-//        }];
-//        linkSigReq.token = [AppDelegate sharedAppDelegate].token;
-//        linkSigReq.identifier = msg.sendId;
-//        linkSigReq.targetRoomnum = [roomId integerValue];
-//        linkSigReq.selfRoomnum = _liveItem.info.roomnum;
-//        [[WebServiceEngine sharedEngine] asyncRequest:linkSigReq];
-//    };
-//    NSString *title = [NSString stringWithFormat:@"%@同意跨房连麦",msg.sendId];
-//    [AlertHelp alertWith:title message:@"是否发起跨房连麦?" funBtns:@{@"发起连麦":linkBlock} cancelBtn:@"取消" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
-}
-
-- (void)recvLinkRoomRefuse:(NSString *)fromId
-{
-    NSString *title = [NSString stringWithFormat:@"%@拒绝跨房连麦",fromId];
-    [AlertHelp alertWith:title message:nil cancelBtn:@"好吧" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
-}
-
-- (void)recvLinkRoomLimit:(NSString *)fromId
-{
-    NSString *msg = [NSString stringWithFormat:@"%@的房间跨房连麦成员已达上限,无法建立连麦",fromId];
-    [AlertHelp alertWith:@"上限提示" message:msg cancelBtn:@"好吧" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
-}
-
-- (BOOL)isSendToSelf:(ILVLiveCustomMessage *)msg
-{
+- (BOOL)isSendToSelf:(ILVLiveCustomMessage *)msg {
     NSString *recvId = [[NSString alloc] initWithData:msg.data encoding:NSUTF8StringEncoding];
     NSString *selfId = [[ILiveLoginManager getInstance] getLoginId];
-    
     return [recvId isEqualToString:selfId];
 }
 
@@ -231,9 +105,8 @@ static __weak UIAlertController *_promptAlert = nil;
     ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
     msg.type = ILVLIVE_IMTYPE_C2C;
     msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Interact_Join;
-    msg.recvId = _liveItem.uid;
-    
-    __weak typeof(self) ws = self;
+    msg.recvId = [[ILiveConst share] hostId];
+  
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         ILiveRoomManager *roomManager = [ILiveRoomManager getInstance];
         [roomManager changeRole:role succ:^{
@@ -241,9 +114,7 @@ static __weak UIAlertController *_promptAlert = nil;
             [roomManager enableCamera:CameraPosFront enable:YES succ:^{
                 NSLog(@"enable camera YES");
                 [roomManager enableMic:YES succ:^{
-                    ws.liveItem.info.roleName = role;
                     [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:role];
-                    
                 } failed:^(NSString *module, int errId, NSString *errMsg) {
                     NSLog(@"enable mic fail");
                 }];
@@ -293,7 +164,6 @@ static __weak UIAlertController *_promptAlert = nil;
 {
     ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
     msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Interact_Refuse;
-    msg.recvId = _liveItem.uid;
     msg.type = ILVLIVE_IMTYPE_C2C;
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         NSLog(@"refuse video succ");

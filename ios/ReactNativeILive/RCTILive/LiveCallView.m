@@ -24,11 +24,11 @@
         _userLabel.textColor = kColorWhite;
         [_imageView addSubview:_userLabel];
         
-        _hangUpBtn = [[UIButton alloc] init];
-        [_hangUpBtn setBackgroundImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
-        [_hangUpBtn addTarget:self action:@selector(cancelInivte) forControlEvents:UIControlEventTouchUpInside];
-        [_imageView addSubview:_hangUpBtn];
-        
+//        _hangUpBtn = [[UIButton alloc] init];
+//        [_hangUpBtn setBackgroundImage:[UIImage imageNamed:@"phone"] forState:UIControlStateNormal];
+//        [_hangUpBtn addTarget:self action:@selector(cancelInivte) forControlEvents:UIControlEventTouchUpInside];
+//        [_imageView addSubview:_hangUpBtn];
+      
         _timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:kCallTimeout target:self selector:@selector(cancelInivte) userInfo:nil repeats:NO];
         
         [self setBackgroundColor:[kColorBlack colorWithAlphaComponent:0.5]];
@@ -44,9 +44,9 @@
     msg.type = ILVLIVE_IMTYPE_C2C;
     
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
-        
+      NSLog(@"发送取消连麦请求成功");
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-        
+      NSLog(@"发送取消连麦请求失败");
     }];
     
     [_timeoutTimer invalidate];

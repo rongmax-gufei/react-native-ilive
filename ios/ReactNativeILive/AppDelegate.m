@@ -35,8 +35,7 @@
   NSNumber *evn = [[NSUserDefaults standardUserDefaults] objectForKey:kEnvParam];
   [manager setEnv:[evn intValue]];//环境
   NSNumber *logLevel = [[NSUserDefaults standardUserDefaults] objectForKey:kLogLevel];//log 等级(默认debug)
-  if (!logLevel)
-  {
+  if (!logLevel) {
     [[NSUserDefaults standardUserDefaults] setObject:@(TIM_LOG_DEBUG) forKey:kLogLevel];
     logLevel = @(TIM_LOG_DEBUG);
   }
@@ -46,8 +45,7 @@
   NSURL *jsCodeLocation;
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
-//  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"index.ios" withExtension:@"jsbundle"];
-  
+ 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"ReactNativeILive"
                                                initialProperties:nil

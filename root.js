@@ -42,7 +42,7 @@ export default class ReactNativeILive extends Component {
         // 先登录腾讯的TLS系统,use id&&sig
         // RtcEngine.iLiveLogin('learnta01', 'eJxlj1FrwjAYRd-7K0JfHeNLamor*JCWbsqcQyeKTyVr0hrbxi5GcY79921VWGH39Rzu5X46CCF3OX2951m2P2qb2o9GumiIXHDv-mDTKJFym3pG-IPy3CgjU55baVqIKaUEoOsoIbVVuboZleRGWw64oxxEmbY7147*TwEZBP2wq6iihc-JPJ5Ep-wNs22xrh4f7CJcDWJ1Ee961hASllmPLYrC7Hrr3XzlM8Wsp7mZPtHsxZIZw8toXAfHOAmToN56EE-OwWZMywqiDRuNOpNW1fJ2Cjzq*wBBh56kOai9bgUCmGLiwW9c58v5Blc5XRk_');
         RtcEngine.iLiveLogin('ruby', 'eJxlj0tPg0AUhff8CsLamJnh2SYuFIkU0dJSWuOGIHOhI*HhMLVQ439XsYmTeLffd3LO-VBUVdU2YXyZ5Xl7aEQqxg40da5qSLv4g13HaJqJVOf0H4ShYxzSrBDAJ4hN0yQIyQ6j0AhWsLPBDy*jRHtapVPFb9z4zhLbMWaywsoJPniJu1i5fe5u9pT621V-8rtwGR4HBHEdjgP1o92SWF7VR-r9-nVdLkqKb*3Ho3XD34qKr*PEAD*IbGzVJxeCp*cg2e4o96rru6G9kioFq*H8D9JnDsKOPOgdeM-aZhIIwiYmOvo5TflUvgApXF2f')
-        //RtcEngine.iLiveLogin('learnta111', 'eJxlj8tOg0AARfd8BWGLMTPA8HBHoBGsQNqipitC59GOtTBOB4Ua-70Vm0ji3Z6Te3O-NF3XjfJxdVtj3HaNqtQgqKHf6QYwbv6gEJxUtapsSf5B2gsuaVUzReUIIULIAmDqcEIbxRm-Gm*0lo2qIYQT50j21Tj0W*JcGizPd4KpwrcjzGbrKF1Ekjmv73M-jEN0wsn88HQ-K1lcgLIzdxvVnfIMic-ewy3bpruwiJNscPmQPjsvy1zYyWogOe43idq766I000XsRmYg8UMxmVT8QK*vALI9Pwi8Cf2g8sjbZhQsABG0bPATQ-vWzhSzXpU_');
+        // RtcEngine.iLiveLogin('learnta111', 'eJxlj8tOg0AARfd8BWGLMTPA8HBHoBGsQNqipitC59GOtTBOB4Ua-70Vm0ji3Z6Te3O-NF3XjfJxdVtj3HaNqtQgqKHf6QYwbv6gEJxUtapsSf5B2gsuaVUzReUIIULIAmDqcEIbxRm-Gm*0lo2qIYQT50j21Tj0W*JcGizPd4KpwrcjzGbrKF1Ekjmv73M-jEN0wsn88HQ-K1lcgLIzdxvVnfIMic-ewy3bpruwiJNscPmQPjsvy1zYyWogOe43idq766I000XsRmYg8UMxmVT8QK*vALI9Pwi8Cf2g8sjbZhQsABG0bPATQ-vWzhSzXpU_');
         //所有的原生通知统一管理
         RtcEngine.eventEmitter({
             onLoginTLS: (data) => {
@@ -52,7 +52,7 @@ export default class ReactNativeILive extends Component {
                 if (result) {
                     // 自己创建直播间 hostId=自己的id,roomNum=自己的房间号,userRole=1
                     // 加入别人的房间 hostId=主播的id,roomNum=主播的房间号,userRole=0
-                    RtcEngine.iLiveJoinChannel('ruby', 193079, 1);
+                    RtcEngine.iLiveJoinChannel('learnta111', 66247, 1);
                 }
             },
             onLogoutTLS: (data) => {
@@ -113,30 +113,33 @@ export default class ReactNativeILive extends Component {
         })
     }
 
-    handerLeavelRoom = () => {
+    handerLeavelRoom() {
+        console.log('handerLeavelRoom');
         // 通知腾讯TLS服务器
         RtcEngine.iLiveLeaveChannel();
         // 移除监听事件
         RtcEngine.removeEmitter();
     };
 
-    handlerUpVideo = (hostId) => {
+    handlerUpVideo (hostId) {
+        console.log('handlerUpVideo');
         RtcEngine.iLiveUpVideo(hostId);
-    }
+    };
 
-    handlerDownVideo = (hostId) => {
+    handlerDownVideo(hostId) {
+        console.log('handlerDownVideo');
         RtcEngine.iLiveDownVideo(hostId);
-    }
+    };
 
-    handlerSwitchCamera = () => {
+    handlerSwitchCamera =() => {
         RtcEngine.iLiveSwitchCamera();
     };
 
-    handlerToggleCamera = () => {
+    handlerToggleCamera =() => {
         RtcEngine.iLiveToggleCamera();
     };
 
-    handlerToggleMic = () => {
+    handlerToggleMic =() => {
         RtcEngine.iLiveToggleMic();
     };
 
@@ -144,30 +147,26 @@ export default class ReactNativeILive extends Component {
         const {bMicOn, bCameraOn, bUpVideo, isJoinSuccess, userRole} = this.state;
             return (
                 <View style={styles.container}>
-                    <ILiveView style={styles.localView} showVideoView={true}/>
+                    <ILiveView ref="liveView" style={styles.localView} showVideoView={true}/>
                     <View style={styles.absView}>
                         <View>
                             <VideoOperateButton
                                 style={{alignSelf: 'center'}}
-                                onPress={this.handerLeavelRoom()}
+                                onPress={this.handerLeavelRoom.bind(this)}
                                 imgStyle={{width: 60, height: 60}}
                                 source={require('./images/icon_exit_live.png')}
                             />
                             <View style={styles.bottomView}>
-                                {/*<VideoOperateButton*/}
-                                    {/*onPress={this.handlerToggleMic()}*/}
-                                    {/*source={ bMicOn ? require('./images/icon_mic_close.png') : require('./images/icon_mic_open.png')}*/}
-                                {/*/>*/}
-                                {/*<VideoOperateButton*/}
-                                    {/*onPress={this.handlerToggleCamera()}*/}
-                                    {/*source={ bCameraOn ? require('./images/icon_camera_off.png') : require('./images/icon_camera_on.png')}*/}
-                                {/*/>*/}
-                                {/*<VideoOperateButton*/}
-                                    {/*onPress={this.handlerSwitchCamera()}*/}
-                                    {/*source={require('./images/icon_switch_camera.png')}*/}
-                                {/*/>*/}
                                 <VideoOperateButton
-                                    onPress={this.handlerUpVideo('learnta111')}
+                                    onPress={this.handlerSwitchCamera.bind(this)}
+                                    source={require('./images/icon_switch_camera.png')}
+                                />
+                                <VideoOperateButton
+                                    onPress={this.handlerUpVideo.bind(this, 'ruby')}
+                                    source={require('./images/icon_mic_open.png')}
+                                />
+                                <VideoOperateButton
+                                    onPress={this.handlerDownVideo.bind(this, 'ruby')}
                                     source={require('./images/icon_mic_open.png')}
                                 />
                             </View>

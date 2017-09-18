@@ -10,14 +10,6 @@
 #define WebServiceHeader_h
 
 #import "BaseRequest.h"
-
 #import "WebServiceEngine.h"
-
-#import "RequestHeader.h"
-
 #import "WebModels.h"
-
-#import "NSObject+Json.h"
-
-
 #endif /* WebServiceHeader_h */

@@ -64,7 +64,7 @@ alpha:a]
 /******************** font ********************************/
 #define kAppLargeTextFont       [UIFont systemFontOfSize:17]
 #define kAppMiddleTextFont      [UIFont systemFontOfSize:15]
-#define kAppSmallTextFont       [UIFont systemFontOfSize:13]
+#define kAppSmallTextFont        [UIFont systemFontOfSize:13]
 
 /******************** icon ********************************/
 #define kDefaultUserIcon            [UIImage imageNamed:@"default_head"]

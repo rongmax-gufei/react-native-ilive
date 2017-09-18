@@ -5,8 +5,8 @@
 //  Copyright © 2017年 Learnta Inc. All rights reserved.
 //
 #import "RCTILive.h"
-#import "ILiveConst.h"
 #import "RCTILive+AVListener.h"
+#import "RCTILive+ImListener.h"
 #import "RCTILiveVideoView.h"
 
 #import <React/RCTEventDispatcher.h>
@@ -64,11 +64,12 @@ RCT_EXPORT_METHOD(iLiveLogout) {
 RCT_EXPORT_METHOD(doAVListener) {
   TILLiveManager *manager = [TILLiveManager getInstance];
   [manager setAVListener:self];
+  [manager setIMListener:self];
 }
 
 // 进入房间
 RCT_EXPORT_METHOD(joinChannel:(NSString *)hostId roomId:(int)roomId userRole:(int)userRole) {
-  _rootView = [[RCTILiveVideoView getInstance] rootView] ;
+  _rootView = [RCTILiveVideoView getInstance] ;
   //添加监听
   [self addObserver];
   [ILiveConst share].hostId = hostId;
@@ -98,10 +99,10 @@ RCT_EXPORT_METHOD(leaveChannel) {
     customMsg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
     customMsg.cmd = (ILVLiveIMCmd)AVIMCMD_ExitLive;
     [[TILLiveManager getInstance] sendCustomMessage:customMsg succ:^{
-      NSLog(@"succ");
+      NSLog(@"主播退群，发送退群消息成功！");
       [ws onClose];
     } failed:^(NSString *module, int errId, NSString *errMsg) {
-      NSLog(@"fail");
+      NSLog(@"主播退群，发送退群消息失败！");
       [ws onClose];
     }];
   } else {
@@ -129,7 +130,8 @@ RCT_EXPORT_METHOD(upVideo:(NSString *)hostId) {
   }];
   //增加连麦小视图
   LiveCallView *callView = [[UserViewManager shareInstance] addPlaceholderView:hostId];
-  [_rootView addSubview:callView];
+  ILiveRenderView *mainAvRenderView = [[TILLiveManager getInstance] getAVRenderView:[[ILiveConst share] hostId] srcType:QAVVIDEO_SRC_TYPE_CAMERA];
+  [mainAvRenderView.superview addSubview:callView];
 }
 
 // 下麦

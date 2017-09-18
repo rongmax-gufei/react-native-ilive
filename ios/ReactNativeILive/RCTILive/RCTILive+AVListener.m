@@ -9,6 +9,7 @@
 #import "RCTILive+AVListener.h"
 
 #import <objc/runtime.h>
+#import "ILiveConst.h"
 
 @implementation RCTILive (AVListener)
 
@@ -70,10 +71,10 @@
     //如果移除的画面是大画面，则屏幕上只会显示一个或几个小画面，为了美化，将最后剩下小画面中的一个显示成大画面
     NSString *codeUserId = [UserViewManager codeUser:user type:type];
     if ([codeUserId isEqualToString:[UserViewManager shareInstance].mainCodeUserId] && [UserViewManager shareInstance].total > 0) {
-      //将主播的画面切到大画面
+    //将主播的画面切到大画面
         MyTapGesture *tap = [[MyTapGesture alloc] init];
-        avVideoSrcType uidType = [[UserViewManager shareInstance] getUserType:_liveItem.uid];
-        tap.codeId = [UserViewManager codeUser:_liveItem.uid type:uidType];
+        avVideoSrcType uidType = [[UserViewManager shareInstance] getUserType:[[ILiveConst share] hostId]];
+        tap.codeId = [UserViewManager codeUser:[[ILiveConst share] hostId] type:uidType];
         [self onSwitchToMain:tap];
     }
     [[UserViewManager shareInstance] removeRenderView:user srcType:type];
@@ -98,14 +99,7 @@
   {
     gesture.codeId = [UserViewManager shareInstance].mainCodeUserId;
     [[UserViewManager shareInstance] switchToMainView:codeId];
-    //大小界面切换之后，判断主窗口上是主播，连麦用户，还是普通观众，对底部的功能按钮做对应的变换
-    [self relayoutBottom];
   }
-}
-
-- (void)relayoutBottom
-{
-  //    [_bottomView setNeedsLayout];
 }
 
 @end

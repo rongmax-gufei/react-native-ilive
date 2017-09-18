@@ -1,5 +1,5 @@
 //
-//  RCTAgoraVideoView.m
+//  RCTILiveVideoView.m
 //
 //  Created by ruby on 2017/8/31.
 //  Copyright © 2017年 Learnta Inc. All rights reserved.
@@ -13,27 +13,25 @@
 @implementation RCTILiveVideoView
 
 static RCTILiveVideoView *instance = nil;
-
-+ (RCTILiveVideoView *)getInstance{
-  @synchronized(self) {
-    if (instance == nil){
-      instance = [[RCTILiveVideoView alloc]init];
-    }
-  }
++ (RCTILiveVideoView *)getInstance {
+  static dispatch_once_t onceToken;
+  dispatch_once(&onceToken, ^{
+    instance = [[RCTILiveVideoView alloc] init];
+    // 默认不隐藏
+    instance.hidden = NO;
+    instance.tag = 100117;
+  });
   return instance;
 }
 
-- (instancetype) init {
+- (instancetype)init {
   if (self == [super init]) {
   }
   return self;
 }
 
 - (void)setShowVideoView:(BOOL)showVideoView {
-  if (showVideoView) {
-    self.rootView = self;
-    [[TILLiveManager getInstance] setAVRootView:self];
-  }
+  [[TILLiveManager getInstance] setAVRootView:self];
 }
 
 @end
