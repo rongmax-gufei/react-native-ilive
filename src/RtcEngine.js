@@ -23,25 +23,29 @@ export default {
     iLiveLogin(id, sig) {
         ILive.iLiveLogin(id, sig);
     },
-    // 进入房间
-    iLiveJoinChannel(hostId, roomId, userRole) {
-        ILive.joinChannel(hostId, roomId, userRole);
+    // 创建房间,画质"HD"、"SD"、"LD"
+    iLiveCreateRoom(hostId, roomId, quality) {
+        ILive.createRoom(hostId, roomId, quality);
+    },
+    // 加入房间,画质，清晰"Guest"、流畅"Guest2"
+    iLiveJoinRoom(hostId, roomId, userRole, quality) {
+        ILive.joinRoom(hostId, roomId, userRole, quality);
     },
     // 离开房间
-    iLiveLeaveChannel() {
-        ILive.leaveChannel();
+    iLiveLeaveRoom() {
+        ILive.leaveRoom();
     },
     // 添加互动直播监听器
     iLiveSetAVListener() {
         ILive.doAVListener();
     },
     // 上麦
-    iLiveUpVideo(hostId) {
-        ILive.upVideo(hostId);
+    iLiveUpVideo(uid) {
+        ILive.upVideo(uid);
     },
     // 下麦
-    iLiveDownVideo(hostId) {
-        ILive.downVideo(hostId);
+    iLiveDownVideo(uid) {
+        ILive.downVideo(uid);
     },
     // 切换摄像头
     iLiveSwitchCamera() {

@@ -11,6 +11,7 @@
 @implementation RCTILiveViewManager
 
 RCT_EXPORT_MODULE()
+RCT_EXPORT_VIEW_PROPERTY(showVideoView, BOOL)
 
 - (UIView *)view {
   return [RCTILiveVideoView new];

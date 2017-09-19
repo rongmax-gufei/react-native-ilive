@@ -87,9 +87,10 @@ RCT_EXPORT_METHOD(doAVListener) {
  * SD：标清(960x540,20fps)
  * LD：流畅(640x480,15fps)
  */
-RCT_EXPORT_METHOD(createChannel:(NSString *)hostId roomId:(int)roomId quality:(NSString *)quality) {
+RCT_EXPORT_METHOD(createRoom:(NSString *)hostId roomId:(int)roomId quality:(NSString *)quality) {
   [ILiveConst share].hostId = hostId;
   [ILiveConst share].roomId = roomId;
+  [ILiveConst share].userRole = 1;
   [ILiveConst share].controlRole = quality;
   _isHost = true;
   [self createRoom: quality];
@@ -103,7 +104,7 @@ RCT_EXPORT_METHOD(createChannel:(NSString *)hostId roomId:(int)roomId quality:(N
  * @param userRole   角色（主播二次进入直播间or观众进入直播间）
  * @param quality      画质，清晰"Guest"、流畅"Guest2"
  */
-RCT_EXPORT_METHOD(joinChannel:(NSString *)hostId roomId:(int)roomId userRole:(int)userRole quality:(NSString *)quality) {
+RCT_EXPORT_METHOD(joinRoom:(NSString *)hostId roomId:(int)roomId userRole:(int)userRole quality:(NSString *)quality) {
   [ILiveConst share].hostId = hostId;
   [ILiveConst share].roomId = roomId;
   [ILiveConst share].userRole = userRole;
@@ -116,7 +117,7 @@ RCT_EXPORT_METHOD(joinChannel:(NSString *)hostId roomId:(int)roomId userRole:(in
  * 退出房间
  * 主播退出房间时，则发通知给群主成员
  */
-RCT_EXPORT_METHOD(leaveChannel) {
+RCT_EXPORT_METHOD(leaveRoom) {
   __weak typeof(self) ws = self;
   if (_isHost) {
     ILVLiveCustomMessage *customMsg = [[ILVLiveCustomMessage alloc] init];

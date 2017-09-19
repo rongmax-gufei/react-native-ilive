@@ -15,7 +15,7 @@
   return self;
 }
 
-- (void)setShowVideoView {
+- (void)setShowVideoView:(BOOL)showVideoView {
   [[TILLiveManager getInstance] setAVRootView:self];
 }
 
