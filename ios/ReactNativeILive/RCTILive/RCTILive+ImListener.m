@@ -102,12 +102,12 @@ static __weak UIAlertController *_promptAlert = nil;
 
 //上麦
 - (void)upToVideo:(id)sender roleName:(NSString *)role {
-    ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
-    msg.type = ILVLIVE_IMTYPE_C2C;
-    msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Interact_Join;
-    msg.recvId = [[ILiveConst share] hostId];
+  ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
+  msg.type = ILVLIVE_IMTYPE_C2C;
+  msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Interact_Join;
+  msg.recvId = [[ILiveConst share] hostId];
   
-    [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
+  [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         ILiveRoomManager *roomManager = [ILiveRoomManager getInstance];
         [roomManager changeRole:role succ:^{
             NSLog(@"changeRole");
@@ -165,6 +165,8 @@ static __weak UIAlertController *_promptAlert = nil;
     ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
     msg.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Interact_Refuse;
     msg.type = ILVLIVE_IMTYPE_C2C;
+    msg.recvId = [[ILiveConst share] hostId];
+  
     [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
         NSLog(@"refuse video succ");
     } failed:^(NSString *module, int errId, NSString *errMsg) {

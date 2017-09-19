@@ -112,10 +112,10 @@ RCT_EXPORT_METHOD(leaveChannel) {
 
 // 上麦
 RCT_EXPORT_METHOD(upVideo:(NSString *)hostId) {
+  // 先判断当前存在几路画面，超过规定线路，则拒绝连接
   if ([UserViewManager shareInstance].total >= kMaxUserViewCount) {
     NSString *message = [NSString stringWithFormat:@"连麦画面不能超过%d路,可以先取消一路连麦",kMaxUserViewCount+1];
-    NSLog(@"%@", message);
-    [self commentEvent:@"onUpVideo" code:kMaxLimit msg:message];
+   [AlertHelp alertWith:@"提示" message:message cancelBtn:@"好吧" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
     return;
   }
   ILVLiveCustomMessage *video = [[ILVLiveCustomMessage alloc] init];
@@ -123,8 +123,7 @@ RCT_EXPORT_METHOD(upVideo:(NSString *)hostId) {
   video.type = ILVLIVE_IMTYPE_C2C;
   video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_Host_Invite;
   [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
-    NSLog(@"连麦请求已发出");
-    [self commentEvent:@"onUpVideo" code:kUpVideoReqSuccess msg:@"连麦请求已发出"];
+    [self commentEvent:@"onUpVideo" code:kSuccess msg:@"连麦请求已发出"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
     NSLog(@"login fail. module=%@,errid=%d,errmsg=%@",module,errId,errMsg);
   }];
@@ -132,6 +131,7 @@ RCT_EXPORT_METHOD(upVideo:(NSString *)hostId) {
   LiveCallView *callView = [[UserViewManager shareInstance] addPlaceholderView:hostId];
   ILiveRenderView *mainAvRenderView = [[TILLiveManager getInstance] getAVRenderView:[[ILiveConst share] hostId] srcType:QAVVIDEO_SRC_TYPE_CAMERA];
   [mainAvRenderView.superview addSubview:callView];
+//  [_rootView addSubview:callView];
 }
 
 // 下麦
@@ -187,8 +187,6 @@ RCT_EXPORT_METHOD(destroy) {
 - (void)addObserver {
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGotupDelete:) name:kGroupDelete_Notification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectVideoCancel:) name:kCancelConnect_Notification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(upVideoUpdateFuns:) name:kUserUpVideo_Notification object:nil];
-  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(downVideoUpdateFuns) name:kUserDownVideo_Notification object:nil];
 }
 
 #pragma mark - createRoom or joinRoom method
@@ -257,16 +255,6 @@ RCT_EXPORT_METHOD(destroy) {
 }
 
 #pragma mark - upVideo or downVideo method
-//上麦之后更新界面
-- (void)upVideoUpdateFuns:(NSNotification *)notify {
-  [_rootView setNeedsLayout];
-}
-
-//下麦之后更新界面
-- (void)downVideoUpdateFuns {
-  [_rootView setNeedsLayout];
-}
-
 // 取消连麦
 - (void)connectVideoCancel:(NSNotification *)noti {
   NSString *userId = (NSString *)noti.object;
