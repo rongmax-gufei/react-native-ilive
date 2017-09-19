@@ -148,7 +148,6 @@ typedef NS_ENUM(NSInteger, RoomOptionType)
 #define kLinkRoomBtn_Notification       @"kLinkRoomBtn_Notification"
 
 /******************** role string **********************/
-//#define kSxbRole_Host       @"LiveMaster"
 #define kSxbRole_HostHD     @"HD"
 #define kSxbRole_HostSD     @"SD"
 #define kSxbRole_HostLD     @"LD"
@@ -158,7 +157,6 @@ typedef NS_ENUM(NSInteger, RoomOptionType)
 #define kSxbRole_HostLDTitle @"3、流畅(640x480,15fps)"
 
 //连麦
-//#define kSxbRole_Interact   @"LiveGuest"
 #define kSxbRole_InteractHD @"HDGuest"
 #define kSxbRole_InteractSD @"SDGuest"
 #define kSxbRole_InteractLD @"LDGuest"
@@ -195,8 +193,6 @@ typedef NS_ENUM(NSInteger, RoomOptionType)
 /******************** appstore **********************/
 #define kSuccess 1000
 #define kMaxLimit 5000
-#define kUpVideoReqSuccess 5001
-#define kDownVideoReqSuccess 5002
 
 #define kIsAppstoreVersion 0
 

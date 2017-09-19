@@ -7,22 +7,7 @@
 
 #import "RCTILiveVideoView.h"
 
-@interface RCTILiveVideoView ()
-@end
-
 @implementation RCTILiveVideoView
-
-static RCTILiveVideoView *instance = nil;
-+ (RCTILiveVideoView *)getInstance {
-  static dispatch_once_t onceToken;
-  dispatch_once(&onceToken, ^{
-    instance = [[RCTILiveVideoView alloc] init];
-    // 默认不隐藏
-    instance.hidden = NO;
-    instance.tag = 100117;
-  });
-  return instance;
-}
 
 - (instancetype)init {
   if (self == [super init]) {
@@ -30,7 +15,7 @@ static RCTILiveVideoView *instance = nil;
   return self;
 }
 
-- (void)setShowVideoView:(BOOL)showVideoView {
+- (void)setShowVideoView {
   [[TILLiveManager getInstance] setAVRootView:self];
 }
 

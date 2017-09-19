@@ -52,7 +52,7 @@ export default class ReactNativeILive extends Component {
                 if (result) {
                     // 自己创建直播间 hostId=自己的id,roomNum=自己的房间号,userRole=1
                     // 加入别人的房间 hostId=主播的id,roomNum=主播的房间号,userRole=0
-                    RtcEngine.iLiveJoinChannel('learnta111', 662553, 0);
+                    RtcEngine.iLiveJoinChannel('learnta111', 662556, 0);
                 }
             },
             onLogoutTLS: (data) => {

@@ -8,10 +8,4 @@
 #import <UIKit/UIKit.h>
 
 @interface RCTILiveVideoView : UIView
-
-/**
- * 获取单例
- * @return 单例
- */
-+ (instancetype)getInstance;
 @end

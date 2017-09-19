@@ -12,13 +12,16 @@
 
 static __weak UIAlertController *_promptAlert = nil;
 
-- (void)onCustomMessage:(ILVLiveCustomMessage *)msg
-{
-    int cmd = msg.cmd;
-    if (msg.type == ILVLIVE_IMTYPE_C2C)
-    {
-        switch (cmd)
-        {
+- (void)onCustomMessage:(ILVLiveCustomMessage *)msg {
+  if (msg.type == ILVLIVE_IMTYPE_GROUP) {
+    //非当前直播间的群消息，不处理
+    if (![[[ILiveConst share] hostId] isEqualToString:msg.recvId]) {
+      return;
+    }
+  }
+  int cmd = msg.cmd;
+  if (msg.type == ILVLIVE_IMTYPE_C2C) {
+        switch (cmd) {
             case AVIMCMD_Multi_Host_Invite:
             {
                 if (_promptAlert)
@@ -70,9 +73,7 @@ static __weak UIAlertController *_promptAlert = nil;
             default:
                 break;
         }
-    }
-    else if (msg.type == ILVLIVE_IMTYPE_GROUP)
-    {
+    } else if (msg.type == ILVLIVE_IMTYPE_GROUP) {
         switch (cmd) {
             case AVIMCMD_Praise:
                 [[NSNotificationCenter defaultCenter] postNotificationName:kUserParise_Notification object:nil];
