@@ -1,0 +1,47 @@
+<resources>
+
+    <string name="btn_return">返回</string>
+    <string name="btn_save">保存</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_refuse">拒绝</string>
+    <string name="btn_agree">同意</string>
+    <string name="btn_sure">确定</string>
+    <string name="btn_close">关闭</string>
+
+    <string name="error_code_prefix">错误码：</string>
+
+    <!-- live fragment-->
+    <string name="live_unknown">未知</string>
+    <string name="live_titile">最新直播</string>
+    <string name="dialog_members_tips">邀请互动连线（最多可与三个成员进行互动直播）</string>
+
+    <!-- live play -->
+    <string name="invite_dialog_tips">主播邀请您与他进行互动直播</string>
+    <string name="str_link_start_tips">已同意您的跨房连麦邀请，是否现在开始跨房连麦?</string>
+    <string name="str_link_req_tips">邀请您跨房连麦，是否同意?</string>
+    <string name="str_link_refuse_tips">已拒绝您的跨房连麦邀请!</string>
+    <string name="str_qav_beauty">美颜</string>
+    <string name="str_qav_white">美白</string>
+    <string name="str_btn_link">跨房连麦</string>
+    <string name="str_dt_change_role">分辨率</string>
+    <string name="str_dt_hd">高清</string>
+    <string name="str_dt_sd">标清</string>
+    <string name="str_dt_ld">流畅</string>
+    <string name="str_dt_filter">滤镜</string>
+    <string name="str_dt_magic">挂件</string>
+    <string name="str_dt_voice">变声</string>
+    <string name="str_beauty_type">美颜方案</string>
+    <string name="str_video_qulity">观看模式</string>
+    <string name="str_video_sd">清晰</string>
+    <string name="str_video_ld">流畅</string>
+    <string name="str_link_limit">已达到跨房连麦上限</string>
+    <string name="str_tips_link_limit">已经达到跨房连麦上限</string>
+    <string name="str_beauty_not_support">ILive美颜暂不支持，敬请期待</string>
+    <string name="str_exit">退出登录</string>
+
+    <string name="str_tips_title">提示</string>
+    <string name="str_offline_msg">您的帐号已在其它地方登陆</string>
+    <string name="str_room_discuss">主播已离开房间，是否退出?</string>
+
+    <string name="str_tips_force_exit">管理员已将房间解散或将您踢出房间!</string>
+</resources>

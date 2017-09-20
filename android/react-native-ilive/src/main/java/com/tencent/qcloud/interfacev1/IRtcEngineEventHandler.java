@@ -5,9 +5,14 @@ public interface IRtcEngineEventHandler {
     void onLogoutTLS(String code, String msg);
     void onCreateRoom(String code, String msg);
     void onJoinRoom(String code, String msg);
-    void onExitRoom(String code, String msg);
+    void onLeaveRoom(String code, String msg);
+    void onHostLeave(String code, String msg);
+    void onHostBack(String code, String msg);
+    void onForceQuitRoom(String code, String msg);
     void onRoomDisconnect(String code, String msg);
     void onSwitchCamera(String code, String msg);
-    void onToggleCamera(boolean bCameraOn);
-    void onToggleMic(boolean bMicOn);
+    void onToggleCamera(String code, String msg);
+    void onToggleMic(String code, String msg);
+    void onUpVideo(String code, String msg);
+    void onDownVideo(String code, String msg);
 }

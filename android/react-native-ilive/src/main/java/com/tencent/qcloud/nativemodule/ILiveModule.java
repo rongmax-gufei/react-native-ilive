@@ -11,7 +11,6 @@ import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.tencent.ilivesdk.core.ILiveRoomManager;
-import com.tencent.livesdk.ILVLiveManager;
 import com.tencent.qcloud.interfacev1.IRtcEngineEventHandler;
 
 import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
@@ -21,7 +20,6 @@ public class ILiveModule extends ReactContextBaseJavaModule {
     private static final String TYPE = "type";
     private static final String CODE = "code";
     private static final String MSG = "msg";
-    private static final String RESULT = "result";
 
     public ILiveModule(ReactApplicationContext context) {
         super(context);
@@ -91,12 +89,54 @@ public class ILiveModule extends ReactContextBaseJavaModule {
         }
 
         @Override
-        public void onExitRoom(final String code, final String msg) {
+        public void onLeaveRoom(final String code, final String msg) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     WritableMap map = Arguments.createMap();
-                    map.putString(TYPE, "onExitRoom");
+                    map.putString(TYPE, "onLeaveRoom");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
+
+        @Override
+        public void onHostLeave(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onHostLeave");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
+
+        @Override
+        public void onHostBack(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onHostBack");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
+
+        @Override
+        public void onForceQuitRoom(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onForceQuitRoom");
                     map.putString(CODE, code);
                     map.putString(MSG, msg);
                     commonEvent(map);
@@ -133,26 +173,56 @@ public class ILiveModule extends ReactContextBaseJavaModule {
         }
 
         @Override
-        public void onToggleCamera(final boolean bCameraOn) {
+        public void onToggleCamera(final String code, final String msg) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     WritableMap map = Arguments.createMap();
                     map.putString(TYPE, "onToggleCamera");
-                    map.putString(RESULT, String.valueOf(bCameraOn));
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
                     commonEvent(map);
                 }
             });
         }
 
         @Override
-        public void onToggleMic(final boolean bMicOn) {
+        public void onToggleMic(final String code, final String msg) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     WritableMap map = Arguments.createMap();
                     map.putString(TYPE, "onToggleMic");
-                    map.putString(RESULT, String.valueOf(bMicOn));
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
+
+        @Override
+        public void onUpVideo(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onUpVideo");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
+
+        @Override
+        public void onDownVideo(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onDownVideo");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
                     commonEvent(map);
                 }
             });
@@ -170,6 +240,11 @@ public class ILiveModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
+    public void doAVListener() {
+        ILiveManager.getInstance().addObserver();
+    }
+
+    @ReactMethod
     public void iLiveLogin(String id, String sig) {
         ILiveManager.getInstance().iLiveLogin(id, sig);
     }
@@ -180,18 +255,53 @@ public class ILiveModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void joinChannel(final String hostId, final int roomId, final int userRole) {
+    public void createRoom(final String hostId, final int roomId, final String quality) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ILiveManager.getInstance().joinChannel(hostId, roomId, userRole);
+                ILiveManager.getInstance().createRoom(hostId, roomId, quality);
             }
         });
     }
 
     @ReactMethod
-    public void leaveChannel() {
-        ILiveManager.getInstance().leaveChannel();
+    public void joinRoom(final String hostId, final int roomId, final int userRole, final String quality) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().joinRoom(hostId, roomId, userRole, quality);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void leaveRoom() {
+        ILiveManager.getInstance().leaveRoom();
+    }
+
+    @ReactMethod
+    public void upVideo(String uid) {
+        ILiveManager.getInstance().upVideo(uid);
+    }
+
+    @ReactMethod
+    public void downVideo(String uid) {
+        ILiveManager.getInstance().downVideo(uid);
+    }
+
+    @ReactMethod
+    public void switchCamera() {
+        ILiveManager.getInstance().switchCamera();
+    }
+
+    @ReactMethod
+    public void toggleCamera(boolean bCameraOn) {
+        ILiveManager.getInstance().toggleCamera(bCameraOn);
+    }
+
+    @ReactMethod
+    public void toggleMic(boolean bMicOn) {
+        ILiveManager.getInstance().toggleMic(bMicOn);
     }
 
     @ReactMethod
@@ -206,22 +316,7 @@ public class ILiveModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void onDestory() {
-        ILVLiveManager.getInstance().quitRoom(null);
-    }
-
-    @ReactMethod
-    public void switchCamera() {
-        ILiveManager.getInstance().switchCamera();
-    }
-
-    @ReactMethod
-    public void toggleCamera() {
-        ILiveManager.getInstance().toggleCamera();
-    }
-
-    @ReactMethod
-    public void toggleMic() {
-        ILiveManager.getInstance().toggleMic();
+        ILiveManager.getInstance().onDestory();
     }
 
     private void commonEvent(WritableMap map) {
