@@ -20,6 +20,9 @@ public class ILiveModule extends ReactContextBaseJavaModule {
     private static final String TYPE = "type";
     private static final String CODE = "code";
     private static final String MSG = "msg";
+    private static final String ROOMID = "roomId";
+
+    private int roomId;
 
     public ILiveModule(ReactApplicationContext context) {
         super(context);
@@ -256,6 +259,7 @@ public class ILiveModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void createRoom(final String hostId, final int roomId, final String quality) {
+        this.roomId = roomId;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -266,6 +270,7 @@ public class ILiveModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void joinRoom(final String hostId, final int roomId, final int userRole, final String quality) {
+        this.roomId = roomId;
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -320,6 +325,7 @@ public class ILiveModule extends ReactContextBaseJavaModule {
     }
 
     private void commonEvent(WritableMap map) {
+        map.putString(ROOMID, String.valueOf(roomId));
         sendEvent(getReactApplicationContext(), "iLiveEvent", map);
     }
 
