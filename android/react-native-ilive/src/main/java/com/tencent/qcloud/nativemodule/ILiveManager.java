@@ -5,7 +5,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -500,7 +499,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
         ILVCustomCmd cmd = (ILVCustomCmd) info.data;
         if (cmd.getType() == ILVText.ILVTextType.eGroupMsg
                 && !hostId.equals(cmd.getDestId())) {
-            SxbLog.d(TAG, "processCmdMsg->ingore message from: " + cmd.getDestId() + "/" + hostId);
+            SxbLog.d(TAG, "processCmdMsg->ignore message from: " + cmd.getDestId() + "/" + hostId);
             return;
         }
 
