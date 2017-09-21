@@ -238,23 +238,43 @@ public class ILiveModule extends ReactContextBaseJavaModule {
      * @param options
      */
     @ReactMethod
-    public void init(ReadableMap options) {
-        ILiveManager.getInstance().init(getReactApplicationContext(), mRtcEventHandler, options);
+    public void init(final ReadableMap options) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().init(getReactApplicationContext(), mRtcEventHandler, options);
+            }
+        });
     }
 
     @ReactMethod
     public void doAVListener() {
-        ILiveManager.getInstance().addObserver();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().addObserver();
+            }
+        });
     }
 
     @ReactMethod
-    public void iLiveLogin(String id, String sig) {
-        ILiveManager.getInstance().iLiveLogin(id, sig);
+    public void iLiveLogin(final String id, final String sig) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().iLiveLogin(id, sig);
+            }
+        });
     }
 
     @ReactMethod
     public void iLiveLogout() {
-        ILiveManager.getInstance().iLiveLogout();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().iLiveLogout();
+            }
+        });
     }
 
     @ReactMethod
@@ -281,47 +301,93 @@ public class ILiveModule extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void leaveRoom() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
         ILiveManager.getInstance().leaveRoom();
     }
 
     @ReactMethod
-    public void upVideo(String uid) {
-        ILiveManager.getInstance().upVideo(uid);
+    public void upVideo(final String uid) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().upVideo(uid);
+            }
+        });
     }
 
     @ReactMethod
-    public void downVideo(String uid) {
-        ILiveManager.getInstance().downVideo(uid);
+    public void downVideo(final String uid) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().downVideo(uid);
+            }
+        });
     }
 
     @ReactMethod
     public void switchCamera() {
-        ILiveManager.getInstance().switchCamera();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().switchCamera();
+            }
+        });
     }
 
     @ReactMethod
-    public void toggleCamera(boolean bCameraOn) {
-        ILiveManager.getInstance().toggleCamera(bCameraOn);
+    public void toggleCamera(final boolean bCameraOn) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().toggleCamera(bCameraOn);
+            }
+        });
     }
 
     @ReactMethod
-    public void toggleMic(boolean bMicOn) {
-        ILiveManager.getInstance().toggleMic(bMicOn);
+    public void toggleMic(final boolean bMicOn) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().toggleMic(bMicOn);
+            }
+        });
     }
 
     @ReactMethod
     public void onPause() {
-        ILiveRoomManager.getInstance().onPause();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveRoomManager.getInstance().onPause();
+            }
+        });
     }
 
     @ReactMethod
     public void onResume() {
-        ILiveRoomManager.getInstance().onResume();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveRoomManager.getInstance().onResume();
+            }
+        });
     }
 
     @ReactMethod
     public void onDestory() {
-        ILiveManager.getInstance().onDestory();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().onDestory();
+            }
+        });
     }
 
     private void commonEvent(WritableMap map) {

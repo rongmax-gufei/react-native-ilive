@@ -47,9 +47,9 @@ public class Constants {
     public static final int HOST = 1;
     public static final int MEMBER = 0;
 
-    public static final String HOST_ROLE = "LiveMaster";
-    public static final String VIDEO_MEMBER_ROLE = "LiveGuest";
-    public static final String NORMAL_MEMBER_ROLE = "Guest";
+//    public static final String HOST_ROLE = "LiveMaster";
+//    public static final String VIDEO_MEMBER_ROLE = "LiveGuest";
+//    public static final String NORMAL_MEMBER_ROLE = "Guest";
 
     // 清晰度
     public static final String HD_ROLE = "HD";

@@ -9,6 +9,7 @@ import com.tencent.livesdk.ILVLiveConfig;
 import com.tencent.livesdk.ILVLiveManager;
 import com.tencent.qcloud.utils.Constants;
 import com.tencent.qcloud.utils.CrashHandler;
+import com.tencent.qcloud.utils.MessageEvent;
 import com.tencent.qcloud.utils.SxbLog;
 
 /**
@@ -43,6 +44,7 @@ public class InitBusinessHelper {
         ILiveSDK.getInstance().initSdk(context, Constants.SDK_APPID, Constants.ACCOUNT_TYPE);
         // 初始化直播模块
         ILVLiveConfig liveConfig = new ILVLiveConfig();
+        liveConfig.setLiveMsgListener(MessageEvent.getInstance());
         ILVLiveManager.getInstance().init(liveConfig);
 
         //初始化CrashReport系统

@@ -6,12 +6,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,6 +21,7 @@ import com.tencent.TIMGroupSystemElem;
 import com.tencent.TIMGroupSystemElemType;
 import com.tencent.TIMMessage;
 import com.tencent.av.opengl.ui.GLView;
+import com.tencent.av.sdk.AVAudioCtrl;
 import com.tencent.av.sdk.AVRoomMulti;
 import com.tencent.av.sdk.AVView;
 import com.tencent.ilivesdk.ILiveCallBack;
@@ -54,10 +52,13 @@ import org.json.JSONTokener;
 import java.util.Observable;
 import java.util.Observer;
 
+import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
+import static com.tencent.qcloud.utils.Constants.HD_GUEST_ROLE;
 import static com.tencent.qcloud.utils.Constants.HOST_AUTH;
 import static com.tencent.qcloud.utils.Constants.KEY_ACCOUNT_TYPE;
 import static com.tencent.qcloud.utils.Constants.KEY_APPID;
 import static com.tencent.qcloud.utils.Constants.NORMAL_MEMBER_AUTH;
+import static com.tencent.qcloud.utils.Constants.SD_GUEST_ROLE;
 
 public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, Observer {
 
@@ -86,7 +87,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     private int curRole = 0;
     final String[] roles = new String[]{"高清(960*540,25fps)", "标清(640*368,20fps)", "流畅(640*368,15fps)"};
     final String[] values = new String[]{Constants.HD_ROLE, Constants.SD_ROLE, Constants.LD_ROLE};
-    final String[] guestValues = new String[]{Constants.HD_GUEST_ROLE, Constants.SD_GUEST_ROLE, Constants.LD_GUEST_ROLE};
+    final String[] guestValues = new String[]{HD_GUEST_ROLE, SD_GUEST_ROLE, Constants.LD_GUEST_ROLE};
 
     public static ILiveManager getInstance() {
         return sILiveManager;
@@ -227,7 +228,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     /**
      * 加入房间
      */
-    public void joinRoom(String hostId, int roomId, int userRole, String quality) {
+    public void joinRoom(final String hostId, int roomId, int userRole, String quality) {
         this.hostId = hostId;
         this.roomId = roomId;
         this.userRole = userRole;
@@ -244,6 +245,18 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
             @Override
             public void onSuccess(Object data) {
                 rootView.getViewByIndex(0).setVisibility(GLView.VISIBLE);
+                if (hostId.equals(loginId)) {
+                    // 主播方式加入房间
+                    //注册一个音频回调为变声用
+                    ILiveSDK.getInstance().getAvAudioCtrl().registAudioDataCallbackWithByteBuffer(AVAudioCtrl.AudioDataSourceType.AUDIO_DATA_SOURCE_VOICEDISPOSE, new AVAudioCtrl.RegistAudioDataCompleteCallbackWithByteBuffer() {
+                        @Override
+                        public int onComplete(AVAudioCtrl.AudioFrameWithByteBuffer audioFrameWithByteBuffer, int i) {
+                            return 0;
+                        }
+                    });
+                } else {
+                    sendGroupCmd(Constants.AVIMCMD_ENTERLIVE, "");
+                }
                 rtcEventHandler.onJoinRoom(SUCCESS_CODE, "进入房间成功");
             }
 
@@ -403,12 +416,31 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
         }
     }
 
-    public void downMemberVideo() {
+    private void upMemberVideo() {
+        SxbLog.e(TAG, "upMemberVideo->1");
+        if (!ILiveRoomManager.getInstance().isEnterRoom()) {
+            SxbLog.e(TAG, "upMemberVideo->with not in room");
+        }
+        SxbLog.e(TAG, "upMemberVideo->2");
+        ILVLiveManager.getInstance().upToVideoMember(Constants.HD_GUEST_ROLE, true, true, new ILiveCallBack<ILVChangeRoleRes>() {
+            @Override
+            public void onSuccess(ILVChangeRoleRes data) {
+                SxbLog.d(TAG, "upToVideoMember->success");
+            }
+
+            @Override
+            public void onError(String module, int errCode, String errMsg) {
+                SxbLog.e(TAG, "upToVideoMember->failed:" + module + "|" + errCode + "|" + errMsg);
+            }
+        });
+    }
+
+    private void downMemberVideo() {
         if (!ILiveRoomManager.getInstance().isEnterRoom()) {
             SxbLog.e(TAG, "downMemberVideo->with not in room");
             rtcEventHandler.onDownVideo(FAIL_CODE, "连麦用户不在房间");
         }
-        ILVLiveManager.getInstance().downToNorMember(Constants.NORMAL_MEMBER_ROLE, new ILiveCallBack<ILVChangeRoleRes>() {
+        ILVLiveManager.getInstance().downToNorMember(Constants.HD_GUEST_ROLE, new ILiveCallBack<ILVChangeRoleRes>() {
             @Override
             public void onSuccess(ILVChangeRoleRes data) {
                 SxbLog.e(TAG, "downMemberVideo->onSuccess");
@@ -498,7 +530,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
         }
         ILVCustomCmd cmd = (ILVCustomCmd) info.data;
         if (cmd.getType() == ILVText.ILVTextType.eGroupMsg
-                && !hostId.equals(cmd.getDestId())) {
+                && !String.valueOf(roomId).equals(cmd.getDestId())) {
             SxbLog.d(TAG, "processCmdMsg->ignore message from: " + cmd.getDestId() + "/" + hostId);
             return;
         }
@@ -512,10 +544,10 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     }
 
     private void handleCustomMsg(int action, String param, String identifier, String nickname) {
-        SxbLog.d(TAG, "handleCustomMsg->action: " + action);
+        SxbLog.d(TAG, "handleCustomMsg->action: " + action + " ->param：" + param + " identifier:" + identifier + " nickname：" + nickname);
         switch (action) {
             case Constants.AVIMCMD_MUlTI_HOST_INVITE:
-                SxbLog.d(TAG, LogConstants.ACTION_VIEWER_SHOW + LogConstants.DIV + hostId + LogConstants.DIV + "receive invite message" +
+                SxbLog.d(TAG, LogConstants.ACTION_VIEWER_SHOW + LogConstants.DIV + loginId + LogConstants.DIV + "receive invite message" +
                         LogConstants.DIV + "id " + identifier);
                 showInviteDialog();
                 break;
@@ -525,18 +557,17 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
             case Constants.AVIMCMD_MUlTI_REFUSE:
                 showToast(identifier + " refuse !");
                 break;
-            case Constants.AVIMCMD_MULTI_CANCEL_INTERACT://主播关闭摄像头命令
+            case Constants.AVIMCMD_MULTI_CANCEL_INTERACT:
                 //如果是自己关闭Camera和Mic
-                if (param.equals(loginId)) {//是自己
+                if (param.equals(loginId)) {
+                    SxbLog.i(TAG, "被动下麦 下麦 下麦");
                     //TODO 被动下麦 下麦 下麦
                     downMemberVideo();
                 }
                 //其他人关闭小窗口
                 ILiveRoomManager.getInstance().getRoomView().closeUserView(param, AVView.VIDEO_SRC_TYPE_CAMERA, true);
-                hideInviteDialog();
                 break;
             case Constants.AVIMCMD_MULTI_HOST_CANCELINVITE:
-                hideInviteDialog();
                 break;
             case Constants.AVIMCMD_EXITLIVE:
                 forceQuitRoom(context.getString(R.string.str_room_discuss));
@@ -571,7 +602,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
         // 过滤非当前群组消息
         if (currMsg.getConversation() != null && currMsg.getConversation().getPeer() != null) {
             if (currMsg.getConversation().getType() == TIMConversationType.Group
-                    && !hostId.equals(currMsg.getConversation().getPeer())) {
+                    && !String.valueOf(roomId).equals(currMsg.getConversation().getPeer())) {
                 return;
             }
         }
@@ -614,20 +645,20 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     }
 
     /**
-     * 切换清晰度命令
+     * 修改房间角色
      *
-     * @param role
+     * @param role 角色(请确保在腾讯云SPEAR上已配置该角色)
      */
     public void changeRole(final String role) {
         ILiveRoomManager.getInstance().changeRole(role, new ILiveCallBack() {
             @Override
             public void onSuccess(Object data) {
-                showToast("change " + role + " succ !!");
+                SxbLog.d(TAG, "change " + role + " success !!");
             }
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                showToast("change " + role + "   failed  : " + errCode + " msg " + errMsg);
+                SxbLog.d(TAG, "change " + role + "   failed  : " + errCode + " msg " + errMsg);
             }
         });
     }
@@ -678,6 +709,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
                 @Override
                 public void onClick(View view) {
                     sendC2CCmd(Constants.AVIMCMD_MUlTI_JOIN, "", String.valueOf(hostId));
+                    upMemberVideo();
                     inviteDg.dismiss();
                     initRoleDialog();
                     if (roleDialog != null)
@@ -693,35 +725,36 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
                 }
             });
 
-            Window dialogWindow = inviteDg.getWindow();
-            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-            dialogWindow.setGravity(Gravity.CENTER);
-            dialogWindow.setAttributes(lp);
+//            Window dialogWindow = inviteDg.getWindow();
+//            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+//            dialogWindow.setGravity(Gravity.CENTER);
+//            dialogWindow.setAttributes(lp);
         }
     }
 
     private void showInviteDialog() {
-        initInviteDialog();
-        if ((inviteDg != null) && (context != null) && (!inviteDg.isShowing())) {
-            inviteDg.show();
-        }
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                initInviteDialog();
+//                if ((inviteDg != null) && (!inviteDg.isShowing())) {
+//                    inviteDg.show();
+//                }
+//            }
+//        });
+        sendC2CCmd(Constants.AVIMCMD_MUlTI_JOIN, "", String.valueOf(hostId));
+        upMemberVideo();
+//        changeRole(SD_GUEST_ROLE);
     }
 
-    private void hideInviteDialog() {
-        if ((inviteDg != null) && (inviteDg.isShowing())) {
-            inviteDg.dismiss();
-        }
-    }
-
-    private void showToast(String strMsg) {
-        if (null != context) {
-            Toast.makeText(context, strMsg, Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void showUserToast(String account, int resId) {
-        if (null != context) {
-            Toast.makeText(context, account + context.getString(resId), Toast.LENGTH_SHORT).show();
-        }
+    private void showToast(final String strMsg) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (null != context) {
+                    Toast.makeText(context, strMsg, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }
