@@ -101,7 +101,7 @@ RCT_EXPORT_METHOD(createRoom:(NSString *)hostId roomId:(int)roomId quality:(NSSt
  *
  * @param hostId      主播ID
  * @param roomId     房间号
- * @param userRole   角色（主播二次进入直播间or观众进入直播间）
+ * @param userRole   角色（主播二次进入直播间or观众进入直播间）1:主播0:观众
  * @param quality      画质，清晰"Guest"、流畅"Guest2"
  */
 RCT_EXPORT_METHOD(joinRoom:(NSString *)hostId roomId:(int)roomId userRole:(int)userRole quality:(NSString *)quality) {
@@ -109,7 +109,7 @@ RCT_EXPORT_METHOD(joinRoom:(NSString *)hostId roomId:(int)roomId userRole:(int)u
   [ILiveConst share].roomId = roomId;
   [ILiveConst share].userRole = userRole;
   [ILiveConst share].controlRole = quality;
-  _isHost = false;
+  _isHost = (userRole == 1);
   [self joinRoom:quality];
 }
 
@@ -175,6 +175,7 @@ RCT_EXPORT_METHOD(upVideo:(NSString *)uid) {
 RCT_EXPORT_METHOD(downVideo:(NSString *)uid) {
   ILVLiveCustomMessage *video = [[ILVLiveCustomMessage alloc] init];
   video.recvId = uid;
+  video.data = [uid dataUsingEncoding:NSUTF8StringEncoding];
   video.type = ILVLIVE_IMTYPE_GROUP;
   video.cmd = (ILVLiveIMCmd)AVIMCMD_Multi_CancelInteract;
   [[TILLiveManager getInstance] sendCustomMessage:video succ:^{
@@ -249,19 +250,33 @@ RCT_EXPORT_METHOD(destroy) {
   }];
 }
 
-
 /**
  *  加入房间
  */
 - (void)joinRoom:(NSString *)quality {
+  __weak typeof(self) ws = self;
   TILLiveRoomOption *option = [TILLiveRoomOption defaultGuestLiveOption];
   option.controlRole = quality;
   [[TILLiveManager getInstance] joinRoom:[[ILiveConst share] roomId] option:option succ:^{
-      NSLog(@"加入房间成功");
-      [self commentEvent:@"onJoinRoom" code:kSuccess msg:@"加入房间成功"];
+    NSLog(@"加入房间成功");
+    [ws sendJoinRoomMsg];
+    [self commentEvent:@"onJoinRoom" code:kSuccess msg:@"加入房间成功"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
-      NSLog(@"加入房间失败");
-      [self commentEvent:@"onJoinRoom" code:errId msg:errMsg];
+    NSLog(@"加入房间失败");
+    [self commentEvent:@"onJoinRoom" code:errId msg:errMsg];
+  }];
+}
+
+- (void)sendJoinRoomMsg {
+  ILVLiveCustomMessage *msg = [[ILVLiveCustomMessage alloc] init];
+  msg.type = ILVLIVE_IMTYPE_GROUP;
+  msg.cmd = (ILVLiveIMCmd)AVIMCMD_EnterLive;
+  msg.recvId = [[ILiveRoomManager getInstance] getIMGroupId];
+  
+  [[TILLiveManager getInstance] sendCustomMessage:msg succ:^{
+    NSLog(@"success");
+  } failed:^(NSString *module, int errId, NSString *errMsg) {
+    NSLog(@"fail");
   }];
 }
 

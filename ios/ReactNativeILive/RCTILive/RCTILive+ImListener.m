@@ -15,7 +15,7 @@ static __weak UIAlertController *_promptAlert = nil;
 - (void)onCustomMessage:(ILVLiveCustomMessage *)msg {
   if (msg.type == ILVLIVE_IMTYPE_GROUP) {
     //非当前直播间的群消息，不处理
-    if (![[[ILiveConst share] hostId] isEqualToString:msg.recvId]) {
+    if (![[[ILiveRoomManager getInstance] getIMGroupId] isEqualToString:msg.recvId]) {
       return;
     }
   }

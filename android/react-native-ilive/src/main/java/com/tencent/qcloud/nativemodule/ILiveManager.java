@@ -509,6 +509,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     @Override
     public void update(Observable observable, Object o) {
         MessageEvent.SxbMsgInfo info = (MessageEvent.SxbMsgInfo) o;
+        SxbLog.w(TAG, "update->MessageEvent.SxbMsgInfo:" + info.toString());
         switch (info.msgType) {
             case MessageEvent.MSGTYPE_TEXT:
                 // 文字消息接收，忽略，项目自己实现
@@ -558,7 +559,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
                 showToast(identifier + " refuse !");
                 break;
             case Constants.AVIMCMD_MULTI_CANCEL_INTERACT:
-                //如果是自己关闭Camera和Mic
+                //主播关闭摄像头命令，关闭Camera和Mic
                 if (param.equals(loginId)) {
                     SxbLog.i(TAG, "被动下麦 下麦 下麦");
                     //TODO 被动下麦 下麦 下麦

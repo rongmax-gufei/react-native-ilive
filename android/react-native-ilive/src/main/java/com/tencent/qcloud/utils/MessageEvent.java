@@ -29,7 +29,16 @@ public class MessageEvent extends Observable implements ILVLiveConfig.ILVLiveMsg
             senderId = id;
             profile = user;
             data = obj;
+        }
 
+        @Override
+        public String toString() {
+            return "SxbMsgInfo{" +
+                    "msgType=" + msgType +
+                    ", data=" + data +
+                    ", senderId='" + senderId + '\'' +
+                    ", profile=" + profile +
+                    '}';
         }
     }
 
