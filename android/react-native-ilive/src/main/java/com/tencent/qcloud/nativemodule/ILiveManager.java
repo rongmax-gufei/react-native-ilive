@@ -417,11 +417,9 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     }
 
     private void upMemberVideo() {
-        SxbLog.e(TAG, "upMemberVideo->1");
         if (!ILiveRoomManager.getInstance().isEnterRoom()) {
             SxbLog.e(TAG, "upMemberVideo->with not in room");
         }
-        SxbLog.e(TAG, "upMemberVideo->2");
         ILVLiveManager.getInstance().upToVideoMember(Constants.HD_GUEST_ROLE, true, true, new ILiveCallBack<ILVChangeRoleRes>() {
             @Override
             public void onSuccess(ILVChangeRoleRes data) {

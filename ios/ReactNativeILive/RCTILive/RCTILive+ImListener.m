@@ -79,12 +79,13 @@ static __weak UIAlertController *_promptAlert = nil;
                 [[NSNotificationCenter defaultCenter] postNotificationName:kUserParise_Notification object:nil];
                 break;
             case AVIMCMD_Multi_CancelInteract:
-                if ([self isSendToSelf:msg])
-                {
+                if ([self isSendToSelf:msg]) {
                     [self downToVideo:nil];
                 }
                 break;
-            case AVIMCMD_EnterLive:
+          case AVIMCMD_EnterLive: {
+                NSLog(@"%@", msg);
+                }
                 break;
             case AVIMCMD_ExitLive:
                 [[NSNotificationCenter defaultCenter] postNotificationName:kGroupDelete_Notification object:nil];
