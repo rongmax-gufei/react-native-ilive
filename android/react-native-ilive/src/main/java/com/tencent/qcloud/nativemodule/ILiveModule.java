@@ -162,6 +162,34 @@ public class ILiveModule extends ReactContextBaseJavaModule {
         }
 
         @Override
+        public void onStartRecord(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onStartRecord");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
+
+        @Override
+        public void onStopRecord(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onStopRecord");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
+
+        @Override
         public void onSwitchCamera(final String code, final String msg) {
             runOnUiThread(new Runnable() {
                 @Override
@@ -326,6 +354,26 @@ public class ILiveModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 ILiveManager.getInstance().downVideo(uid);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void startRecord(final String fileName, final int recordType) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().startRecord(fileName, recordType);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void stopRecord() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().stopRecord();
             }
         });
     }

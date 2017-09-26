@@ -10,6 +10,8 @@ public interface IRtcEngineEventHandler {
     void onHostBack(String code, String msg);
     void onForceQuitRoom(String code, String msg);
     void onRoomDisconnect(String code, String msg);
+    void onStartRecord(String code, String msg);
+    void onStopRecord(String code, String msg);
     void onSwitchCamera(String code, String msg);
     void onToggleCamera(String code, String msg);
     void onToggleMic(String code, String msg);

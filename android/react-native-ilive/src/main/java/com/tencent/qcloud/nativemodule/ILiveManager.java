@@ -20,6 +20,7 @@ import com.tencent.TIMElemType;
 import com.tencent.TIMGroupSystemElem;
 import com.tencent.TIMGroupSystemElemType;
 import com.tencent.TIMMessage;
+import com.tencent.av.TIMAvManager;
 import com.tencent.av.opengl.ui.GLView;
 import com.tencent.av.sdk.AVAudioCtrl;
 import com.tencent.av.sdk.AVRoomMulti;
@@ -28,6 +29,7 @@ import com.tencent.ilivesdk.ILiveCallBack;
 import com.tencent.ilivesdk.ILiveConstants;
 import com.tencent.ilivesdk.ILiveSDK;
 import com.tencent.ilivesdk.core.ILiveLoginManager;
+import com.tencent.ilivesdk.core.ILiveRecordOption;
 import com.tencent.ilivesdk.core.ILiveRoomManager;
 import com.tencent.ilivesdk.core.ILiveRoomOption;
 import com.tencent.ilivesdk.view.AVRootView;
@@ -49,6 +51,7 @@ import com.tencent.qcloud.view.RadioGroupDialog;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -361,6 +364,55 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
      */
     public void downVideo(String uid) {
         cancelMemberView(uid);
+    }
+
+    /**
+     * 开始录视频
+     *
+     * @param fileName
+     * @param recordType
+     */
+    public void startRecord(String fileName, int recordType) {
+        ILiveRecordOption option = new ILiveRecordOption();
+        option.fileName("learnta_" + ILiveLoginManager.getInstance().getMyUserId() + "_" + fileName);
+//        option.classId(123);
+        option.recordType(recordType == 0 ? TIMAvManager.RecordType.VIDEO : TIMAvManager.RecordType.AUDIO);
+        ILiveRoomManager.getInstance().startRecordVideo(option, new ILiveCallBack() {
+            @Override
+            public void onSuccess(Object data) {
+                SxbLog.d(TAG, "已经开始录制");
+                rtcEventHandler.onStartRecord(SUCCESS_CODE, "已经开始录制：" + data.toString());
+            }
+
+            @Override
+            public void onError(String module, int errCode, String errMsg) {
+                String errInfo = "start record error " + errCode + "  " + errMsg;
+                SxbLog.e(TAG, errInfo);
+                rtcEventHandler.onStartRecord(String.valueOf(errCode), errInfo);
+            }
+        });
+    }
+
+    /**
+     * 结束录制视频
+     */
+    public void stopRecord() {
+        ILiveRoomManager.getInstance().stopRecordVideo(new ILiveCallBack<List<String>>() {
+            @Override
+            public void onSuccess(List<String> data) {
+                for (String url : data) {
+                    SxbLog.d(TAG, "stopRecord->url:" + url);
+                }
+                rtcEventHandler.onStartRecord(SUCCESS_CODE, "已经结束录制：" + data.toString());
+            }
+
+            @Override
+            public void onError(String module, int errCode, String errMsg) {
+                String errInfo = "stopRecord->failed:" + module + "|" + errCode + "|" + errMsg;
+                SxbLog.e(TAG, errInfo);
+                rtcEventHandler.onStartRecord(String.valueOf(errCode), errInfo);
+            }
+        });
     }
 
     /**
