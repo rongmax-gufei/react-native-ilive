@@ -20,7 +20,6 @@
 @property (nonatomic, strong) NSString *mainCodeUserId;
 @property (nonatomic, strong) NSString *mainUserId;
 
-
 - (ILiveRenderView *)addRenderView:(NSString *)userId srcType:(avVideoSrcType)type;
 - (void)removeRenderView:(NSString *)userId srcType:(avVideoSrcType)type;
 

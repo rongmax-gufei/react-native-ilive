@@ -268,7 +268,7 @@
   {
     return NO;
   }
-  if (!_mainCodeUserId || _mainCodeUserId <= 0)
+  if (!_mainCodeUserId || _mainCodeUserId.length <= 0)
   {
     return NO;
   }

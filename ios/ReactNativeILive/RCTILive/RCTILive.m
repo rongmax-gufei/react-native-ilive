@@ -226,15 +226,15 @@ RCT_EXPORT_METHOD(toggleMic:(BOOL) bMicOn) {
 /**
  * 视频录制
  * @param filename          录制的文件名
- * @param recordType      1：录制视频，0：录制纯音频
+ * @param recordType      0：录制视频，1：录制纯音频
  */
-RCT_EXPORT_METHOD(startRecord:(NSString *)filename type:(ILiveRecordType)recordType) {
+RCT_EXPORT_METHOD(startRecord:(NSString *)filename type:(int)recordType) {
   NSString *defName = [[NSString alloc] initWithFormat:@"%3.f", [NSDate timeIntervalSinceReferenceDate]];
   NSString *recName = filename && filename.length > 0 ? filename : defName;
   ILiveRecordOption *option = [[ILiveRecordOption alloc] init];
   NSString *identifier = [[ILiveLoginManager getInstance] getLoginId];
   option.fileName = [NSString stringWithFormat:@"learnta_%@_%@",identifier,recName];
-  option.recordType = recordType;
+  option.recordType = (recordType == 0) ? ILive_RECORD_TYPE_VIDEO:ILive_RECORD_TYPE_AUDIO;
   [[ILiveRoomManager getInstance] startRecordVideo:option succ:^{
     [self commentEvent:@"onStartRecord" code:kSuccess msg:@"已开始录制"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {

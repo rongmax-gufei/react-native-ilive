@@ -9,6 +9,8 @@ import {
     StyleSheet,
     View,
     TouchableOpacity,
+    TouchableHighlight,
+    Text,
     Image,
 } from 'react-native';
 
@@ -83,6 +85,14 @@ export default class ReactNativeILive extends Component {
             onDownVideo: (data) => {
                 console.log(data);
             },
+            // 开始录制视频
+            onStartRecord: (data) => {
+                console.log(data);
+            },
+            // 停止录制视频
+            onStopRecord: (data) => {
+                console.log(data);
+            },
             // 与房间断开连接
             onRoomDisconnect: (data) => {
                 console.log(data);
@@ -132,6 +142,16 @@ export default class ReactNativeILive extends Component {
         RtcEngine.iLiveDownVideo(uid);
     };
 
+    handlerStartRecord (fileName, recordType) {
+        console.log('handlerStartRecord');
+        RtcEngine.iLiveStartRecord(fileName, recordType);
+    };
+
+    handlerStopRecord() {
+        console.log('handlerStopRecord');
+        RtcEngine.iLiveStopRecord();
+    };
+
     handlerSwitchCamera =() => {
         RtcEngine.iLiveSwitchCamera();
     };
@@ -162,14 +182,22 @@ export default class ReactNativeILive extends Component {
                                     onPress={this.handlerSwitchCamera.bind(this)}
                                     source={require('./images/icon_switch_camera.png')}
                                 />
-                                <VideoOperateButton
-                                    onPress={this.handlerUpVideo.bind(this, 'ruby')}
-                                    source={require('./images/icon_mic_open.png')}
-                                />
-                                <VideoOperateButton
-                                    onPress={this.handlerDownVideo.bind(this, 'ruby')}
-                                    source={require('./images/icon_mic_open.png')}
-                                />
+                                <TouchableHighlight style={styles.btn} underlayColor={'#ff0000'}
+                                  onPress={this.handlerUpVideo.bind(this, 'ruby')}>
+                                  <Text style={styles.btnText}>上麦</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight style={styles.btn} underlayColor={'#ff0000'}
+                                  onPress={this.handlerDownVideo.bind(this, 'ruby')}>
+                                  <Text style={styles.btnText}>下麦</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight style={styles.btn} underlayColor={'#ff0000'}
+                                  onPress={this.handlerStartRecord.bind(this, '001', 0)}>
+                                  <Text style={styles.btnText}>开始录屏</Text>
+                                </TouchableHighlight>
+                                <TouchableHighlight style={styles.btn} underlayColor={'#ff0000'}
+                                  onPress={this.handlerStopRecord.bind(this)}>
+                                  <Text style={styles.btnText}>停止录屏</Text>
+                                </TouchableHighlight>
                             </View>
                         </View>
                     </View>
@@ -196,7 +224,7 @@ const VideoOperateButton = ({onPress, source, style, imgStyle = {width: 50, heig
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F4F4F4'
+        backgroundColor: '#F4F4F4',
     },
     absView: {
         position: 'absolute',
@@ -204,7 +232,7 @@ const styles = StyleSheet.create({
         left: 0,
         right: 0,
         bottom: 0,
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
     },
     videoView: {
         padding: 5,
@@ -218,7 +246,16 @@ const styles = StyleSheet.create({
     bottomView: {
         padding: 20,
         flexDirection: 'row',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+    },
+    btn: {
+        width: 100,
+        height: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center',
+    },
+    btnText: {
+        fontSize: 18,
     }
-
 });

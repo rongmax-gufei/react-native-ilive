@@ -47,6 +47,14 @@ export default {
     iLiveDownVideo(uid) {
         ILive.downVideo(uid);
     },
+    // 开始录视频,recordType,0：录制视频，1：录制纯音频
+    iLiveStartRecord(fileName, recordType) {
+        ILive.startRecord(fileName, recordType);
+    },
+    // 停止录视频
+    iLiveStopRecord() {
+        ILive.stopRecord();
+    },
     // 切换摄像头
     iLiveSwitchCamera() {
         ILive.switchCamera();
