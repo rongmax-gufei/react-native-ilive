@@ -224,6 +224,38 @@ RCT_EXPORT_METHOD(toggleMic:(BOOL) bMicOn) {
 }
 
 /**
+ * 视频录制
+ * @param filename          录制的文件名
+ * @param recordType      1：录制视频，0：录制纯音频
+ */
+RCT_EXPORT_METHOD(startRecord:(NSString *)filename type:(ILiveRecordType)recordType) {
+  NSString *defName = [[NSString alloc] initWithFormat:@"%3.f", [NSDate timeIntervalSinceReferenceDate]];
+  NSString *recName = filename && filename.length > 0 ? filename : defName;
+  ILiveRecordOption *option = [[ILiveRecordOption alloc] init];
+  NSString *identifier = [[ILiveLoginManager getInstance] getLoginId];
+  option.fileName = [NSString stringWithFormat:@"learnta_%@_%@",identifier,recName];
+  option.recordType = recordType;
+  [[ILiveRoomManager getInstance] startRecordVideo:option succ:^{
+    [self commentEvent:@"onStartRecord" code:kSuccess msg:@"已开始录制"];
+  } failed:^(NSString *module, int errId, NSString *errMsg) {
+    NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+    [self commentEvent:@"onStartRecord" code:errId msg:errinfo];
+  }];
+}
+
+/**
+ * 结束视频录制
+ */
+RCT_EXPORT_METHOD(stopRecord) {
+  [[ILiveRoomManager getInstance] stopRecordVideo:^(id selfPtr) {
+    [self commentEvent:@"onStopRecord" code:kSuccess msg:@"已结束录制"];
+  } failed:^(NSString *module, int errId, NSString *errMsg) {
+    NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
+   [self commentEvent:@"onStopRecord" code:errId msg:errinfo];
+  }];
+}
+
+/**
  * 销毁引擎实例
  */
 RCT_EXPORT_METHOD(destroy) {
