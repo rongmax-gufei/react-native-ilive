@@ -10,12 +10,14 @@
 #import "RCTILive+Audio.h"
 #import "RCTILiveVideoView.h"
 
+#import <ReplayKit/ReplayKit.h>
+
 #import <React/RCTEventDispatcher.h>
 #import <React/RCTBridge.h>
 #import <React/RCTUIManager.h>
 #import <React/RCTView.h>
 
-@interface RCTILive ()<QAVLocalVideoDelegate, ILiveRoomDisconnectListener>
+@interface RCTILive ()<QAVLocalVideoDelegate, ILiveRoomDisconnectListener, RPPreviewViewControllerDelegate>
 @end
 
 @implementation RCTILive
@@ -224,11 +226,11 @@ RCT_EXPORT_METHOD(toggleMic:(BOOL) bMicOn) {
 }
 
 /**
- * 视频录制
+ * 视频录制(腾讯云服务提供，只能录制视频不能录制控件)
  * @param filename          录制的文件名
  * @param recordType      0：录制视频，1：录制纯音频
  */
-RCT_EXPORT_METHOD(startRecord:(NSString *)filename type:(int)recordType) {
+RCT_EXPORT_METHOD(startLiveVideoRecord:(NSString *)filename type:(int)recordType) {
   NSString *defName = [[NSString alloc] initWithFormat:@"%3.f", [NSDate timeIntervalSinceReferenceDate]];
   NSString *recName = filename && filename.length > 0 ? filename : defName;
   ILiveRecordOption *option = [[ILiveRecordOption alloc] init];
@@ -236,23 +238,66 @@ RCT_EXPORT_METHOD(startRecord:(NSString *)filename type:(int)recordType) {
   option.fileName = [NSString stringWithFormat:@"learnta_%@_%@",identifier,recName];
   option.recordType = (recordType == 0) ? ILive_RECORD_TYPE_VIDEO:ILive_RECORD_TYPE_AUDIO;
   [[ILiveRoomManager getInstance] startRecordVideo:option succ:^{
-    [self commentEvent:@"onStartRecord" code:kSuccess msg:@"已开始录制"];
+    [self commentEvent:@"onStartVideoRecord" code:kSuccess msg:@"已开始录制"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
     NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-    [self commentEvent:@"onStartRecord" code:errId msg:errinfo];
+    [self commentEvent:@"onStartVideoRecord" code:errId msg:errinfo];
   }];
 }
 
 /**
  * 结束视频录制
  */
-RCT_EXPORT_METHOD(stopRecord) {
+RCT_EXPORT_METHOD(stopLiveVideoRecord) {
   [[ILiveRoomManager getInstance] stopRecordVideo:^(id selfPtr) {
-    [self commentEvent:@"onStopRecord" code:kSuccess msg:@"已结束录制"];
+    [self commentEvent:@"onStopVideoRecord" code:kSuccess msg:@"已结束录制"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
     NSString *errinfo = [NSString stringWithFormat:@"push stream fail.module=%@,errid=%d,errmsg=%@",module,errId,errMsg];
-   [self commentEvent:@"onStopRecord" code:errId msg:errinfo];
+   [self commentEvent:@"onStopVideoRecord" code:errId msg:errinfo];
   }];
+}
+
+/**
+ * 开始屏幕录制（iOS 9.0后官方自带ReplayKit，支持录制控件）
+ */
+RCT_EXPORT_METHOD(startScreenRecord) {
+  //如果还没有开始录制，判断系统是否支持
+  if ([RPScreenRecorder sharedRecorder].available) {
+     [self commentEvent:@"onStartScreenRecord" code:kSuccess msg:@"已经开始录制屏幕"];
+    //如果支持，就使用下面的方法可以启动录制回放
+    [[RPScreenRecorder sharedRecorder] startRecordingWithMicrophoneEnabled:YES handler:^(NSError * _Nullable error) {
+      //处理发生的错误，如设用户权限原因无法开始录制等
+      [self commentEvent:@"onStartScreenRecord" code:kSuccess msg:error.localizedDescription];
+    }];
+  } else {
+    [self commentEvent:@"onStartScreenRecord" code:kSuccess msg:@"录制回放功能不可用"];
+  }
+}
+
+/**
+ * 结束屏幕录制
+ */
+RCT_EXPORT_METHOD(stopScreenRecord) {
+  // 停止录制回放，并显示回放的预览，在预览中用户可以选择保存视频到相册中、放弃、或者分享出去
+  [[RPScreenRecorder sharedRecorder] stopRecordingWithHandler:^(RPPreviewViewController * _Nullable previewViewController, NSError * _Nullable error) {
+    if (error) {
+      NSLog(@"%@", error);
+      //处理发生的错误，如磁盘空间不足而停止等
+      [self commentEvent:@"onStopScreenRecord" code:kSuccess msg:error.localizedDescription];
+    }
+    if (previewViewController) {
+      //设置预览页面到代理
+      previewViewController.previewControllerDelegate = self;
+//      [self presentViewController:previewViewController animated:YES completion:nil];
+      [self commentEvent:@"onStopScreenRecord" code:kSuccess msg:@"执行预览"];
+    }
+  }];
+}
+
+//回放预览界面的代理方法
+- (void)previewControllerDidFinish:(RPPreviewViewController *)previewController {
+  //用户操作完成后，返回之前的界面
+  [previewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 /**
