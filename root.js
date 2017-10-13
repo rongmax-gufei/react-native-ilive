@@ -150,14 +150,14 @@ export default class ReactNativeILive extends Component {
         RtcEngine.iLiveDownVideo(uid);
     };
 
-    handlerStartRecord (fileName, recordType) {
-        console.log('handlerStartRecord');
-        RtcEngine.iLiveStartRecord(fileName, recordType);
+    handlerStartVideoRecord (fileName, recordType) {
+        console.log('handlerStartVideoRecord');
+        RtcEngine.iLiveStartVideoRecord(fileName, recordType);
     };
 
-    handlerStopRecord() {
-        console.log('handlerStopRecord');
-        RtcEngine.iLiveStopRecord();
+    handlerStopVideoRecord() {
+        console.log('handlerStopVideoRecord');
+        RtcEngine.iLiveStopVideoRecord();
     };
 
     handlerStartScreenRecord () {
