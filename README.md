@@ -6,16 +6,15 @@
 
 ### Android
 
-1、将android/react-native-ilive拷贝到自己项目的android目录下
+* 将android/react-native-ilive拷贝到自己项目的android目录下
 
-2、在android/settings.gradle文件中新增：':react-native-ilive'依赖
+* 在android/settings.gradle文件中新增：':react-native-ilive'依赖
 
-3、在android/app/build.gradle文件的dependencies中添加：
+* 在android/app/build.gradle文件的dependencies中添加：
 compile project(path: ':react-native-ilive')
 
-4、在android/app/src/main/AndroidMainfest.xml中：
-权限添加：
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+* 在android/app/src/main/AndroidMainfest.xml中添加权限：<br>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -40,8 +39,8 @@ compile project(path: ':react-native-ilive')
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-application下添加：
-<provider
+*  application下添加：
+    <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.tencent.qcloud.suixinbo.fileProvider"
             android:exported="false"
@@ -51,54 +50,54 @@ application下添加：
                 android:resource="@xml/file_paths" />
     </provider>
 
-5、MainApplication.java文件：
-  a、extends QavsdkApplication
-  b、getPackages()方法中添加new ILivePackage()
+* MainApplication.java文件：
+  *  extends QavsdkApplication
+  *  getPackages()方法中添加new ILivePackage()
 
 ### iOS
 
-1、将ios/RCTILive拷贝到自己项目中
+* 将ios/RCTILive拷贝到自己项目中
 
-2、运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，仅保留AVSDK、ILiveSDK、IMSDK三个文件夹（！！多余的文件/文件夹删除）
+* 运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，仅保留AVSDK、ILiveSDK、IMSDK三个文件夹（！！多余的文件/文件夹删除）
 
-3、修改工程配置
+* 修改工程配置
 
-  将下载好的SDK复制到工程目录下，工程目录右键，Add Files to " you projectname"
+  *  将下载好的SDK复制到工程目录下，工程目录右键，Add Files to " you projectname"
 
-  Build Settings/Linking/Other Linker Flags，增加 -ObjC 配置
+  *  Build Settings/Linking/Other Linker Flags，增加 -ObjC 配置
 
-  Build Settings/Linking/Bitcode，增加 Bitcode 配置，设置为NO
+  *  Build Settings/Linking/Bitcode，增加 Bitcode 配置，设置为NO
 
-  iOS10及以上系统，需在Info.plist中增加设备访问权限配置
-  http://mc.qcloudimg.com/static/img/e7b7897cb79a5cb9a984938dd4b3fda3/image.png
+  *  iOS10及以上系统，需在Info.plist中增加设备访问权限配置
+  ![](http://mc.qcloudimg.com/static/img/e7b7897cb79a5cb9a984938dd4b3fda3/image.png)
 
 
-4 添加系统库
+* 添加系统库
     需要增加的系统库
-    libc++.tbd
-    libstdc++.tbd
-    libstdc++.6.tbd
-    libz.tbd
-    libbz2.tbd
-    libiconv.tbd
-    libresolv.tbd
-    libsqlite3.tbd
-    libprotobuf.tbd
-    UIKit.framework
-    CoreVideo.framework
-    CoreMedia.framework
-    Accelerate.framework
-    Foundation.framework
-    AVFoundation.framework
-    VideoToolbox.framework
-    CoreGraphics.framework
-    CoreTelephony.framework
-    SystemConfiguration.framework
+    *  libc++.tbd
+    *  libstdc++.tbd
+    *  libstdc++.6.tbd
+    *  libz.tbd
+    *  libbz2.tbd
+    *  libiconv.tbd
+    *  libresolv.tbd
+    *  libsqlite3.tbd
+    *  libprotobuf.tbd
+    *  UIKit.framework
+    *  CoreVideo.framework
+    *  CoreMedia.framework
+    *  Accelerate.framework
+    *  Foundation.framework
+    *  AVFoundation.framework
+    *  VideoToolbox.framework
+    *  CoreGraphics.framework
+    *  CoreTelephony.framework
+    *  SystemConfiguration.framework
 
-5、Build Settings/PrefixHeader/your_projectname/RCTILive/TILLiveSDKShow-Prefix.pch
+* Build Settings/PrefixHeader/your_projectname/RCTILive/TILLiveSDKShow-Prefix.pch
 
-6、ReactNativeILive/AppDelegate.m文件修改：
-
+* ReactNativeILive/AppDelegate.m文件修改：
+ ```
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   // start 腾讯互动直播环境初始化
@@ -116,9 +115,9 @@ application下添加：
   // end
   ........
 }
+ ```
 
-
-#react-native代码配置如下：
+### react-native代码配置如下：
 
 1、将react-native-ilive.git/src下的ILiveView、index、RtcEngine三个文件拷贝到你的项目相应目录下
 
@@ -127,6 +126,7 @@ application下添加：
   a、导入import {RtcEngine, ILiveView} from './src/index';
 
   b、componentWillMount中初始化直播引擎：
+   ```
   //初始化iLive
   const options = {
       appid: '1400027849',
@@ -135,8 +135,9 @@ application下添加：
   RtcEngine.init(options);
   // 添加AVListener，此方法必须在rn的componentWillMount()方法中执行，render()之前执行
   RtcEngine.iLiveSetAVListener();
-
+ ```
 c、componentDidMount中先登录腾讯的TLS系统,use id&&sig（自己服务器端生成）
+ ```
 //所有的原生通知统一管理
 RtcEngine.iLiveLogin('learnta111', 'eJxlj8tOg0AARfd8BWGLMTPA8HBHoBGsQNqipitC59GOtTBOB4Ua-70Vm0ji3Z6Te3O-NF3XjfJxdVtj3HaNqtQgqKHf6QYwbv6gEJxUtapsSf5B2gsuaVUzReUIIULIAmDqcEIbxRm-Gm*0lo2qIYQT50j21Tj0W*JcGizPd4KpwrcjzGbrKF1Ekjmv73M-jEN0wsn88HQ-K1lcgLIzdxvVnfIMic-ewy3bpruwiJNscPmQPjsvy1zYyWogOe43idq766I000XsRmYg8UMxmVT8QK*vALI9Pwi8Cf2g8sjbZhQsABG0bPATQ-vWzhSzXpU_');
 //所有的原生通知统一管理
@@ -208,7 +209,7 @@ RtcEngine.eventEmitter({
         // 错误!
     }
 })
-
+ 
 d、页面销毁退出直播间，移除回调
 componentWillUnmount() {
         RtcEngine.iLiveLeaveRoom();
@@ -249,3 +250,4 @@ handlerToggleMic =(bMicOn) => {
 
 f、render()中添加直播component
   <ILiveView style={styles.localView} showVideoView={true}/>
+```
