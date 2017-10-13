@@ -1,21 +1,27 @@
+# README
+| Author        |     E-mail      |
+| ------------- |:---------------:|
+| gufei         | 799170694@qq.com|
+
+*  不断更新优化中
+
 # react-native-ilive
-1、基于腾讯互动直播封装成react-native组件
-2、封装android、iOS两大平台
+*  基于腾讯互动直播封装成react-native组件
+*  封装android、iOS两大平台
+*  目前实现功能：创建房间、加入房间、上下麦、切换摄像头、开关摄像头、开关声麦、录视频流、录屏幕
+*  待实现功能：美颜插件、主播直播前预览
 
-Get started
+### Android
 
-#Android
+* 将android/react-native-ilive拷贝到自己项目的android目录下
 
-1、将android/react-native-ilive拷贝到自己项目的android目录下
+* 在android/settings.gradle文件中新增：':react-native-ilive'依赖
 
-2、在android/settings.gradle文件中新增：':react-native-ilive'依赖
+* 在android/app/build.gradle文件的dependencies中添加：compile project(path: ':react-native-ilive')
 
-3、在android/app/build.gradle文件的dependencies中添加：
-compile project(path: ':react-native-ilive')
-
-4、在android/app/src/main/AndroidMainfest.xml中：
-权限添加：
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+* 在android/app/src/main/AndroidMainfest.xml中添加权限：
+```
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -40,8 +46,10 @@ compile project(path: ':react-native-ilive')
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-application下添加：
-<provider
+```
+*  application下添加：
+```
+    <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.tencent.qcloud.suixinbo.fileProvider"
             android:exported="false"
@@ -49,65 +57,63 @@ application下添加：
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
-    </provider>
+    </provider>
+```
+* MainApplication.java文件：
+  *  extends QavsdkApplication
+  *  getPackages()方法中添加new ILivePackage()
 
-5、MainApplication.java文件：
-  a、extends QavsdkApplication
-  b、getPackages()方法中添加new ILivePackage()
+### iOS
 
-#iOS
+* 将ios/RCTILive拷贝到自己项目中
 
-1、将ios/RCTILive拷贝到自己项目中
+* 运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，仅保留AVSDK、ILiveSDK、IMSDK三个文件夹（！！多余的文件/文件夹删除）
 
-2、运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，仅保留AVSDK、ILiveSDK、IMSDK三个文件夹（！！多余的文件/文件夹删除）
+* 修改工程配置
 
-3、修改工程配置
+  *  将下载好的SDK复制到工程目录下，工程目录右键，Add Files to " you projectname"
 
-  将下载好的SDK复制到工程目录下，工程目录右键，Add Files to " you projectname"
+  *  Build Settings/Linking/Other Linker Flags，增加 -ObjC 配置
 
-  Build Settings/Linking/Other Linker Flags，增加 -ObjC 配置
+  *  Build Settings/Linking/Bitcode，增加 Bitcode 配置，设置为NO
 
-  Build Settings/Linking/Bitcode，增加 Bitcode 配置，设置为NO
-
-  iOS10及以上系统，需在Info.plist中增加设备访问权限配置
-  http://mc.qcloudimg.com/static/img/e7b7897cb79a5cb9a984938dd4b3fda3/image.png
+  *  iOS10及以上系统，需在Info.plist中增加设备访问权限配置
+  ![](http://mc.qcloudimg.com/static/img/e7b7897cb79a5cb9a984938dd4b3fda3/image.png)
 
 
-4 添加系统库
+* 添加系统库
     需要增加的系统库
-    libc++.tbd
-    libstdc++.tbd
-    libstdc++.6.tbd
-    libz.tbd
-    libbz2.tbd
-    libiconv.tbd
-    libresolv.tbd
-    libsqlite3.tbd
-    libprotobuf.tbd
-    UIKit.framework
-    CoreVideo.framework
-    CoreMedia.framework
-    Accelerate.framework
-    Foundation.framework
-    AVFoundation.framework
-    VideoToolbox.framework
-    CoreGraphics.framework
-    CoreTelephony.framework
-    SystemConfiguration.framework
+    *  libc++.tbd
+    *  libstdc++.tbd
+    *  libstdc++.6.tbd
+    *  libz.tbd
+    *  libbz2.tbd
+    *  libiconv.tbd
+    *  libresolv.tbd
+    *  libsqlite3.tbd
+    *  libprotobuf.tbd
+    *  UIKit.framework
+    *  CoreVideo.framework
+    *  CoreMedia.framework
+    *  Accelerate.framework
+    *  Foundation.framework
+    *  AVFoundation.framework
+    *  VideoToolbox.framework
+    *  CoreGraphics.framework
+    *  CoreTelephony.framework
+    *  SystemConfiguration.framework
 
-5、Build Settings/PrefixHeader/your_projectname/RCTILive/TILLiveSDKShow-Prefix.pch
+* Build Settings/PrefixHeader/your_projectname/RCTILive/TILLiveSDKShow-Prefix.pch
 
-6、ReactNativeILive/AppDelegate.m文件修改：
-
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+* ReactNativeILive/AppDelegate.m文件修改：
+ ```
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
   // start 腾讯互动直播环境初始化
   TIMManager *manager = [[ILiveSDK getInstance] getTIMManager];
   NSNumber *evn = [[NSUserDefaults standardUserDefaults] objectForKey:kEnvParam];
-  [manager setEnv:[evn intValue]];//环境
-  NSNumber *logLevel = [[NSUserDefaults standardUserDefaults] objectForKey:kLogLevel];//log 等级(默认debug)
-  if (!logLevel)
-  {
+  [manager setEnv:[evn intValue]];
+  NSNumber *logLevel = [[NSUserDefaults standardUserDefaults] objectForKey:kLogLevel];
+  if (!logLevel) {
     [[NSUserDefaults standardUserDefaults] setObject:@(TIM_LOG_DEBUG) forKey:kLogLevel];
     logLevel = @(TIM_LOG_DEBUG);
   }
@@ -116,18 +122,19 @@ application下添加：
   // end
   ........
 }
+ ```
 
+### react-native代码配置如下：
 
-#react-native代码配置如下：
+*   将react-native-ilive.git/src下的ILiveView、index、RtcEngine三个文件拷贝到你的项目相应目录下
 
-1、将react-native-ilive.git/src下的ILiveView、index、RtcEngine三个文件拷贝到你的项目相应目录下
+*   在你项目的直播功能js文件中：
 
-2、在你项目的直播功能js文件中：
+  *  import {RtcEngine, ILiveView} from './src/index';
 
-  a、导入import {RtcEngine, ILiveView} from './src/index';
-
-  b、componentWillMount中初始化直播引擎：
-  //初始化iLive
+  *  componentWillMount中初始化直播引擎：
+   ```
+  // 初始化iLive
   const options = {
       appid: '1400027849',
       accountType: '11656'
@@ -135,11 +142,13 @@ application下添加：
   RtcEngine.init(options);
   // 添加AVListener，此方法必须在rn的componentWillMount()方法中执行，render()之前执行
   RtcEngine.iLiveSetAVListener();
-
-c、componentDidMount中先登录腾讯的TLS系统,use id&&sig（自己服务器端生成）
-//所有的原生通知统一管理
+ ```
+*  componentDidMount中先登录腾讯的TLS系统,use id&&sig（自己服务器端生成）
+ ```
 RtcEngine.iLiveLogin('learnta111', 'eJxlj8tOg0AARfd8BWGLMTPA8HBHoBGsQNqipitC59GOtTBOB4Ua-70Vm0ji3Z6Te3O-NF3XjfJxdVtj3HaNqtQgqKHf6QYwbv6gEJxUtapsSf5B2gsuaVUzReUIIULIAmDqcEIbxRm-Gm*0lo2qIYQT50j21Tj0W*JcGizPd4KpwrcjzGbrKF1Ekjmv73M-jEN0wsn88HQ-K1lcgLIzdxvVnfIMic-ewy3bpruwiJNscPmQPjsvy1zYyWogOe43idq766I000XsRmYg8UMxmVT8QK*vALI9Pwi8Cf2g8sjbZhQsABG0bPATQ-vWzhSzXpU_');
-//所有的原生通知统一管理
+ ```
+*  所有的原生通知统一管理
+ ```
 RtcEngine.eventEmitter({
     onLoginTLS: (data) => {
         var result = data.code === '1000';
@@ -179,6 +188,22 @@ RtcEngine.eventEmitter({
     onDownVideo: (data) => {
         console.log(data);
     },
+    // 开始录制视频
+    onStartVideoRecord: (data) => {
+        console.log(data);
+    },
+    // 停止录制视频
+    onStopVideoRecord: (data) => {
+         console.log(data);
+    },
+    // 开始录屏幕
+    onStartScreenRecord: (data) => {
+       console.log(data);
+    },
+    // 停止录屏幕
+    onStopScreenRecord: (data) => {
+        console.log(data);
+    },
     // 与房间断开连接
     onRoomDisconnect: (data) => {
         console.log(data);
@@ -208,15 +233,16 @@ RtcEngine.eventEmitter({
         // 错误!
     }
 })
-
-d、页面销毁退出直播间，移除回调
+  ```
+*  页面销毁退出直播间，移除回调
+ ```
 componentWillUnmount() {
         RtcEngine.iLiveLeaveRoom();
         RtcEngine.removeEmitter()
     }
-
-e、退出房间、上麦、下麦、切换摄像头、开关摄像头、开关声麦方法如下
-
+ ```
+*  退出房间、上麦、下麦、录制视频流、录制屏幕、切换摄像头、开关摄像头、开关声麦方法如下
+ ```
 handerLeavelRoom() {
     console.log('handerLeavelRoom');
     // 通知腾讯TLS服务器
@@ -235,6 +261,26 @@ handlerDownVideo(uid) {
     RtcEngine.iLiveDownVideo(uid);
 };
 
+handlerStartRecord (fileName, recordType) {
+    console.log('handlerStartRecord');
+    RtcEngine.iLiveStartRecord(fileName, recordType);
+};
+
+handlerStopRecord() {
+    console.log('handlerStopRecord');
+    RtcEngine.iLiveStopRecord();
+};
+
+handlerStartScreenRecord () {
+    console.log('handlerStartScreenRecord');
+    RtcEngine.iLiveStartScreenRecord();
+};
+
+handlerStopScreenRecord() {
+    console.log('handlerStopScreenRecord');
+    RtcEngine.iLiveStopScreenRecord();
+};
+
 handlerSwitchCamera =() => {
     RtcEngine.iLiveSwitchCamera();
 };
@@ -246,6 +292,8 @@ handlerToggleCamera =(bCameraOn) => {
 handlerToggleMic =(bMicOn) => {
     RtcEngine.iLiveToggleMic(bMicOn);
 };
-
-f、render()中添加直播component
+ ```
+*  render()中添加直播component
+ ```
   <ILiveView style={styles.localView} showVideoView={true}/>
+ ```
