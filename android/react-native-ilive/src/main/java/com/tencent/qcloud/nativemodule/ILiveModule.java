@@ -22,10 +22,12 @@ public class ILiveModule extends ReactContextBaseJavaModule {
     private static final String MSG = "msg";
     private static final String ROOMID = "roomId";
 
+    private ReactApplicationContext context;
     private int roomId;
 
-    public ILiveModule(ReactApplicationContext context) {
-        super(context);
+    public ILiveModule(ReactApplicationContext reactContext) {
+        super(reactContext);
+        this.context = reactContext;
     }
 
     @Override
@@ -33,7 +35,7 @@ public class ILiveModule extends ReactContextBaseJavaModule {
         return "RCTILive";
     }
 
-    private IRtcEngineEventHandler mRtcEventHandler = new IRtcEngineEventHandler() {
+    private IRtcEngineEventHandler rtcEventHandler = new IRtcEngineEventHandler() {
 
         @Override
         public void onLoginTLS(final String code, final String msg) {
@@ -162,12 +164,12 @@ public class ILiveModule extends ReactContextBaseJavaModule {
         }
 
         @Override
-        public void onStartRecord(final String code, final String msg) {
+        public void onStartVideoRecord(final String code, final String msg) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     WritableMap map = Arguments.createMap();
-                    map.putString(TYPE, "onStartRecord");
+                    map.putString(TYPE, "onStartVideoRecord");
                     map.putString(CODE, code);
                     map.putString(MSG, msg);
                     commonEvent(map);
@@ -176,12 +178,40 @@ public class ILiveModule extends ReactContextBaseJavaModule {
         }
 
         @Override
-        public void onStopRecord(final String code, final String msg) {
+        public void onStopVideoRecord(final String code, final String msg) {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     WritableMap map = Arguments.createMap();
-                    map.putString(TYPE, "onStopRecord");
+                    map.putString(TYPE, "onStopVideoRecord");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
+
+        @Override
+        public void onStartScreenRecord(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onStartScreenRecord");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
+
+        @Override
+        public void onStopScreenRecord(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onStopScreenRecord");
                     map.putString(CODE, code);
                     map.putString(MSG, msg);
                     commonEvent(map);
@@ -270,7 +300,7 @@ public class ILiveModule extends ReactContextBaseJavaModule {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ILiveManager.getInstance().init(getReactApplicationContext(), mRtcEventHandler, options);
+                ILiveManager.getInstance().init(context, rtcEventHandler, options);
             }
         });
     }
@@ -332,10 +362,9 @@ public class ILiveModule extends ReactContextBaseJavaModule {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
+                ILiveManager.getInstance().leaveRoom();
             }
         });
-        ILiveManager.getInstance().leaveRoom();
     }
 
     @ReactMethod
@@ -359,24 +388,45 @@ public class ILiveModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void startRecord(final String fileName, final int recordType) {
+    public void startVideoRecord(final String fileName, final int recordType) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ILiveManager.getInstance().startRecord(fileName, recordType);
+                ILiveManager.getInstance().startVideoRecord(fileName, recordType);
             }
         });
     }
 
     @ReactMethod
-    public void stopRecord() {
+    public void stopVideoRecord() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ILiveManager.getInstance().stopRecord();
+                ILiveManager.getInstance().stopVideoRecord();
             }
         });
     }
+
+    @ReactMethod
+    public void startScreenRecord() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().startScreenRecord(getCurrentActivity());
+            }
+        });
+    }
+
+    @ReactMethod
+    public void stopScreenRecord() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().stopScreenRecord();
+            }
+        });
+    }
+
 
     @ReactMethod
     public void switchCamera() {
@@ -450,5 +500,4 @@ public class ILiveModule extends ReactContextBaseJavaModule {
                 .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                 .emit(eventName, params);
     }
-
 }

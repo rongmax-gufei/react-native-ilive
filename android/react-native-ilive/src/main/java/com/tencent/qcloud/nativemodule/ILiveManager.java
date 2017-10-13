@@ -1,17 +1,22 @@
 package com.tencent.qcloud.nativemodule;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
+import android.media.projection.MediaProjection;
+import android.media.projection.MediaProjectionManager;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
-import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.react.bridge.ActivityEventListener;
+import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 import com.tencent.TIMConversationType;
 import com.tencent.TIMCustomElem;
@@ -45,12 +50,14 @@ import com.tencent.qcloud.interfacev1.IRtcEngineEventHandler;
 import com.tencent.qcloud.utils.Constants;
 import com.tencent.qcloud.utils.LogConstants;
 import com.tencent.qcloud.utils.MessageEvent;
+import com.tencent.qcloud.utils.ScreenRecorder;
 import com.tencent.qcloud.utils.SxbLog;
 import com.tencent.qcloud.view.RadioGroupDialog;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import java.io.File;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -63,12 +70,16 @@ import static com.tencent.qcloud.utils.Constants.KEY_APPID;
 import static com.tencent.qcloud.utils.Constants.NORMAL_MEMBER_AUTH;
 import static com.tencent.qcloud.utils.Constants.SD_GUEST_ROLE;
 
-public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, Observer {
+public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, Observer, ActivityEventListener {
 
     private static final String TAG = "ILiveManager";
     private static final String SUCCESS_CODE = "1000";
     private static final String FAIL_CODE = "1001";
     private static final int TIMEOUT_INVITE = 1;
+    private static final int REQUEST_CODE = 2;
+
+    private MediaProjectionManager mediaProjectionManager;
+    private ScreenRecorder recorder;
 
     private static ILiveManager sILiveManager = new ILiveManager();
 
@@ -88,9 +99,9 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     // 角色对话框
     private RadioGroupDialog roleDialog;
     private int curRole = 0;
-    final String[] roles = new String[]{"高清(960*540,25fps)", "标清(640*368,20fps)", "流畅(640*368,15fps)"};
-    final String[] values = new String[]{Constants.HD_ROLE, Constants.SD_ROLE, Constants.LD_ROLE};
-    final String[] guestValues = new String[]{HD_GUEST_ROLE, SD_GUEST_ROLE, Constants.LD_GUEST_ROLE};
+    private final String[] roles = new String[]{"高清(960*540,25fps)", "标清(640*368,20fps)", "流畅(640*368,15fps)"};
+    private final String[] values = new String[]{Constants.HD_ROLE, Constants.SD_ROLE, Constants.LD_ROLE};
+    private final String[] guestValues = new String[]{HD_GUEST_ROLE, SD_GUEST_ROLE, Constants.LD_GUEST_ROLE};
 
     public static ILiveManager getInstance() {
         return sILiveManager;
@@ -99,9 +110,11 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     /**
      * 初始化
      */
-    public void init(Context context, IRtcEngineEventHandler rtcEventHandler, ReadableMap options) {
+    public void init(ReactApplicationContext context, IRtcEngineEventHandler rtcEventHandler, ReadableMap options) {
         this.context = context;
         this.rtcEventHandler = rtcEventHandler;
+        context.addActivityEventListener(this);
+        mediaProjectionManager = (MediaProjectionManager) context.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
         if (options.hasKey(KEY_APPID)) {
             Constants.SDK_APPID = Integer.valueOf(options.getString(KEY_APPID));
         }
@@ -372,7 +385,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
      * @param fileName
      * @param recordType
      */
-    public void startRecord(String fileName, int recordType) {
+    public void startVideoRecord(String fileName, int recordType) {
         ILiveRecordOption option = new ILiveRecordOption();
         option.fileName("learnta_" + ILiveLoginManager.getInstance().getMyUserId() + "_" + fileName);
 //        option.classId(123);
@@ -381,14 +394,14 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
             @Override
             public void onSuccess(Object data) {
                 SxbLog.d(TAG, "已经开始录制");
-                rtcEventHandler.onStartRecord(SUCCESS_CODE, "已经开始录制：" + data.toString());
+                rtcEventHandler.onStartVideoRecord(SUCCESS_CODE, "已经开始录制：" + data.toString());
             }
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
                 String errInfo = "start record error " + errCode + "  " + errMsg;
                 SxbLog.e(TAG, errInfo);
-                rtcEventHandler.onStartRecord(String.valueOf(errCode), errInfo);
+                rtcEventHandler.onStartVideoRecord(String.valueOf(errCode), errInfo);
             }
         });
     }
@@ -396,23 +409,48 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     /**
      * 结束录制视频
      */
-    public void stopRecord() {
+    public void stopVideoRecord() {
         ILiveRoomManager.getInstance().stopRecordVideo(new ILiveCallBack<List<String>>() {
             @Override
             public void onSuccess(List<String> data) {
                 for (String url : data) {
                     SxbLog.d(TAG, "stopRecord->url:" + url);
                 }
-                rtcEventHandler.onStartRecord(SUCCESS_CODE, "已经结束录制：" + data.toString());
+                rtcEventHandler.onStartVideoRecord(SUCCESS_CODE, "已经结束录制：" + data.toString());
             }
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
                 String errInfo = "stopRecord->failed:" + module + "|" + errCode + "|" + errMsg;
                 SxbLog.e(TAG, errInfo);
-                rtcEventHandler.onStartRecord(String.valueOf(errCode), errInfo);
+                rtcEventHandler.onStartVideoRecord(String.valueOf(errCode), errInfo);
             }
         });
+    }
+
+    /**
+     * 开始屏幕录制
+     *
+     * @param currentActivity
+     */
+    public void startScreenRecord(Activity currentActivity) {
+        if (currentActivity == null) {
+            rtcEventHandler.onStartScreenRecord(FAIL_CODE, "Activity doesn't exist");
+            return;
+        }
+        Intent captureIntent = mediaProjectionManager.createScreenCaptureIntent();
+        currentActivity.startActivityForResult(captureIntent, REQUEST_CODE);
+    }
+
+    /**
+     * 结束屏幕录制
+     */
+    public void stopScreenRecord() {
+        if (null != recorder) {
+            recorder.quit();
+            recorder = null;
+        }
+        rtcEventHandler.onStartScreenRecord(SUCCESS_CODE, "已经结束录制屏幕");
     }
 
     /**
@@ -447,6 +485,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     public void onDestory() {
         MessageEvent.getInstance().deleteObserver(this);
         ILVLiveManager.getInstance().quitRoom(null);
+        stopScreenRecord();
     }
 
     /**
@@ -600,7 +639,9 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
             case Constants.AVIMCMD_MUlTI_HOST_INVITE:
                 SxbLog.d(TAG, LogConstants.ACTION_VIEWER_SHOW + LogConstants.DIV + loginId + LogConstants.DIV + "receive invite message" +
                         LogConstants.DIV + "id " + identifier);
-                showInviteDialog();
+                sendC2CCmd(Constants.AVIMCMD_MUlTI_JOIN, "", String.valueOf(hostId));
+                upMemberVideo();
+//              changeRole(SD_GUEST_ROLE);
                 break;
             case Constants.AVIMCMD_MUlTI_JOIN:
                 SxbLog.i(TAG, "handleCustomMsg " + identifier);
@@ -714,90 +755,6 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
         });
     }
 
-    /**
-     * 清晰度选择弹出框
-     */
-    private void initRoleDialog() {
-        if (null == roleDialog) {
-            if (loginId.equals(hostId)) {
-                if (quality.equals(Constants.SD_ROLE)) {
-                    curRole = 1;
-                } else if (quality.equals(Constants.LD_ROLE)) {
-                    curRole = 2;
-                }
-            }
-            roleDialog = new RadioGroupDialog(context, roles);
-
-            roleDialog.setTitle(R.string.str_dt_change_role);
-            roleDialog.setSelected(curRole);
-            roleDialog.setOnItemClickListener(new RadioGroupDialog.onItemClickListener() {
-                @Override
-                public void onItemClick(int position) {
-                    SxbLog.d(TAG, "initRoleDialog->onClick item:" + position);
-                    curRole = position;
-                    if (loginId.equals(hostId)) {
-                        changeRole(values[curRole]);
-                    } else {
-                        changeRole(guestValues[curRole]);
-                    }
-                }
-            });
-        }
-    }
-
-    /**
-     * 主播邀请应答框
-     */
-    private void initInviteDialog() {
-        if (null == inviteDg) {
-            inviteDg = new Dialog(context, R.style.dialog);
-            inviteDg.setContentView(R.layout.invite_dialog);
-            final TextView hostId = (TextView) inviteDg.findViewById(R.id.host_id);
-            hostId.setText(String.valueOf(hostId));
-            TextView agreeBtn = (TextView) inviteDg.findViewById(R.id.invite_agree);
-            TextView refusebtn = (TextView) inviteDg.findViewById(R.id.invite_refuse);
-            agreeBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    sendC2CCmd(Constants.AVIMCMD_MUlTI_JOIN, "", String.valueOf(hostId));
-                    upMemberVideo();
-                    inviteDg.dismiss();
-                    initRoleDialog();
-                    if (roleDialog != null)
-                        roleDialog.show();
-                }
-            });
-
-            refusebtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    sendC2CCmd(Constants.AVIMCMD_MUlTI_REFUSE, "", String.valueOf(hostId));
-                    inviteDg.dismiss();
-                }
-            });
-
-//            Window dialogWindow = inviteDg.getWindow();
-//            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-//            dialogWindow.setGravity(Gravity.CENTER);
-//            dialogWindow.setAttributes(lp);
-        }
-    }
-
-    private void showInviteDialog() {
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                initInviteDialog();
-//                if ((inviteDg != null) && (!inviteDg.isShowing())) {
-//                    inviteDg.show();
-//                }
-//            }
-//        });
-        sendC2CCmd(Constants.AVIMCMD_MUlTI_JOIN, "", String.valueOf(hostId));
-        upMemberVideo();
-//        changeRole(SD_GUEST_ROLE);
-    }
-
     private void showToast(final String strMsg) {
         runOnUiThread(new Runnable() {
             @Override
@@ -807,5 +764,35 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
                 }
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        MediaProjection mediaProjection = mediaProjectionManager.getMediaProjection(resultCode, data);
+        if (mediaProjection == null) {
+            SxbLog.e(TAG, "media projection is null");
+            rtcEventHandler.onStartScreenRecord(FAIL_CODE, "media projection is null");
+            return;
+        }
+        // video size
+        final int width = 1280;
+        final int height = 720;
+        File file = new File(Environment.getExternalStorageDirectory(),
+                "record-" + width + "x" + height + "-" + System.currentTimeMillis() + ".mp4");
+        final int bitrate = 6000000;
+        recorder = new ScreenRecorder(width, height, bitrate, 1, mediaProjection, file.getAbsolutePath());
+        recorder.start();
+        rtcEventHandler.onStartScreenRecord(SUCCESS_CODE, "已经开始录制屏幕");
+//        Activity currentActivity = getCurrentActivity();
+//        if (null == currentActivity) {
+//            SxbLog.e("ILIveManager", "Activity doesn't exist");
+//            return;
+//        }
+//        currentActivity.moveTaskToBack(true);
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+
     }
 }
