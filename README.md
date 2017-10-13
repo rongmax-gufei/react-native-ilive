@@ -1,10 +1,10 @@
 # react-native-ilive
-1、基于腾讯互动直播封装成react-native组件
+1、基于腾讯互动直播封装成react-native组件<br>
 2、封装android、iOS两大平台
 
-Get started
+### Get started
 
-#Android
+### Android
 
 1、将android/react-native-ilive拷贝到自己项目的android目录下
 
@@ -55,7 +55,7 @@ application下添加：
   a、extends QavsdkApplication
   b、getPackages()方法中添加new ILivePackage()
 
-#iOS
+### iOS
 
 1、将ios/RCTILive拷贝到自己项目中
 
