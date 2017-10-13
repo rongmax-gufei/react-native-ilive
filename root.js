@@ -86,11 +86,19 @@ export default class ReactNativeILive extends Component {
                 console.log(data);
             },
             // 开始录制视频
-            onStartRecord: (data) => {
+            onStartVideoRecord: (data) => {
                 console.log(data);
             },
             // 停止录制视频
-            onStopRecord: (data) => {
+            onStopVideoRecord: (data) => {
+                console.log(data);
+            },
+            // 开始录屏幕
+            onStartScreenRecord: (data) => {
+                console.log(data);
+            },
+            // 停止录屏幕
+            onStopScreenRecord: (data) => {
                 console.log(data);
             },
             // 与房间断开连接
@@ -152,6 +160,16 @@ export default class ReactNativeILive extends Component {
         RtcEngine.iLiveStopRecord();
     };
 
+    handlerStartScreenRecord () {
+        console.log('handlerStartScreenRecord');
+        RtcEngine.iLiveStartScreenRecord();
+    };
+
+    handlerStopScreenRecord() {
+        console.log('handlerStopScreenRecord');
+        RtcEngine.iLiveStopScreenRecord();
+    };
+
     handlerSwitchCamera =() => {
         RtcEngine.iLiveSwitchCamera();
     };
@@ -178,24 +196,12 @@ export default class ReactNativeILive extends Component {
                                 source={require('./images/icon_exit_live.png')}
                             />
                             <View style={styles.bottomView}>
-                                <VideoOperateButton
-                                    onPress={this.handlerSwitchCamera.bind(this)}
-                                    source={require('./images/icon_switch_camera.png')}
-                                />
                                 <TouchableHighlight style={styles.btn} underlayColor={'#ff0000'}
-                                  onPress={this.handlerUpVideo.bind(this, 'ruby')}>
-                                  <Text style={styles.btnText}>上麦</Text>
-                                </TouchableHighlight>
-                                <TouchableHighlight style={styles.btn} underlayColor={'#ff0000'}
-                                  onPress={this.handlerDownVideo.bind(this, 'ruby')}>
-                                  <Text style={styles.btnText}>下麦</Text>
-                                </TouchableHighlight>
-                                <TouchableHighlight style={styles.btn} underlayColor={'#ff0000'}
-                                  onPress={this.handlerStartRecord.bind(this, '001', 0)}>
+                                  onPress={this.handlerStartScreenRecord.bind(this, '001', 0)}>
                                   <Text style={styles.btnText}>开始录屏</Text>
                                 </TouchableHighlight>
                                 <TouchableHighlight style={styles.btn} underlayColor={'#ff0000'}
-                                  onPress={this.handlerStopRecord.bind(this)}>
+                                  onPress={this.handlerStopScreenRecord.bind(this)}>
                                   <Text style={styles.btnText}>停止录屏</Text>
                                 </TouchableHighlight>
                             </View>

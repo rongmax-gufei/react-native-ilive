@@ -47,13 +47,21 @@ export default {
     iLiveDownVideo(uid) {
         ILive.downVideo(uid);
     },
-    // 开始录视频,recordType,0：录制视频，1：录制纯音频
+    // 开始录视频(腾讯云服务提供，仅能录制视频流，不能录制节目操作),recordType,0：录制视频，1：录制纯音频
     iLiveStartRecord(fileName, recordType) {
         ILive.startRecord(fileName, recordType);
     },
     // 停止录视频
     iLiveStopRecord() {
         ILive.stopRecord();
+    },
+    // 开始录屏幕（iOS官方ReplayKit提供）
+    iLiveStartScreenRecord() {
+        ILive.startScreenRecord();
+    },
+    // 停止录屏幕
+    iLiveStopScreenRecord() {
+        ILive.stopScreenRecord();
     },
     // 切换摄像头
     iLiveSwitchCamera() {
