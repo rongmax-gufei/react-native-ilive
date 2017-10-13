@@ -288,16 +288,10 @@ RCT_EXPORT_METHOD(stopScreenRecord) {
     if (previewViewController) {
       //设置预览页面到代理
       previewViewController.previewControllerDelegate = self;
-//      [self presentViewController:previewViewController animated:YES completion:nil];
+      [[self getCurrentVC] presentViewController:previewViewController animated:YES completion:nil];
       [self commentEvent:@"onStopScreenRecord" code:kSuccess msg:@"执行预览"];
     }
   }];
-}
-
-//回放预览界面的代理方法
-- (void)previewControllerDidFinish:(RPPreviewViewController *)previewController {
-  //用户操作完成后，返回之前的界面
-  [previewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 /**
@@ -412,6 +406,34 @@ RCT_EXPORT_METHOD(destroy) {
   [ws onClose];
   [ws commentEvent:@"onRoomDisconnect" code:kSuccess msg:@"房间失去连接"];
   return YES;
+}
+
+#pragma mark - 回放预览界面的代理方法
+- (void)previewControllerDidFinish:(RPPreviewViewController *)previewController {
+  //用户操作完成后，返回之前的界面
+  [previewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+//获取当前屏幕显示的viewcontroller
+- (UIViewController *)getCurrentVC {
+  UIViewController *result = nil;
+  UIWindow * window = [[UIApplication sharedApplication] keyWindow];
+  if (window.windowLevel != UIWindowLevelNormal) {
+    NSArray *windows = [[UIApplication sharedApplication] windows];
+    for(UIWindow * tmpWin in windows) {
+      if (tmpWin.windowLevel == UIWindowLevelNormal) {
+        window = tmpWin;
+        break;
+      }
+    }
+  }
+  UIView *frontView = [[window subviews] objectAtIndex:0];
+  id nextResponder = [frontView nextResponder];
+  if ([nextResponder isKindOfClass:[UIViewController class]])
+    result = nextResponder;
+  else
+    result = window.rootViewController;
+  return result;
 }
 
 #pragma mark - native to js event method
