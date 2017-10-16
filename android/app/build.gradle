@@ -114,6 +114,9 @@ android {
         }
         // Enabling multidex support.
         multiDexEnabled true
+        ndk {
+            abiFilters "armeabi-v7a", "armeabi"
+        }
     }
     buildTypes {
         release {

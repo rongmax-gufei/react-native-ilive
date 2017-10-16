@@ -18,8 +18,8 @@ android {
 
     sourceSets {
         main {
-            jniLibs.srcDirs = ['libs']
             assets.srcDirs = ['src/main/assets', 'src/main/assets/']
+            jniLibs.srcDirs = ['src/main/jniLibs', 'src/main/jniLibs']
         }
     }
     compileOptions {

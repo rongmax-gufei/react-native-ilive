@@ -300,7 +300,7 @@ public class ILiveModule extends ReactContextBaseJavaModule {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ILiveManager.getInstance().init(context, rtcEventHandler, options);
+                ILiveManager.getInstance().init(context, getCurrentActivity(), rtcEventHandler, options);
             }
         });
     }

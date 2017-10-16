@@ -1,15 +1,13 @@
 package com.tencent.qcloud.nativemodule;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
-import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -50,14 +48,12 @@ import com.tencent.qcloud.interfacev1.IRtcEngineEventHandler;
 import com.tencent.qcloud.utils.Constants;
 import com.tencent.qcloud.utils.LogConstants;
 import com.tencent.qcloud.utils.MessageEvent;
-import com.tencent.qcloud.utils.ScreenRecorder;
+import com.tencent.qcloud.screenrecorder.ScreenRecordService;
 import com.tencent.qcloud.utils.SxbLog;
-import com.tencent.qcloud.view.RadioGroupDialog;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.File;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -76,18 +72,17 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     private static final String SUCCESS_CODE = "1000";
     private static final String FAIL_CODE = "1001";
     private static final int TIMEOUT_INVITE = 1;
-    private static final int REQUEST_CODE = 2;
+    private static final int REQUEST_CODE = 1000;
 
     private MediaProjectionManager mediaProjectionManager;
-    private ScreenRecorder recorder;
 
     private static ILiveManager sILiveManager = new ILiveManager();
 
+    private Activity activity;
     private Context context;
     private IRtcEngineEventHandler rtcEventHandler;
 
     private AVRootView rootView;
-    private Dialog inviteDg;
 
     private String loginId;
     private String hostId;
@@ -96,12 +91,13 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     private String quality;
     private int inviteViewCount = 0;
 
-    // 角色对话框
-    private RadioGroupDialog roleDialog;
-    private int curRole = 0;
     private final String[] roles = new String[]{"高清(960*540,25fps)", "标清(640*368,20fps)", "流畅(640*368,15fps)"};
     private final String[] values = new String[]{Constants.HD_ROLE, Constants.SD_ROLE, Constants.LD_ROLE};
     private final String[] guestValues = new String[]{HD_GUEST_ROLE, SD_GUEST_ROLE, Constants.LD_GUEST_ROLE};
+
+    private int screenWidth;
+    private int screenHeight;
+    private int screenDensity;
 
     public static ILiveManager getInstance() {
         return sILiveManager;
@@ -110,11 +106,12 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     /**
      * 初始化
      */
-    public void init(ReactApplicationContext context, IRtcEngineEventHandler rtcEventHandler, ReadableMap options) {
+    public void init(ReactApplicationContext context, Activity activity, IRtcEngineEventHandler rtcEventHandler, ReadableMap options) {
         this.context = context;
+        this.activity = activity;
         this.rtcEventHandler = rtcEventHandler;
         context.addActivityEventListener(this);
-        mediaProjectionManager = (MediaProjectionManager) context.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+        mediaProjectionManager = (MediaProjectionManager) activity.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
         if (options.hasKey(KEY_APPID)) {
             Constants.SDK_APPID = Integer.valueOf(options.getString(KEY_APPID));
         }
@@ -434,10 +431,15 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
      * @param currentActivity
      */
     public void startScreenRecord(Activity currentActivity) {
+        SxbLog.d(TAG, "startScreenRecord");
         if (currentActivity == null) {
             rtcEventHandler.onStartScreenRecord(FAIL_CODE, "Activity doesn't exist");
             return;
         }
+        getScreenBaseInfo();
+        /**
+         * 获取屏幕录制的权限
+         */
         Intent captureIntent = mediaProjectionManager.createScreenCaptureIntent();
         currentActivity.startActivityForResult(captureIntent, REQUEST_CODE);
     }
@@ -446,10 +448,9 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
      * 结束屏幕录制
      */
     public void stopScreenRecord() {
-        if (null != recorder) {
-            recorder.quit();
-            recorder = null;
-        }
+        SxbLog.d(TAG, "stopScreenRecord");
+        Intent service = new Intent(context, ScreenRecordService.class);
+        context.stopService(service);
         rtcEventHandler.onStartScreenRecord(SUCCESS_CODE, "已经结束录制屏幕");
     }
 
@@ -768,31 +769,40 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        MediaProjection mediaProjection = mediaProjectionManager.getMediaProjection(resultCode, data);
-        if (mediaProjection == null) {
-            SxbLog.e(TAG, "media projection is null");
-            rtcEventHandler.onStartScreenRecord(FAIL_CODE, "media projection is null");
-            return;
+        if(requestCode == REQUEST_CODE) {
+            if(resultCode == Activity.RESULT_OK) {
+                // 获得权限，启动Service开始录制
+                Intent service = new Intent(activity, ScreenRecordService.class);
+                service.putExtra("code", resultCode);
+                service.putExtra("data", data);
+                service.putExtra("audio", true);
+                service.putExtra("width", screenWidth);
+                service.putExtra("height", screenHeight);
+                service.putExtra("density", screenDensity);
+                service.putExtra("quality", false);
+                activity.startService(service);
+                SxbLog.i(TAG, "Started screen recording");
+                rtcEventHandler.onStartScreenRecord(SUCCESS_CODE, "已经开始录制屏幕");
+            } else {
+                SxbLog.i(TAG, "User cancelled");
+                rtcEventHandler.onStartScreenRecord(SUCCESS_CODE, "取消录制屏幕");
+            }
         }
-        // video size
-        final int width = 1280;
-        final int height = 720;
-        File file = new File(Environment.getExternalStorageDirectory(),
-                "record-" + width + "x" + height + "-" + System.currentTimeMillis() + ".mp4");
-        final int bitrate = 6000000;
-        recorder = new ScreenRecorder(width, height, bitrate, 1, mediaProjection, file.getAbsolutePath());
-        recorder.start();
-        rtcEventHandler.onStartScreenRecord(SUCCESS_CODE, "已经开始录制屏幕");
-//        Activity currentActivity = getCurrentActivity();
-//        if (null == currentActivity) {
-//            SxbLog.e("ILIveManager", "Activity doesn't exist");
-//            return;
-//        }
-//        currentActivity.moveTaskToBack(true);
     }
 
     @Override
     public void onNewIntent(Intent intent) {
 
+    }
+
+    /**
+     * 获取屏幕相关数据
+     */
+    private void getScreenBaseInfo() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+        screenWidth = metrics.widthPixels;
+        screenHeight = metrics.heightPixels;
+        screenDensity = metrics.densityDpi;
     }
 }
