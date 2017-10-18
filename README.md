@@ -103,7 +103,7 @@
     *  CoreTelephony.framework
     *  SystemConfiguration.framework
 
-* Build Settings/PrefixHeader/your_projectname/RCTILive/TILLiveSDKShow-Prefix.pch
+* 点击项目->TARGETS/Build Settings/Prefix Header->添加your_projectname/RCTILive/TILLiveSDKShow-Prefix.pch
 
 * ReactNativeILive/AppDelegate.m文件修改：
  ```
