@@ -15,13 +15,14 @@
 {
     if (self == [super initWithFrame:frame])
     {
-        _imageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"defaul_publishcover"]];
+        _imageView = [[UIImageView alloc] init];
         _imageView.userInteractionEnabled = YES;
         [self addSubview:_imageView];
         
         _userLabel = [[UILabel alloc] init];
         _userLabel.textAlignment = NSTextAlignmentCenter;
         _userLabel.textColor = kColorWhite;
+        [_userLabel setHidden:YES];
         [_imageView addSubview:_userLabel];
         
 //        _hangUpBtn = [[UIButton alloc] init];

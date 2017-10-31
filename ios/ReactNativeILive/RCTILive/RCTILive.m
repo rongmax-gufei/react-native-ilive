@@ -77,6 +77,7 @@ RCT_EXPORT_METHOD(doAVListener) {
   // 注册全局消息回调（主播主动退出房间、取消连麦）
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGotupDelete:) name:kGroupDelete_Notification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectVideoCancel:) name:kCancelConnect_Notification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(upVideoCallback:) name:kUserUpVideo_Notification object:nil];
 }
 
 /**
@@ -150,7 +151,7 @@ RCT_EXPORT_METHOD(upVideo:(NSString *)uid) {
   // 先判断当前存在几路画面，超过规定线路，则拒绝连接
   if ([UserViewManager shareInstance].total >= kMaxUserViewCount) {
     NSString *message = [NSString stringWithFormat:@"连麦画面不能超过%d路，先取消一路连麦",  kMaxUserViewCount+1];
-   [AlertHelp alertWith:@"温馨提示" message:message cancelBtn:@"知道了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+    [self commentEvent:@"onUpVideo" code:kFail  msg:message];
     return;
   }
   // 给连麦对象发送连麦请求
@@ -367,6 +368,14 @@ RCT_EXPORT_METHOD(destroy) {
 }
 
 #pragma mark - upVideo or downVideo method
+/**
+ * 连麦回调事件
+ */
+- (void)upVideoCallback:(NSNotification *)noti {
+  NSString *message = (NSString *)noti.object;
+  [self commentEvent:@"onUpVideo" code:kFail msg:message];
+}
+
 /**
  * 取消连麦
  */

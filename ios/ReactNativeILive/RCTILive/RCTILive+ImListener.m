@@ -10,8 +10,6 @@
 
 @implementation RCTILive (ImListener)
 
-static __weak UIAlertController *_promptAlert = nil;
-
 - (void)onCustomMessage:(ILVLiveCustomMessage *)msg {
   if (msg.type == ILVLIVE_IMTYPE_GROUP) {
     //非当前直播间的群消息，不处理
@@ -22,52 +20,27 @@ static __weak UIAlertController *_promptAlert = nil;
   int cmd = msg.cmd;
   if (msg.type == ILVLIVE_IMTYPE_C2C) {
         switch (cmd) {
-            case AVIMCMD_Multi_Host_Invite:
-            {
-                if (_promptAlert)
-                {
-                    [_promptAlert dismissViewControllerAnimated:NO completion:nil];
-                    _promptAlert = nil;
-                }
-                AlertActionHandle hdBlock = ^(UIAlertAction * _Nonnull action){
-                    [self upToVideo:nil roleName:kSxbRole_InteractHD];
-                };
-                AlertActionHandle sdBlock = ^(UIAlertAction * _Nonnull action){
-                    [self upToVideo:nil roleName:kSxbRole_InteractSD];
-                };
-                AlertActionHandle ldBlock = ^(UIAlertAction * _Nonnull action){
-                    [self upToVideo:nil roleName:kSxbRole_InteractLD];
-                };
-                NSDictionary *funs = @{kSxbRole_InteractHDTitle:hdBlock,kSxbRole_InteractSDTitle:sdBlock, kSxbRole_InteractLDTitle:ldBlock};
-                NSString *title = [NSString stringWithFormat:@"收到%@视频邀请",msg.sendId];
-                _promptAlert = [AlertHelp alertWith:title message:@"接收请选择流控角色，否则点拒绝" funBtns:funs cancelBtn:@"拒绝" alertStyle:UIAlertControllerStyleActionSheet cancelAction:^(UIAlertAction * _Nonnull action) {
-                    [self rejectToVideo:nil];
-                }];
+            case AVIMCMD_Multi_Host_Invite: {
+//         kSxbRole_InteractHD（高清）/kSxbRole_InteractLD（流畅）
+             [self upToVideo:nil roleName:kSxbRole_InteractSD];//默认标清
+              NSString *message = [NSString stringWithFormat:@"收到%@视频邀请",msg.sendId];
+              NSLog(@"%@", message);
+              [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:message];
+//          [self rejectToVideo:nil];//收到上麦一方有权拒绝视频（暂无此需求）
             }
                 break;
-            case AVIMCMD_Multi_Interact_Refuse:
-            {
+            case AVIMCMD_Multi_Interact_Refuse:  {
               NSString *message = [NSString stringWithFormat:@"%@拒绝了你的邀请",msg.sendId];
-              [AlertHelp alertWith:@"提示" message:message cancelBtn:@"好的" alertStyle:UIAlertControllerStyleAlert cancelAction:^(UIAlertAction * _Nonnull action) {
-                             [[UserViewManager shareInstance] removePlaceholderView:msg.sendId];
-                        }];
+              [[UserViewManager shareInstance] removePlaceholderView:msg.sendId];
+              NSLog(@"%@", message);
+              [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:message];
             }
                 break;
-            case AVIMCMD_Multi_Host_CancelInvite:
-            {
+            case AVIMCMD_Multi_Host_CancelInvite:  {
                NSString *message = [NSString stringWithFormat:@"%@已取消视频邀请",msg.sendId];
-              if (_promptAlert)
-              {
-                [_promptAlert dismissViewControllerAnimated:NO completion:nil];
-                _promptAlert = nil;
-              }
-             _promptAlert = [AlertHelp alertWith:@"提示" message:message cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:^(UIAlertAction * _Nonnull action) {
-                [[UserViewManager shareInstance] removePlaceholderView:msg.sendId];
-              }];
-              dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [_promptAlert dismissViewControllerAnimated:YES completion:nil];
-                _promptAlert = nil;
-              });
+                  [[UserViewManager shareInstance] removePlaceholderView:msg.sendId];
+                  NSLog(@"%@", message);
+                  [[NSNotificationCenter defaultCenter] postNotificationName:kUserUpVideo_Notification object:message];
             }
                 break;
             default:

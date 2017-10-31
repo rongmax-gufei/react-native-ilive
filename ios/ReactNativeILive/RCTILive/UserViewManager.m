@@ -301,9 +301,9 @@
   }
   _mainCodeUserId = codeUserId;
   _mainUserId = userId;
-  
   return YES;
 }
+
 - (void)refreshViews
 {
   int index = 0;
