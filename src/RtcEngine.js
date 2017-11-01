@@ -23,6 +23,10 @@ export default {
     iLiveLogin(id, sig) {
         ILive.iLiveLogin(id, sig);
     },
+    // 登出腾讯互动直播TLS系统
+    iLiveLogout() {
+        ILive.iLiveLogout();
+    },
     // 创建房间,画质"HD"、"SD"、"LD"
     iLiveCreateRoom(hostId, roomId, quality) {
         ILive.createRoom(hostId, roomId, quality);

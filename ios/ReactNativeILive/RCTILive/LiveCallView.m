@@ -32,7 +32,7 @@
       
         _timeoutTimer = [NSTimer scheduledTimerWithTimeInterval:kCallTimeout target:self selector:@selector(cancelInivte) userInfo:nil repeats:NO];
         
-        [self setBackgroundColor:[kColorBlack colorWithAlphaComponent:0.5]];
+        [self setBackgroundColor:[kColorBlack colorWithAlphaComponent:0]];
     }
     return self;
 }

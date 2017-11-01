@@ -39,11 +39,13 @@
 }
 
 - (void)onFirstFrameRecved:(int)width height:(int)height identifier:(NSString *)identifier srcType:(avVideoSrcType)srcType; {
-  NSLog(@"%d,%d,%@",width,height,identifier);
+  NSLog(@"接收到第一帧视频：%d,%d,%@",width,height,identifier);
 }
 
 - (void)onVideoType:(avVideoSrcType)type users:(NSArray *)users {
+  NSLog(@"onVideoType >>>> start");
   for (NSString *user in users) {
+    NSLog(@"onVideoType >>>> %@", user);
     ILiveRenderView *renderView = [[UserViewManager shareInstance] addRenderView:user srcType:type];
     if ([UserViewManager shareInstance].total != 0)//小画面添加点击事件。大画面不加。
     {
@@ -55,7 +57,7 @@
     }
     renderView.isRotate = NO;
   }
-  
+  NSLog(@"onVideoType >>>> end");
   NSArray *renderViews = [[TILLiveManager getInstance] getAllAVRenderViews];
   if (renderViews.count > 0) {
     self.noCameraDatatalabel.hidden = YES;
@@ -67,11 +69,13 @@
 }
 
 - (void)offVideoType:(avVideoSrcType)type users:(NSArray *)users {
+  NSLog(@"offVideoType >>>>>> start");
   for (NSString *user in users) {
+    NSLog(@"offVideoType >>>>>> %@", user);
     //如果移除的画面是大画面，则屏幕上只会显示一个或几个小画面，为了美化，将最后剩下小画面中的一个显示成大画面
     NSString *codeUserId = [UserViewManager codeUser:user type:type];
     if ([codeUserId isEqualToString:[UserViewManager shareInstance].mainCodeUserId] && [UserViewManager shareInstance].total > 0) {
-    //将主播的画面切到大画面
+        //将主播的画面切到大画面
         MyTapGesture *tap = [[MyTapGesture alloc] init];
         avVideoSrcType uidType = [[UserViewManager shareInstance] getUserType:[[ILiveConst share] hostId]];
         tap.codeId = [UserViewManager codeUser:[[ILiveConst share] hostId] type:uidType];
@@ -80,6 +84,7 @@
     [[UserViewManager shareInstance] removeRenderView:user srcType:type];
   }
   [[UserViewManager shareInstance] refreshViews];
+  NSLog(@"offVideoType >>>> end");
   
   NSArray *renderViews = [[TILLiveManager getInstance] getAllAVRenderViews];
   if (renderViews.count > 0) {
@@ -91,12 +96,10 @@
   }
 }
 
-- (void)onSwitchToMain:(MyTapGesture *)gesture
-{
+- (void)onSwitchToMain:(MyTapGesture *)gesture {
   NSString *codeId = gesture.codeId;
   NSDictionary *userDic = [UserViewManager decodeUser:codeId];
-  if (userDic)
-  {
+  if (userDic) {
     gesture.codeId = [UserViewManager shareInstance].mainCodeUserId;
     [[UserViewManager shareInstance] switchToMainView:codeId];
   }

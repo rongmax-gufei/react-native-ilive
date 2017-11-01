@@ -304,24 +304,23 @@
   return YES;
 }
 
-- (void)refreshViews
-{
+- (void)refreshViews {
   int index = 0;
   
   //先布局渲染视图，主视图是全屏，不用再布局了
   NSArray *renderKeys = [_renderViews allKeys];
-  for (NSString * codeId in renderKeys)
-  {
+  for (NSString * codeId in renderKeys) {
     ILiveRenderView *renderView = [_renderViews objectForKey:codeId];
     CGRect rect = [self getRect:index++];
-    NSLog(@"------>refresh rect=%@",NSStringFromCGRect(rect));
+    NSLog(@"refreshViews刷新渲染视图------>codeId=%@",  codeId);
+    NSLog(@"refreshViews刷新渲染视图------>refresh rect=%@", NSStringFromCGRect(rect));
     [renderView setFrame:rect];
   }
   
   //再布局占位符视图
   NSArray *placeholderKes = [_placeholderViews allKeys];
-  for (NSString *userId in placeholderKes)
-  {
+  for (NSString *userId in placeholderKes) {
+    NSLog(@"refreshViews布局占位符视图------>userId=%@",  userId);
     LiveCallView *callView = [_placeholderViews objectForKey:userId];
     [callView setFrame:[self getRect:index++]];
   }
