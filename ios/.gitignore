@@ -14,5 +14,8 @@ UserInterface.xcuserstate
 
 /build/
 *.bin
-*.framework
+/Frameworks/AVSDK
+/Frameworks/ILIVESDK
+/Frameworks/IMSDK
+/Frameworks/QAVEffect
 *.xcscheme
