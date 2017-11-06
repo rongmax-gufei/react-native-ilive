@@ -24,7 +24,6 @@
 #import <ILiveSDK/ILiveSpeedTestManager.h>
 #import <TILLiveSDK/TILLiveSDK.h>
 
-#import "CustomUIHeader.h"
 #import "ConstHeader.h"
 #import "ILiveConst.h"
 #import "AppDelegate.h"

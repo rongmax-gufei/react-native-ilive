@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
+// 美颜
+#import "TXCVideoPreprocessor.h"
 
 @interface RCTILive : RCTEventEmitter<RCTBridgeModule> {
   BOOL _isHost; //自己是不是主播
@@ -22,5 +24,9 @@
 //business data
 @property (nonatomic, assign) NSInteger videoCount;
 @property (nonatomic, assign) ILiveFrameDispatcher *frameDispatcher;
+
+//美颜
+@property (nonatomic, strong) TXCVideoPreprocessor *preProcessor;
+@property (nonatomic, assign) Byte  *processorBytes;
 - (void)onClose;
 @end

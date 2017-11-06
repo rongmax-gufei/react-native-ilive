@@ -20,14 +20,12 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
-		1837F10D1FAAF607005C46E6 /* UIColor+MLPFlatColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 1837F0E51FAAF607005C46E6 /* UIColor+MLPFlatColors.m */; };
-		1837F10E1FAAF607005C46E6 /* UIImage+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 1837F0E71FAAF607005C46E6 /* UIImage+Common.m */; };
-		1837F10F1FAAF607005C46E6 /* UIImage+TintColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 1837F0E91FAAF607005C46E6 /* UIImage+TintColor.m */; };
-		1837F1101FAAF607005C46E6 /* UIView+CustomAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 1837F0EB1FAAF607005C46E6 /* UIView+CustomAutoLayout.m */; };
-		1837F1111FAAF607005C46E6 /* UIView+ShakeAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 1837F0ED1FAAF607005C46E6 /* UIView+ShakeAnimation.m */; };
+		182D207C1FB00302001CB054 /* UIColor+MLPFlatColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 182D20731FB00302001CB054 /* UIColor+MLPFlatColors.m */; };
+		182D207D1FB00302001CB054 /* UIImage+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 182D20751FB00302001CB054 /* UIImage+Common.m */; };
+		182D207E1FB00302001CB054 /* UIImage+TintColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 182D20771FB00302001CB054 /* UIImage+TintColor.m */; };
+		182D207F1FB00302001CB054 /* UIView+CustomAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 182D20791FB00302001CB054 /* UIView+CustomAutoLayout.m */; };
+		182D20801FB00302001CB054 /* UIView+ShakeAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 182D207B1FB00302001CB054 /* UIView+ShakeAnimation.m */; };
 		1837F1121FAAF607005C46E6 /* libCOSClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F0F21FAAF607005C46E6 /* libCOSClient.a */; };
-		1837F1131FAAF607005C46E6 /* AlertHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = 1837F0F61FAAF607005C46E6 /* AlertHelp.m */; };
-		1837F1141FAAF607005C46E6 /* LoadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1837F0F91FAAF607005C46E6 /* LoadView.m */; };
 		1837F1151FAAF607005C46E6 /* ILiveConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 1837F0FB1FAAF607005C46E6 /* ILiveConst.m */; };
 		1837F1161FAAF607005C46E6 /* LiveCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1837F0FD1FAAF607005C46E6 /* LiveCallView.m */; };
 		1837F1171FAAF607005C46E6 /* RCTILive+Audio.m in Sources */ = {isa = PBXBuildFile; fileRef = 1837F0FF1FAAF607005C46E6 /* RCTILive+Audio.m */; };
@@ -39,9 +37,7 @@
 		1837F11D1FAAF607005C46E6 /* UserViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1837F10C1FAAF607005C46E6 /* UserViewManager.m */; };
 		1837F1201FAAF6D9005C46E6 /* LoadSDK.sh in Resources */ = {isa = PBXBuildFile; fileRef = 1837F11F1FAAF6D9005C46E6 /* LoadSDK.sh */; };
 		1837F15F1FAB02B9005C46E6 /* QAVSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F14B1FAAFC9B005C46E6 /* QAVSDK.framework */; };
-		1837F1601FAB02B9005C46E6 /* xplatform.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F14C1FAAFC9B005C46E6 /* xplatform.framework */; };
 		1837F1611FAB02C0005C46E6 /* ILiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F14E1FAAFC9B005C46E6 /* ILiveSDK.framework */; };
-		1837F1621FAB02C0005C46E6 /* TILFilterResource.bundle in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F14F1FAAFC9B005C46E6 /* TILFilterResource.bundle */; };
 		1837F1631FAB02C0005C46E6 /* TILFilterSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F1501FAAFC9B005C46E6 /* TILFilterSDK.framework */; };
 		1837F1641FAB02C0005C46E6 /* TILLiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F1511FAAFC9B005C46E6 /* TILLiveSDK.framework */; };
 		1837F1651FAB02C5005C46E6 /* IMCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F15A1FAAFC9C005C46E6 /* IMCore.framework */; };
@@ -49,6 +45,11 @@
 		1837F1671FAB02C5005C46E6 /* IMSDKBugly.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F15C1FAAFC9C005C46E6 /* IMSDKBugly.framework */; };
 		1837F1681FAB02C5005C46E6 /* QALSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F15D1FAAFC9C005C46E6 /* QALSDK.framework */; };
 		1837F1691FAB02C5005C46E6 /* TLSSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F15E1FAAFC9C005C46E6 /* TLSSDK.framework */; };
+		1837F16B1FAB382E005C46E6 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F16A1FAB382E005C46E6 /* OpenAL.framework */; };
+		1837F1D91FAC2414005C46E6 /* libTXMBasic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F1CA1FAC2414005C46E6 /* libTXMBasic.a */; };
+		1837F1DA1FAC2414005C46E6 /* libTXMRenderer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F1CB1FAC2414005C46E6 /* libTXMRenderer.a */; };
+		1837F1DB1FAC2414005C46E6 /* libTXMVideoPreprocessorBasic.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1837F1CC1FAC2414005C46E6 /* libTXMVideoPreprocessorBasic.a */; };
+		1837F1DC1FAC2414005C46E6 /* TXLiteAVVideoPreprocessorResource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1837F1CD1FAC2414005C46E6 /* TXLiteAVVideoPreprocessorResource.bundle */; };
 		18788AE11F583CB900CB3171 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 18788AE01F583CB900CB3171 /* libc++.tbd */; };
 		18788AE31F583CCB00CB3171 /* libstdc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 18788AE21F583CCB00CB3171 /* libstdc++.tbd */; };
 		18788AE51F583CD500CB3171 /* libstdc++.6.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 18788AE41F583CD500CB3171 /* libstdc++.6.tbd */; };
@@ -296,26 +297,21 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = ReactNativeILive/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = ReactNativeILive/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
-		1837F0E31FAAF607005C46E6 /* CategoryHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryHeader.h; sourceTree = "<group>"; };
-		1837F0E41FAAF607005C46E6 /* UIColor+MLPFlatColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+MLPFlatColors.h"; sourceTree = "<group>"; };
-		1837F0E51FAAF607005C46E6 /* UIColor+MLPFlatColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+MLPFlatColors.m"; sourceTree = "<group>"; };
-		1837F0E61FAAF607005C46E6 /* UIImage+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Common.h"; sourceTree = "<group>"; };
-		1837F0E71FAAF607005C46E6 /* UIImage+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Common.m"; sourceTree = "<group>"; };
-		1837F0E81FAAF607005C46E6 /* UIImage+TintColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+TintColor.h"; sourceTree = "<group>"; };
-		1837F0E91FAAF607005C46E6 /* UIImage+TintColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+TintColor.m"; sourceTree = "<group>"; };
-		1837F0EA1FAAF607005C46E6 /* UIView+CustomAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CustomAutoLayout.h"; sourceTree = "<group>"; };
-		1837F0EB1FAAF607005C46E6 /* UIView+CustomAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CustomAutoLayout.m"; sourceTree = "<group>"; };
-		1837F0EC1FAAF607005C46E6 /* UIView+ShakeAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ShakeAnimation.h"; sourceTree = "<group>"; };
-		1837F0ED1FAAF607005C46E6 /* UIView+ShakeAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ShakeAnimation.m"; sourceTree = "<group>"; };
+		182D20711FB00302001CB054 /* CategoryHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryHeader.h; sourceTree = "<group>"; };
+		182D20721FB00302001CB054 /* UIColor+MLPFlatColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+MLPFlatColors.h"; sourceTree = "<group>"; };
+		182D20731FB00302001CB054 /* UIColor+MLPFlatColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+MLPFlatColors.m"; sourceTree = "<group>"; };
+		182D20741FB00302001CB054 /* UIImage+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Common.h"; sourceTree = "<group>"; };
+		182D20751FB00302001CB054 /* UIImage+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Common.m"; sourceTree = "<group>"; };
+		182D20761FB00302001CB054 /* UIImage+TintColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+TintColor.h"; sourceTree = "<group>"; };
+		182D20771FB00302001CB054 /* UIImage+TintColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+TintColor.m"; sourceTree = "<group>"; };
+		182D20781FB00302001CB054 /* UIView+CustomAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CustomAutoLayout.h"; sourceTree = "<group>"; };
+		182D20791FB00302001CB054 /* UIView+CustomAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CustomAutoLayout.m"; sourceTree = "<group>"; };
+		182D207A1FB00302001CB054 /* UIView+ShakeAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ShakeAnimation.h"; sourceTree = "<group>"; };
+		182D207B1FB00302001CB054 /* UIView+ShakeAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ShakeAnimation.m"; sourceTree = "<group>"; };
 		1837F0EE1FAAF607005C46E6 /* ConstHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstHeader.h; sourceTree = "<group>"; };
 		1837F0F01FAAF607005C46E6 /* COSClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSClient.h; sourceTree = "<group>"; };
 		1837F0F11FAAF607005C46E6 /* COSTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSTask.h; sourceTree = "<group>"; };
 		1837F0F21FAAF607005C46E6 /* libCOSClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libCOSClient.a; sourceTree = "<group>"; };
-		1837F0F51FAAF607005C46E6 /* AlertHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertHelp.h; sourceTree = "<group>"; };
-		1837F0F61FAAF607005C46E6 /* AlertHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertHelp.m; sourceTree = "<group>"; };
-		1837F0F71FAAF607005C46E6 /* CustomUIHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomUIHeader.h; sourceTree = "<group>"; };
-		1837F0F81FAAF607005C46E6 /* LoadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadView.h; sourceTree = "<group>"; };
-		1837F0F91FAAF607005C46E6 /* LoadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadView.m; sourceTree = "<group>"; };
 		1837F0FA1FAAF607005C46E6 /* ILiveConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILiveConst.h; sourceTree = "<group>"; };
 		1837F0FB1FAAF607005C46E6 /* ILiveConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILiveConst.m; sourceTree = "<group>"; };
 		1837F0FC1FAAF607005C46E6 /* LiveCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveCallView.h; sourceTree = "<group>"; };
@@ -337,7 +333,6 @@
 		1837F10C1FAAF607005C46E6 /* UserViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserViewManager.m; sourceTree = "<group>"; };
 		1837F11F1FAAF6D9005C46E6 /* LoadSDK.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = LoadSDK.sh; sourceTree = "<group>"; };
 		1837F14B1FAAFC9B005C46E6 /* QAVSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QAVSDK.framework; sourceTree = "<group>"; };
-		1837F14C1FAAFC9B005C46E6 /* xplatform.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = xplatform.framework; sourceTree = "<group>"; };
 		1837F14E1FAAFC9B005C46E6 /* ILiveSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ILiveSDK.framework; sourceTree = "<group>"; };
 		1837F14F1FAAFC9B005C46E6 /* TILFilterResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TILFilterResource.bundle; sourceTree = "<group>"; };
 		1837F1501FAAFC9B005C46E6 /* TILFilterSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TILFilterSDK.framework; sourceTree = "<group>"; };
@@ -347,6 +342,17 @@
 		1837F15C1FAAFC9C005C46E6 /* IMSDKBugly.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = IMSDKBugly.framework; sourceTree = "<group>"; };
 		1837F15D1FAAFC9C005C46E6 /* QALSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QALSDK.framework; sourceTree = "<group>"; };
 		1837F15E1FAAFC9C005C46E6 /* TLSSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TLSSDK.framework; sourceTree = "<group>"; };
+		1837F16A1FAB382E005C46E6 /* OpenAL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenAL.framework; path = System/Library/Frameworks/OpenAL.framework; sourceTree = SDKROOT; };
+		1837F1C41FAC2414005C46E6 /* TXCRenderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXCRenderView.h; sourceTree = "<group>"; };
+		1837F1C51FAC2414005C46E6 /* TXCVideoPreprocessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXCVideoPreprocessor.h; sourceTree = "<group>"; };
+		1837F1C61FAC2414005C46E6 /* TXEVideoPreprocessorDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXEVideoPreprocessorDef.h; sourceTree = "<group>"; };
+		1837F1C71FAC2414005C46E6 /* TXEVideoTypeDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXEVideoTypeDef.h; sourceTree = "<group>"; };
+		1837F1C81FAC2414005C46E6 /* TXINotifyDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXINotifyDelegate.h; sourceTree = "<group>"; };
+		1837F1C91FAC2414005C46E6 /* TXIVideoPreprocessorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TXIVideoPreprocessorDelegate.h; sourceTree = "<group>"; };
+		1837F1CA1FAC2414005C46E6 /* libTXMBasic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTXMBasic.a; sourceTree = "<group>"; };
+		1837F1CB1FAC2414005C46E6 /* libTXMRenderer.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTXMRenderer.a; sourceTree = "<group>"; };
+		1837F1CC1FAC2414005C46E6 /* libTXMVideoPreprocessorBasic.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTXMVideoPreprocessorBasic.a; sourceTree = "<group>"; };
+		1837F1CD1FAC2414005C46E6 /* TXLiteAVVideoPreprocessorResource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TXLiteAVVideoPreprocessorResource.bundle; sourceTree = "<group>"; };
 		18788AE01F583CB900CB3171 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		18788AE21F583CCB00CB3171 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		18788AE41F583CD500CB3171 /* libstdc++.6.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.6.tbd"; path = "usr/lib/libstdc++.6.tbd"; sourceTree = SDKROOT; };
@@ -377,17 +383,17 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1837F1DB1FAC2414005C46E6 /* libTXMVideoPreprocessorBasic.a in Frameworks */,
+				1837F16B1FAB382E005C46E6 /* OpenAL.framework in Frameworks */,
 				1837F1651FAB02C5005C46E6 /* IMCore.framework in Frameworks */,
 				1837F1661FAB02C5005C46E6 /* ImSDK.framework in Frameworks */,
 				1837F1671FAB02C5005C46E6 /* IMSDKBugly.framework in Frameworks */,
 				1837F1681FAB02C5005C46E6 /* QALSDK.framework in Frameworks */,
 				1837F1691FAB02C5005C46E6 /* TLSSDK.framework in Frameworks */,
 				1837F1611FAB02C0005C46E6 /* ILiveSDK.framework in Frameworks */,
-				1837F1621FAB02C0005C46E6 /* TILFilterResource.bundle in Frameworks */,
 				1837F1631FAB02C0005C46E6 /* TILFilterSDK.framework in Frameworks */,
 				1837F1641FAB02C0005C46E6 /* TILLiveSDK.framework in Frameworks */,
 				1837F15F1FAB02B9005C46E6 /* QAVSDK.framework in Frameworks */,
-				1837F1601FAB02B9005C46E6 /* xplatform.framework in Frameworks */,
 				18B49E851F5981290009EF9D /* AssetsLibrary.framework in Frameworks */,
 				18788B051F583D7700CB3171 /* SystemConfiguration.framework in Frameworks */,
 				18788B031F583D6D00CB3171 /* CoreTelephony.framework in Frameworks */,
@@ -397,6 +403,7 @@
 				18788AFB1F583D4A00CB3171 /* Foundation.framework in Frameworks */,
 				18788AF91F583D3C00CB3171 /* Accelerate.framework in Frameworks */,
 				18788AF71F583D2F00CB3171 /* CoreMedia.framework in Frameworks */,
+				1837F1D91FAC2414005C46E6 /* libTXMBasic.a in Frameworks */,
 				18788AF51F583D2700CB3171 /* CoreVideo.framework in Frameworks */,
 				18788AF31F583D1E00CB3171 /* UIKit.framework in Frameworks */,
 				18788AF11F583D1400CB3171 /* libprotobuf.tbd in Frameworks */,
@@ -419,6 +426,7 @@
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
+				1837F1DA1FAC2414005C46E6 /* libTXMRenderer.a in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -521,53 +529,84 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		1837F0E11FAAF607005C46E6 /* RCTILive */ = {
+		182D20511FB0017A001CB054 /* Util */ = {
 			isa = PBXGroup;
 			children = (
-				1837F0E21FAAF607005C46E6 /* Category */,
 				1837F0EE1FAAF607005C46E6 /* ConstHeader.h */,
-				1837F0EF1FAAF607005C46E6 /* COS_SDK */,
-				1837F0F31FAAF607005C46E6 /* CustomUI */,
 				1837F0FA1FAAF607005C46E6 /* ILiveConst.h */,
 				1837F0FB1FAAF607005C46E6 /* ILiveConst.m */,
+				1837F10A1FAAF607005C46E6 /* TILLiveSDKShow-Prefix.pch */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		182D206F1FB0020A001CB054 /* TableCell */ = {
+			isa = PBXGroup;
+			children = (
 				1837F0FC1FAAF607005C46E6 /* LiveCallView.h */,
 				1837F0FD1FAAF607005C46E6 /* LiveCallView.m */,
+			);
+			path = TableCell;
+			sourceTree = "<group>";
+		};
+		182D20701FB00302001CB054 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				182D20711FB00302001CB054 /* CategoryHeader.h */,
+				182D20721FB00302001CB054 /* UIColor+MLPFlatColors.h */,
+				182D20731FB00302001CB054 /* UIColor+MLPFlatColors.m */,
+				182D20741FB00302001CB054 /* UIImage+Common.h */,
+				182D20751FB00302001CB054 /* UIImage+Common.m */,
+				182D20761FB00302001CB054 /* UIImage+TintColor.h */,
+				182D20771FB00302001CB054 /* UIImage+TintColor.m */,
+				182D20781FB00302001CB054 /* UIView+CustomAutoLayout.h */,
+				182D20791FB00302001CB054 /* UIView+CustomAutoLayout.m */,
+				182D207A1FB00302001CB054 /* UIView+ShakeAnimation.h */,
+				182D207B1FB00302001CB054 /* UIView+ShakeAnimation.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		182D20811FB00315001CB054 /* ILIve */ = {
+			isa = PBXGroup;
+			children = (
+				1837F1041FAAF607005C46E6 /* RCTILive.h */,
+				1837F1051FAAF607005C46E6 /* RCTILive.m */,
 				1837F0FE1FAAF607005C46E6 /* RCTILive+Audio.h */,
 				1837F0FF1FAAF607005C46E6 /* RCTILive+Audio.m */,
 				1837F1001FAAF607005C46E6 /* RCTILive+AVListener.h */,
 				1837F1011FAAF607005C46E6 /* RCTILive+AVListener.m */,
 				1837F1021FAAF607005C46E6 /* RCTILive+ImListener.h */,
 				1837F1031FAAF607005C46E6 /* RCTILive+ImListener.m */,
-				1837F1041FAAF607005C46E6 /* RCTILive.h */,
-				1837F1051FAAF607005C46E6 /* RCTILive.m */,
+				1837F10B1FAAF607005C46E6 /* UserViewManager.h */,
+				1837F10C1FAAF607005C46E6 /* UserViewManager.m */,
+			);
+			path = ILIve;
+			sourceTree = "<group>";
+		};
+		182D20821FB00393001CB054 /* RCTModule */ = {
+			isa = PBXGroup;
+			children = (
 				1837F1061FAAF607005C46E6 /* RCTILiveVideoView.h */,
 				1837F1071FAAF607005C46E6 /* RCTILiveVideoView.m */,
 				1837F1081FAAF607005C46E6 /* RCTILiveViewManager.h */,
 				1837F1091FAAF607005C46E6 /* RCTILiveViewManager.m */,
-				1837F10A1FAAF607005C46E6 /* TILLiveSDKShow-Prefix.pch */,
-				1837F10B1FAAF607005C46E6 /* UserViewManager.h */,
-				1837F10C1FAAF607005C46E6 /* UserViewManager.m */,
+			);
+			path = RCTModule;
+			sourceTree = "<group>";
+		};
+		1837F0E11FAAF607005C46E6 /* RCTILive */ = {
+			isa = PBXGroup;
+			children = (
+				182D20821FB00393001CB054 /* RCTModule */,
+				182D20811FB00315001CB054 /* ILIve */,
+				182D20701FB00302001CB054 /* Category */,
+				182D206F1FB0020A001CB054 /* TableCell */,
+				182D20511FB0017A001CB054 /* Util */,
+				1837F0EF1FAAF607005C46E6 /* COS_SDK */,
 			);
 			name = RCTILive;
 			path = ReactNativeILive/RCTILive;
-			sourceTree = "<group>";
-		};
-		1837F0E21FAAF607005C46E6 /* Category */ = {
-			isa = PBXGroup;
-			children = (
-				1837F0E31FAAF607005C46E6 /* CategoryHeader.h */,
-				1837F0E41FAAF607005C46E6 /* UIColor+MLPFlatColors.h */,
-				1837F0E51FAAF607005C46E6 /* UIColor+MLPFlatColors.m */,
-				1837F0E61FAAF607005C46E6 /* UIImage+Common.h */,
-				1837F0E71FAAF607005C46E6 /* UIImage+Common.m */,
-				1837F0E81FAAF607005C46E6 /* UIImage+TintColor.h */,
-				1837F0E91FAAF607005C46E6 /* UIImage+TintColor.m */,
-				1837F0EA1FAAF607005C46E6 /* UIView+CustomAutoLayout.h */,
-				1837F0EB1FAAF607005C46E6 /* UIView+CustomAutoLayout.m */,
-				1837F0EC1FAAF607005C46E6 /* UIView+ShakeAnimation.h */,
-				1837F0ED1FAAF607005C46E6 /* UIView+ShakeAnimation.m */,
-			);
-			path = Category;
 			sourceTree = "<group>";
 		};
 		1837F0EF1FAAF607005C46E6 /* COS_SDK */ = {
@@ -580,29 +619,10 @@
 			path = COS_SDK;
 			sourceTree = "<group>";
 		};
-		1837F0F31FAAF607005C46E6 /* CustomUI */ = {
-			isa = PBXGroup;
-			children = (
-				1837F0F41FAAF607005C46E6 /* AlertHelp */,
-				1837F0F71FAAF607005C46E6 /* CustomUIHeader.h */,
-				1837F0F81FAAF607005C46E6 /* LoadView.h */,
-				1837F0F91FAAF607005C46E6 /* LoadView.m */,
-			);
-			path = CustomUI;
-			sourceTree = "<group>";
-		};
-		1837F0F41FAAF607005C46E6 /* AlertHelp */ = {
-			isa = PBXGroup;
-			children = (
-				1837F0F51FAAF607005C46E6 /* AlertHelp.h */,
-				1837F0F61FAAF607005C46E6 /* AlertHelp.m */,
-			);
-			path = AlertHelp;
-			sourceTree = "<group>";
-		};
 		1837F11E1FAAF6D9005C46E6 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1837F1AC1FAC2414005C46E6 /* TXMVideoPreprocessor */,
 				1837F14A1FAAFC9B005C46E6 /* AVSDK */,
 				1837F14D1FAAFC9B005C46E6 /* ILiveSDK */,
 				1837F1591FAAFC9C005C46E6 /* IMSDK */,
@@ -615,7 +635,6 @@
 			isa = PBXGroup;
 			children = (
 				1837F14B1FAAFC9B005C46E6 /* QAVSDK.framework */,
-				1837F14C1FAAFC9B005C46E6 /* xplatform.framework */,
 			);
 			path = AVSDK;
 			sourceTree = "<group>";
@@ -643,9 +662,43 @@
 			path = IMSDK;
 			sourceTree = "<group>";
 		};
+		1837F1AC1FAC2414005C46E6 /* TXMVideoPreprocessor */ = {
+			isa = PBXGroup;
+			children = (
+				1837F1C21FAC2414005C46E6 /* basic */,
+			);
+			path = TXMVideoPreprocessor;
+			sourceTree = "<group>";
+		};
+		1837F1C21FAC2414005C46E6 /* basic */ = {
+			isa = PBXGroup;
+			children = (
+				1837F1C31FAC2414005C46E6 /* include */,
+				1837F1CA1FAC2414005C46E6 /* libTXMBasic.a */,
+				1837F1CB1FAC2414005C46E6 /* libTXMRenderer.a */,
+				1837F1CC1FAC2414005C46E6 /* libTXMVideoPreprocessorBasic.a */,
+				1837F1CD1FAC2414005C46E6 /* TXLiteAVVideoPreprocessorResource.bundle */,
+			);
+			path = basic;
+			sourceTree = "<group>";
+		};
+		1837F1C31FAC2414005C46E6 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				1837F1C41FAC2414005C46E6 /* TXCRenderView.h */,
+				1837F1C51FAC2414005C46E6 /* TXCVideoPreprocessor.h */,
+				1837F1C61FAC2414005C46E6 /* TXEVideoPreprocessorDef.h */,
+				1837F1C71FAC2414005C46E6 /* TXEVideoTypeDef.h */,
+				1837F1C81FAC2414005C46E6 /* TXINotifyDelegate.h */,
+				1837F1C91FAC2414005C46E6 /* TXIVideoPreprocessorDelegate.h */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
 		18788AA41F58325D00CB3171 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				1837F16A1FAB382E005C46E6 /* OpenAL.framework */,
 				18B49E841F5981290009EF9D /* AssetsLibrary.framework */,
 				18788B041F583D7700CB3171 /* SystemConfiguration.framework */,
 				18788B021F583D6D00CB3171 /* CoreTelephony.framework */,
@@ -1045,6 +1098,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1837F1DC1FAC2414005C46E6 /* TXLiteAVVideoPreprocessorResource.bundle in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				1837F1201FAAF6D9005C46E6 /* LoadSDK.sh in Resources */,
@@ -1075,24 +1129,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1837F1141FAAF607005C46E6 /* LoadView.m in Sources */,
+				182D207D1FB00302001CB054 /* UIImage+Common.m in Sources */,
+				182D207F1FB00302001CB054 /* UIView+CustomAutoLayout.m in Sources */,
 				1837F11D1FAAF607005C46E6 /* UserViewManager.m in Sources */,
 				1837F11A1FAAF607005C46E6 /* RCTILive.m in Sources */,
 				1837F11B1FAAF607005C46E6 /* RCTILiveVideoView.m in Sources */,
-				1837F1111FAAF607005C46E6 /* UIView+ShakeAnimation.m in Sources */,
 				1837F1171FAAF607005C46E6 /* RCTILive+Audio.m in Sources */,
-				1837F10E1FAAF607005C46E6 /* UIImage+Common.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				1837F11C1FAAF607005C46E6 /* RCTILiveViewManager.m in Sources */,
-				1837F1101FAAF607005C46E6 /* UIView+CustomAutoLayout.m in Sources */,
+				182D207E1FB00302001CB054 /* UIImage+TintColor.m in Sources */,
 				1837F1181FAAF607005C46E6 /* RCTILive+AVListener.m in Sources */,
 				1837F1191FAAF607005C46E6 /* RCTILive+ImListener.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
-				1837F10D1FAAF607005C46E6 /* UIColor+MLPFlatColors.m in Sources */,
+				182D207C1FB00302001CB054 /* UIColor+MLPFlatColors.m in Sources */,
+				182D20801FB00302001CB054 /* UIView+ShakeAnimation.m in Sources */,
 				1837F1161FAAF607005C46E6 /* LiveCallView.m in Sources */,
 				1837F1151FAAF607005C46E6 /* ILiveConst.m in Sources */,
-				1837F10F1FAAF607005C46E6 /* UIImage+TintColor.m in Sources */,
-				1837F1131FAAF607005C46E6 /* AlertHelp.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1121,27 +1173,23 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Frameworks/AVSDK\"",
-					"\"$(SRCROOT)/Frameworks/ILiveSDK\"",
-					"\"$(SRCROOT)/Frameworks/IMSDK\"",
 					"$(PROJECT_DIR)/Frameworks/AVSDK",
 					"$(PROJECT_DIR)/Frameworks/ILiveSDK",
 					"$(PROJECT_DIR)/Frameworks/IMSDK",
+					"$(PROJECT_DIR)/Frameworks/TXMVideoPreprocessor/advance/Pitu",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ReactNativeILive/RCTILive/TILLiveSDKShow-Prefix.pch";
+				GCC_PREFIX_HEADER = "ReactNativeILive/RCTILive/Util/TILLiveSDKShow-Prefix.pch";
 				INFOPLIST_FILE = ReactNativeILive/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ReactNativeILive/RCTILive/COS_SDK",
+					"$(PROJECT_DIR)/Frameworks/TXMVideoPreprocessor/basic",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-lc++",
-				);
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.learnta.ilive;
 				PRODUCT_NAME = ReactNativeILive;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1157,27 +1205,23 @@
 				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/Frameworks/AVSDK\"",
-					"\"$(SRCROOT)/Frameworks/ILiveSDK\"",
-					"\"$(SRCROOT)/Frameworks/IMSDK\"",
 					"$(PROJECT_DIR)/Frameworks/AVSDK",
 					"$(PROJECT_DIR)/Frameworks/ILiveSDK",
 					"$(PROJECT_DIR)/Frameworks/IMSDK",
+					"$(PROJECT_DIR)/Frameworks/TXMVideoPreprocessor/advance/Pitu",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "ReactNativeILive/RCTILive/TILLiveSDKShow-Prefix.pch";
+				GCC_PREFIX_HEADER = "ReactNativeILive/RCTILive/Util/TILLiveSDKShow-Prefix.pch";
 				INFOPLIST_FILE = ReactNativeILive/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ReactNativeILive/RCTILive/COS_SDK",
+					"$(PROJECT_DIR)/Frameworks/TXMVideoPreprocessor/basic",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-lc++",
-				);
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.learnta.ilive;
 				PRODUCT_NAME = ReactNativeILive;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1203,6 +1247,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_BITCODE = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
@@ -1221,7 +1266,12 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				SDKROOT = iphoneos;
+				VALID_ARCHS = "armv7 arm64 armv7s";
 			};
 			name = Debug;
 		};
@@ -1244,6 +1294,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				ENABLE_BITCODE = NO;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
@@ -1255,8 +1306,14 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+				);
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "armv7 arm64 armv7s";
 			};
 			name = Release;
 		};

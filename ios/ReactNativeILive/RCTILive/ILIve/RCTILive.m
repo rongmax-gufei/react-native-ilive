@@ -17,7 +17,7 @@
 #import <React/RCTUIManager.h>
 #import <React/RCTView.h>
 
-@interface RCTILive ()<QAVLocalVideoDelegate, ILiveRoomDisconnectListener, RPPreviewViewControllerDelegate>
+@interface RCTILive ()<QAVLocalVideoDelegate, ILiveRoomDisconnectListener, RPPreviewViewControllerDelegate, TXIVideoPreprocessorDelegate>
 @end
 
 @implementation RCTILive
@@ -74,6 +74,11 @@ RCT_EXPORT_METHOD(doAVListener) {
   [manager setAVListener:self];
   // 消息监听
   [manager setIMListener:self];
+  //创建变量
+  self.preProcessor = [[TXCVideoPreprocessor alloc] init];
+  [self.preProcessor setDelegate:self];
+  // 进房前设置数据帧回调
+  [[ILiveRoomManager getInstance] setLocalVideoDelegate:self];
   // 注册全局消息回调（主播主动退出房间、取消连麦）
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onGotupDelete:) name:kGroupDelete_Notification object:nil];
   [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(connectVideoCancel:) name:kCancelConnect_Notification object:nil];
@@ -266,10 +271,13 @@ RCT_EXPORT_METHOD(startScreenRecord) {
   if ([RPScreenRecorder sharedRecorder].available) {
      [self commentEvent:@"onStartScreenRecord" code:kSuccess msg:@"已经开始录制屏幕"];
     //如果支持，就使用下面的方法可以启动录制回放
-    [[RPScreenRecorder sharedRecorder] startRecordingWithMicrophoneEnabled:YES handler:^(NSError * _Nullable error) {
-      //处理发生的错误，如设用户权限原因无法开始录制等
+    [[RPScreenRecorder sharedRecorder] startRecordingWithHandler:^(NSError * _Nullable error) {
       [self commentEvent:@"onStartScreenRecord" code:kSuccess msg:error.localizedDescription];
     }];
+//    [[RPScreenRecorder sharedRecorder] startRecordingWithMicrophoneEnabled:YES handler:^(NSError * _Nullable error) {
+//      //处理发生的错误，如设用户权限原因无法开始录制等
+//      [self commentEvent:@"onStartScreenRecord" code:kSuccess msg:error.localizedDescription];
+//    }];
   } else {
     [self commentEvent:@"onStartScreenRecord" code:kSuccess msg:@"录制回放功能不可用"];
   }
@@ -362,6 +370,21 @@ RCT_EXPORT_METHOD(destroy) {
 }
 
 - (void)OnLocalVideoPreProcess:(QAVVideoFrame *)frameData {
+  //设置美颜、美白、红润等参数
+  [self.preProcessor setBeautyLevel:5];
+  [self.preProcessor setRuddinessLevel:8];
+  [self.preProcessor setWhitenessLevel:8];
+  [self.preProcessor setOutputSize:CGSizeMake(frameData.frameDesc.width, frameData.frameDesc.height)];
+  //开始预处理
+  [self.preProcessor processFrame:frameData.data width:frameData.frameDesc.width height:frameData.frameDesc.height orientation:TXE_ROTATION_0 inputFormat:TXE_FRAME_FORMAT_NV12 outputFormat:TXE_FRAME_FORMAT_NV12];
+  //将处理完的数据拷贝到原来的地址空间，如果是同步处理，此时会先执行（4）
+  if (self.processorBytes) {
+    memcpy(frameData.data, self.processorBytes, frameData.frameDesc.width * frameData.frameDesc.height * 3 / 2);
+  }
+}
+
+- (void)didProcessFrame:(Byte *)bytes width:(NSInteger)width height:(NSInteger)height format:(TXEFrameFormat)format timeStamp:(UInt64)timeStamp {
+  self.processorBytes = bytes;
 }
 
 - (void)OnLocalVideoRawSampleBuf:(CMSampleBufferRef)buf result:(CMSampleBufferRef *)ret {
