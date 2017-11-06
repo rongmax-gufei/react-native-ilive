@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.projection.MediaProjectionManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -27,6 +28,7 @@ import com.tencent.av.TIMAvManager;
 import com.tencent.av.opengl.ui.GLView;
 import com.tencent.av.sdk.AVAudioCtrl;
 import com.tencent.av.sdk.AVRoomMulti;
+import com.tencent.av.sdk.AVVideoCtrl;
 import com.tencent.av.sdk.AVView;
 import com.tencent.ilivesdk.ILiveCallBack;
 import com.tencent.ilivesdk.ILiveConstants;
@@ -37,6 +39,8 @@ import com.tencent.ilivesdk.core.ILiveRoomManager;
 import com.tencent.ilivesdk.core.ILiveRoomOption;
 import com.tencent.ilivesdk.view.AVRootView;
 import com.tencent.ilivesdk.view.AVVideoView;
+import com.tencent.liteav.basic.enums.TXEFrameFormat;
+import com.tencent.liteav.beauty.TXCVideoPreprocessor;
 import com.tencent.livesdk.ILVChangeRoleRes;
 import com.tencent.livesdk.ILVCustomCmd;
 import com.tencent.livesdk.ILVLiveConstants;
@@ -45,10 +49,10 @@ import com.tencent.livesdk.ILVLiveRoomOption;
 import com.tencent.livesdk.ILVText;
 import com.tencent.qcloud.R;
 import com.tencent.qcloud.interfacev1.IRtcEngineEventHandler;
+import com.tencent.qcloud.screenrecorder.ScreenRecordService;
 import com.tencent.qcloud.utils.Constants;
 import com.tencent.qcloud.utils.LogConstants;
 import com.tencent.qcloud.utils.MessageEvent;
-import com.tencent.qcloud.screenrecorder.ScreenRecordService;
 import com.tencent.qcloud.utils.SxbLog;
 
 import org.json.JSONObject;
@@ -83,6 +87,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     private IRtcEngineEventHandler rtcEventHandler;
 
     private AVRootView rootView;
+    private TXCVideoPreprocessor mTxcFilter;
 
     private String loginId;
     private String hostId;
@@ -125,6 +130,15 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
      */
     public void addObserver() {
         MessageEvent.getInstance().addObserver(this);
+        boolean bGLContext = false;     // 在 AVSDk 场景下，设置当前为无 OpenGL 环境
+        mTxcFilter = new TXCVideoPreprocessor(activity, bGLContext);
+        // 根据自己的需要，在适当的地方设置参数
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            mTxcFilter.setBeautyStyle(0);           // 设置美颜风格，0: 光滑 1: 自然 2: 朦胧
+            mTxcFilter.setBeautyLevel(5);           // 设置美颜级别,范围 0～10
+            mTxcFilter.setWhitenessLevel(8);        // 设置美白级别,范围 0～10
+            mTxcFilter.setRuddyLevel(8);            // 设置红润级别,范围 0～10
+        }
     }
 
     /**
@@ -227,6 +241,16 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
             @Override
             public void onSuccess(Object data) {
                 rootView.getViewByIndex(0).setVisibility(GLView.VISIBLE);
+                boolean bRet = ILiveSDK.getInstance().getAvVideoCtrl().setLocalVideoPreProcessCallback(new AVVideoCtrl.LocalVideoPreProcessCallback(){
+                    @Override
+                    public void onFrameReceive(AVVideoCtrl.VideoFrame var1) {
+                        // 回调的数据，传递给 ilivefilter processFrame 接口处理;
+                        // avsdk回调函数，默认为 I420 格式
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                            mTxcFilter.processFrame(var1.data, var1.width, var1.height, var1.rotate, TXEFrameFormat.I420, TXEFrameFormat.I420);
+                        }
+                    }
+                });
                 rtcEventHandler.onCreateRoom(SUCCESS_CODE, "创建房间成功");
             }
 
@@ -322,6 +346,10 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
             // 观众退出直播间
             cancelMemberView(hostId);
         }
+        // 取消 AVSDK 相机数据回调（参数传null）
+        boolean bRet = ILiveSDK.getInstance().getAvVideoCtrl().setLocalVideoPreProcessCallback(null);
+        // 退出房间后，一定要销毁filter 资源；否则下次进入房间，setFilter将不生效或其他异常
+        mTxcFilter.release();
     }
 
     /**
@@ -769,8 +797,8 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_CODE) {
-            if(resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == Activity.RESULT_OK) {
                 // 获得权限，启动Service开始录制
                 Intent service = new Intent(activity, ScreenRecordService.class);
                 service.putExtra("code", resultCode);
