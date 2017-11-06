@@ -68,7 +68,8 @@
 * 将ios/RCTILive拷贝到自己项目中
 
 * 运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，仅保留AVSDK、ILiveSDK、IMSDK三个文件夹（！！多余的文件/文件夹删除）
-
+* 下载美颜插件：http://dldir1.qq.com/hudongzhibo/ILiveSDK/TXMVideoPreprocessor_3.3.0.zip
+  解压至ios/RCTILive/Frameworks/文件夹下，保留basic文件夹（基础美颜，免费），删除advance文件夹（高级美颜需付费）。
 * 修改工程配置
 
   *  将下载好的SDK复制到工程目录下，工程目录右键，Add Files to " you projectname"
@@ -102,6 +103,7 @@
     *  CoreGraphics.framework
     *  CoreTelephony.framework
     *  SystemConfiguration.framework
+    *  OpenAL.framework
 
 * 点击项目->TARGETS/Build Settings/Prefix Header->添加your_projectname/RCTILive/TILLiveSDKShow-Prefix.pch
 
