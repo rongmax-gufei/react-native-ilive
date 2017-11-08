@@ -122,6 +122,23 @@ RCT_EXPORT_METHOD(joinRoom:(NSString *)hostId roomId:(int)roomId userRole:(int)u
 }
 
 /**
+ * 切换角色
+ * 请确保在腾讯云SPEAR上已配置该角色
+ * @param quality
+ *  1、画质，主播："HD"、"SD"、"LD"
+ *  2、连麦观众："HDGuest"、"SDGuest"、"LDGuest"
+ *  3、普通观众：清晰"Guest"、流畅"Guest2"
+ */
+RCT_EXPORT_METHOD(changeRole:(NSString *)quality) {
+  ILiveRoomManager *manager = [ILiveRoomManager getInstance];
+  [manager changeRole:quality succ:^ {
+    [self commentEvent:@"onChangeRole" code:kSuccess  msg:@"角色改变成功"];
+  } failed:^(NSString *module, int errId, NSString *errMsg) {
+    [self commentEvent:@"onChangeRole" code:errId  msg:errMsg];
+  }];
+}
+
+/**
  * 退出房间
  * 主播退出房间时，则发通知给群主成员
  */

@@ -19,4 +19,5 @@ public interface IRtcEngineEventHandler {
     void onToggleMic(String code, String msg);
     void onUpVideo(String code, String msg);
     void onDownVideo(String code, String msg);
+    void onChangeRole(String code, String msg);
 }

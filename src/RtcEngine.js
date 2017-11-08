@@ -27,6 +27,10 @@ export default {
     iLiveLogout() {
         ILive.iLiveLogout();
     },
+    // 添加互动直播监听器
+    iLiveSetAVListener() {
+        ILive.doAVListener();
+    },
     // 创建房间,画质"HD"、"SD"、"LD"
     iLiveCreateRoom(hostId, roomId, quality) {
         ILive.createRoom(hostId, roomId, quality);
@@ -39,9 +43,9 @@ export default {
     iLiveLeaveRoom() {
         ILive.leaveRoom();
     },
-    // 添加互动直播监听器
-    iLiveSetAVListener() {
-        ILive.doAVListener();
+    // 切换角色，确保腾讯后台SPEAR配置过此角色
+    iLiveChangeRole(quality) {
+        ILive.changeRole(quality);
     },
     // 上麦
     iLiveUpVideo(uid) {

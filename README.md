@@ -182,6 +182,10 @@ RtcEngine.eventEmitter({
     onExitRoom: (data) => {
         console.log(data);
     },
+    // 切换角色
+    onChangeRole: (data) => {
+        console.log(data);
+    },
     // 上麦
     onUpVideo: (data) => {
         console.log(data);

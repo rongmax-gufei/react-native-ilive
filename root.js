@@ -53,9 +53,9 @@ export default class ReactNativeILive extends Component {
                 // TLS登录成功
                 if (result) {
                     // 自己创建直播间 hostId=自己的id,roomNum=自己的房间号,清晰度（HD、SD、LD）
-                    // 加入别人的房间 hostId=主播的id,roomNum=主播的房间号,userRole=0,清晰度（Guest、Guest2）
-                    RtcEngine.iLiveCreateRoom('learnta111', 679997, 'HD');
-                    // RtcEngine.iLiveJoinRoom('learnta111', 679997, 0, 'Guest');
+                    // 加入别人的房间 hostId=主播的id,roomNum=主播的房间号,userRole=0(1:主播、0:观众),清晰度（Guest、Guest2）
+                    // RtcEngine.iLiveCreateRoom('learnta111', 779999, 'HD');
+                    RtcEngine.iLiveJoinRoom('learnta111', 779999, 0, 'Guest');
                 }
             },
             onLogoutTLS: (data) => {
@@ -75,6 +75,10 @@ export default class ReactNativeILive extends Component {
             },
             // 退出房间
             onExitRoom: (data) => {
+                console.log(data);
+            },
+            // 切换角色
+            onChangeRole: (data) => {
                 console.log(data);
             },
             // 上麦
@@ -140,6 +144,11 @@ export default class ReactNativeILive extends Component {
         RtcEngine.removeEmitter();
     };
 
+    handlerChangeRole(role) {
+      console.log('handlerChangeRole');
+      RtcEngine.iLiveChangeRole(role);
+    };
+
     handlerUpVideo(uid) {
         console.log('handlerUpVideo');
         RtcEngine.iLiveUpVideo(uid);
@@ -187,7 +196,7 @@ export default class ReactNativeILive extends Component {
             return (
                 <View style={styles.container}>
                     <ILiveView ref="liveView" style={styles.localView} showVideoView={true}/>
-                    {/*<View style={styles.absView}>*/}
+                    <View style={styles.absView}>
                         <View>
                             <VideoOperateButton
                                 style={{alignSelf: 'center'}}
@@ -206,7 +215,7 @@ export default class ReactNativeILive extends Component {
                                 </TouchableHighlight>
                             </View>
                         </View>
-                    {/*</View>*/}
+                    </View>
                 </View>
             );
     }

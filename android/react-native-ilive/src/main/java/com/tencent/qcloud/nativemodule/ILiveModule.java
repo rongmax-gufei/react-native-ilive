@@ -288,6 +288,20 @@ public class ILiveModule extends ReactContextBaseJavaModule {
                 }
             });
         }
+
+        @Override
+        public void onChangeRole(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onChangeRole");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
     };
 
     /**
@@ -353,6 +367,16 @@ public class ILiveModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 ILiveManager.getInstance().joinRoom(hostId, roomId, userRole, quality);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void changeRole(final String role) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().changeRole(role);
             }
         });
     }

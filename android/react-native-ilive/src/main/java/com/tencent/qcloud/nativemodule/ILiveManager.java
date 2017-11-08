@@ -241,7 +241,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
             @Override
             public void onSuccess(Object data) {
                 rootView.getViewByIndex(0).setVisibility(GLView.VISIBLE);
-                boolean bRet = ILiveSDK.getInstance().getAvVideoCtrl().setLocalVideoPreProcessCallback(new AVVideoCtrl.LocalVideoPreProcessCallback(){
+                boolean bRet = ILiveSDK.getInstance().getAvVideoCtrl().setLocalVideoPreProcessCallback(new AVVideoCtrl.LocalVideoPreProcessCallback() {
                     @Override
                     public void onFrameReceive(AVVideoCtrl.VideoFrame var1) {
                         // 回调的数据，传递给 ilivefilter processFrame 接口处理;
@@ -774,12 +774,16 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
         ILiveRoomManager.getInstance().changeRole(role, new ILiveCallBack() {
             @Override
             public void onSuccess(Object data) {
-                SxbLog.d(TAG, "change " + role + " success !!");
+                String message = "change " + role + " success !";
+                SxbLog.d(TAG, message);
+                rtcEventHandler.onChangeRole(SUCCESS_CODE, message);
             }
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
-                SxbLog.d(TAG, "change " + role + "   failed  : " + errCode + " msg " + errMsg);
+                String message = "change " + role + "   failed  : " + errCode + " msg " + errMsg;
+                SxbLog.d(TAG, message);
+                rtcEventHandler.onChangeRole(SUCCESS_CODE, message);
             }
         });
     }
