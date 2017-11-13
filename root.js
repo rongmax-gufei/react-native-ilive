@@ -73,10 +73,6 @@ export default class ReactNativeILive extends Component {
             onLeaveRoom: (data) => {
                 console.log(data);
             },
-            // 退出房间
-            onExitRoom: (data) => {
-                console.log(data);
-            },
             // 切换角色
             onChangeRole: (data) => {
                 console.log(data);

@@ -430,9 +430,9 @@ RCT_EXPORT_METHOD(destroy) {
  */
 - (void)onClose {
   [[TILLiveManager getInstance] quitRoom:^{
-    [self commentEvent:@"onExitRoom" code:kSuccess msg:@"退出房间成功"];
+    [self commentEvent:@"onLeaveRoom" code:kSuccess msg:@"退出房间成功"];
   } failed:^(NSString *module, int errId, NSString *errMsg) {
-    [self commentEvent:@"onExitRoom" code:errId msg:errMsg];
+    [self commentEvent:@"onLeaveRoom" code:errId msg:errMsg];
   }];
   [[UserViewManager shareInstance] releaseManager];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kCancelConnect_Notification object:nil];
