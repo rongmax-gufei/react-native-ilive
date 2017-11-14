@@ -148,38 +148,36 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
      */
     public SurfaceView getVideoView() {
         //TODO 获取渲染层
-        if (null == rootView) {
-            rootView = new AVRootView(context);
-            //TODO 设置渲染层
-            ILVLiveManager.getInstance().setAvVideoView(rootView);
-            rootView.setGravity(AVRootView.LAYOUT_GRAVITY_RIGHT);
-            rootView.setSubCreatedListener(new AVRootView.onSubViewCreatedListener() {
-                @Override
-                public void onSubViewCreated() {
-                    for (int i = 1; i < ILiveConstants.MAX_AV_VIDEO_NUM; i++) {
-                        final int index = i;
-                        AVVideoView avVideoView = rootView.getViewByIndex(index);
-                        avVideoView.setRotate(false);
-                        avVideoView.setGestureListener(new GestureDetector.SimpleOnGestureListener() {
-                            @Override
-                            public boolean onSingleTapConfirmed(MotionEvent e) {
-                                rootView.swapVideoView(0, index);
-                                hostId = rootView.getViewByIndex(0).getIdentifier();
-                                return super.onSingleTapConfirmed(e);
-                            }
-                        });
-                    }
-
-                    rootView.getViewByIndex(0).setRotate(false);
-                    rootView.getViewByIndex(0).setGestureListener(new GestureDetector.SimpleOnGestureListener() {
+        rootView = new AVRootView(context);
+        //TODO 设置渲染层
+        ILVLiveManager.getInstance().setAvVideoView(rootView);
+        rootView.setGravity(AVRootView.LAYOUT_GRAVITY_RIGHT);
+        rootView.setSubCreatedListener(new AVRootView.onSubViewCreatedListener() {
+            @Override
+            public void onSubViewCreated() {
+                for (int i = 1; i < ILiveConstants.MAX_AV_VIDEO_NUM; i++) {
+                    final int index = i;
+                    AVVideoView avVideoView = rootView.getViewByIndex(index);
+                    avVideoView.setRotate(false);
+                    avVideoView.setGestureListener(new GestureDetector.SimpleOnGestureListener() {
                         @Override
-                        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-                            return false;
+                        public boolean onSingleTapConfirmed(MotionEvent e) {
+                            rootView.swapVideoView(0, index);
+                            hostId = rootView.getViewByIndex(0).getIdentifier();
+                            return super.onSingleTapConfirmed(e);
                         }
                     });
                 }
-            });
-        }
+
+                rootView.getViewByIndex(0).setRotate(false);
+                rootView.getViewByIndex(0).setGestureListener(new GestureDetector.SimpleOnGestureListener() {
+                    @Override
+                    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+                        return false;
+                    }
+                });
+            }
+        });
         return rootView;
     }
 
