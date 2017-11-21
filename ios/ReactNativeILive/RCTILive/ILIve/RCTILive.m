@@ -437,6 +437,7 @@ RCT_EXPORT_METHOD(destroy) {
   [[UserViewManager shareInstance] releaseManager];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kCancelConnect_Notification object:nil];
   [[NSNotificationCenter defaultCenter] removeObserver:self name:kGroupDelete_Notification object:nil];
+  [[NSNotificationCenter defaultCenter] removeObserver:self name:kUserUpVideo_Notification object:nil];
 }
 
 /**
