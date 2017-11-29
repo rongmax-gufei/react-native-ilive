@@ -347,7 +347,8 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
         // 取消 AVSDK 相机数据回调（参数传null）
         boolean bRet = ILiveSDK.getInstance().getAvVideoCtrl().setLocalVideoPreProcessCallback(null);
         // 退出房间后，一定要销毁filter 资源；否则下次进入房间，setFilter将不生效或其他异常
-        mTxcFilter.release();
+        if (null != mTxcFilter)
+            mTxcFilter.release();
     }
 
     /**
@@ -542,11 +543,13 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
             @Override
             public void onSuccess(ILVChangeRoleRes data) {
                 SxbLog.d(TAG, "upToVideoMember->success");
+                rtcEventHandler.onUpVideo(SUCCESS_CODE, "上麦成功");
             }
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
                 SxbLog.e(TAG, "upToVideoMember->failed:" + module + "|" + errCode + "|" + errMsg);
+                rtcEventHandler.onUpVideo(String.valueOf(errCode), errMsg);
             }
         });
     }
