@@ -158,6 +158,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
                 for (int i = 1; i < ILiveConstants.MAX_AV_VIDEO_NUM; i++) {
                     final int index = i;
                     AVVideoView avVideoView = rootView.getViewByIndex(index);
+                    if (null == avVideoView) return;
                     avVideoView.setRotate(false);
                     avVideoView.setGestureListener(new GestureDetector.SimpleOnGestureListener() {
                         @Override
