@@ -413,7 +413,7 @@ RCT_EXPORT_METHOD(destroy) {
  */
 - (void)upVideoCallback:(NSNotification *)noti {
   NSString *message = (NSString *)noti.object;
-  [self commentEvent:@"onUpVideo" code:kFail msg:message];
+  [self commentEvent:@"onUpVideo" code:kSuccess msg:message];
 }
 
 /**
