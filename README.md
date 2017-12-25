@@ -4,6 +4,7 @@
 | gufei         | 799170694@qq.com|
 
 *  不断更新优化中
+iOS编译过程中若出现错误，请联系我发ILiveSDK.framework的最新库，此库腾讯官方可能尚未更新上去。
 
 # react-native-ilive
 *  基于腾讯互动直播封装成react-native组件
