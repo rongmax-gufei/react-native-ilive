@@ -17,7 +17,7 @@
 #import <React/RCTUIManager.h>
 #import <React/RCTView.h>
 
-@interface RCTILive ()<QAVLocalVideoDelegate, ILiveRoomDisconnectListener, RPPreviewViewControllerDelegate, TXIVideoPreprocessorDelegate>
+@interface RCTILive ()<QAVLocalVideoDelegate, ILiveRoomDisconnectListener, RPPreviewViewControllerDelegate, TXIVideoPreprocessorDelegate, ILiveSpeedTestDelegate>
 @end
 
 @implementation RCTILive
@@ -321,6 +321,110 @@ RCT_EXPORT_METHOD(stopScreenRecord) {
 }
 
 /**
+ * 实时采集房间信息
+ */
+RCT_EXPORT_METHOD(onParon) {
+    NSMutableString *_versionInfo = [NSMutableString string];
+    NSString *iliveSDKVer = [NSString stringWithFormat:@"ilivesdk: %@\n",[[ILiveSDK getInstance] getVersion]];
+    [_versionInfo appendString:iliveSDKVer];
+    NSString *tilliveSDKVer = [NSString stringWithFormat:@"tillivesdk: %@\n",[[TILLiveManager getInstance] getVersion]];
+    [_versionInfo appendString:tilliveSDKVer];
+    NSString *imSDKVer = [NSString stringWithFormat:@"imsdk: %@\n",[[TIMManager sharedInstance] GetVersion]];
+    [_versionInfo appendString:imSDKVer];
+    NSString *avSDKVer = [NSString stringWithFormat:@"avsdk: %@\n",[QAVContext getVersion]];
+    [_versionInfo appendString:avSDKVer];
+    NSString *filterSDKVer = [NSString stringWithFormat:@"filter:%@\n",[TILFilter getVersion]];
+    [_versionInfo appendString:filterSDKVer];
+    _logTimer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(onLogTimer) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_logTimer forMode:NSDefaultRunLoopMode];
+}
+
+/**
+ * 结束采集房间信息
+ */
+RCT_EXPORT_METHOD(onParOff) {
+    [_logTimer invalidate];
+    _logTimer = nil;
+}
+
+- (void)onLogTimer
+{
+    __weak typeof(self) ws = self;
+    QAVContext *context = [[ILiveSDK getInstance] getAVContext];
+    if (context.videoCtrl && context.audioCtrl && context.room)
+    {
+        ILiveQualityData *qualityData = [[ILiveRoomManager getInstance] getQualityData];
+        NSMutableString *paramString = [NSMutableString string];
+        //FPS
+        [paramString appendString:[NSString stringWithFormat:@"FPS:%ld.\n",qualityData.interactiveSceneFPS/10]];
+        //Send Recv
+        [paramString appendString:[NSString stringWithFormat:@"Send: %ldkbps, Recv: %ldkbps.\n",qualityData.sendRate,(long)qualityData.recvRate]];
+        //sendLossRate recvLossRate
+        CGFloat sendLossRate = (CGFloat)qualityData.sendLossRate / (CGFloat)100;
+        CGFloat recvLossRate = (CGFloat)qualityData.recvLossRate / (CGFloat)100;
+        NSString *per = @"%";
+        [paramString appendString:[NSString stringWithFormat:@"SendLossRate: %.2f%@,   RecvLossRate: %.2f%@.\n",sendLossRate,per,recvLossRate,per]];
+        
+        //appcpu syscpu
+        CGFloat appCpuRate = (CGFloat)qualityData.appCPURate / (CGFloat)100;
+        CGFloat sysCpuRate = (CGFloat)qualityData.sysCPURate / (CGFloat)100;
+        [paramString appendString:[NSString stringWithFormat:@"AppCPURate:   %.2f%@,   SysCPURate:   %.2f%@.\n",appCpuRate,per,sysCpuRate,per]];
+        
+        //分别角色的分辨率
+        NSArray *keys = [_resolutionDic allKeys];
+        for (NSString *key in keys)
+        {
+            QAVFrameDesc *desc = _resolutionDic[key];
+            [paramString appendString:[NSString stringWithFormat:@"%@---> %d * %d\n",key,desc.width,desc.height]];
+        }
+        //avsdk版本号
+        NSString *avSDKVer = [NSString stringWithFormat:@"AVSDK版本号: %@\n",[QAVContext getVersion]];
+        [paramString appendString:avSDKVer];
+        //房间号
+        int roomid = [[ILiveRoomManager getInstance] getRoomId];
+        [paramString appendString:[NSString stringWithFormat:@"房间号:%d\n",roomid]];
+        //角色
+        NSString *roleStr = _config.isHost ? @"主播" : @"非主播";
+        [paramString appendString:[NSString stringWithFormat:@"角色:%@\n",roleStr]];
+        
+        //采集信息
+        NSString *videoParam = [context.videoCtrl getQualityTips];
+        NSArray *array = [videoParam componentsSeparatedByString:@"\n"]; //从字符A中分隔成2个元素的数组
+        if (array.count > 3)
+        {
+            NSString *resolution = [array objectAtIndex:2];
+            [paramString appendString:[NSString stringWithFormat:@"%@\n",resolution]];
+        }
+        //麦克风
+        NSString *isOpen = [[ILiveRoomManager getInstance] getCurMicState] ? @"ON" : @"OFF";
+        [paramString appendString:[NSString stringWithFormat:@"麦克风: %@\n",isOpen]];
+        //扬声器
+        NSString *isOpenSpeaker = [[ILiveRoomManager getInstance] getCurSpeakerState] ? @"ON" : @"OFF";
+        [paramString appendString:[NSString stringWithFormat:@"扬声器: %@\n",isOpenSpeaker]];
+        
+        [paramString appendString:_versionInfo];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self commentEvent:@"onParOn" code:kSuccess msg:paramString];
+        });
+    }
+}
+
+UIAlertController *_alert;
+/**
+ * 测网速
+ */
+RCT_EXPORT_METHOD(onNetSpeedTest) {
+    SpeedTestRequestParam *param = [[SpeedTestRequestParam alloc] init];
+    [[ILiveSpeedTestManager shareInstance] requestSpeedTest:param succ:^{
+        
+    } fail:^(NSString *module, int errId, NSString *errMsg) {
+        NSString *string = [NSString stringWithFormat:@"module=%@,code=%d,msg=%@",module,errId,errMsg];
+        [AlertHelp alertWith:@"请求测速失败" message:string cancelBtn:@"确定" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+    }];
+}
+
+/**
  * 销毁引擎实例
  */
 RCT_EXPORT_METHOD(destroy) {
@@ -462,6 +566,118 @@ RCT_EXPORT_METHOD(destroy) {
 - (void)previewControllerDidFinish:(RPPreviewViewController *)previewController {
   //用户操作完成后，返回之前的界面
   [previewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark - measure speed delegate
+
+//开始测速成功
+- (void)onILiveSpeedTestStartSucc
+{
+    _alert = [UIAlertController alertControllerWithTitle:@"正在测速" message:@"0/0" preferredStyle:UIAlertControllerStyleAlert];
+    [_alert addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        [[ILiveSpeedTestManager shareInstance] cancelSpeedTest:^{
+            
+        } fail:^(int code, NSString *msg) {
+            NSString *string = [NSString stringWithFormat:@"code=%d,msg=%@",code,msg];
+            [AlertHelp alertWith:@"取消测速失败" message:string cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+        }];
+    }]];
+    [[AlertHelp topViewController] presentViewController:_alert animated:YES completion:nil];
+}
+
+//开始测速失败
+- (void)onILiveSpeedTestStartFail:(int)code errMsg:(NSString *)errMsg
+{
+    NSString *string = [NSString stringWithFormat:@"code=%d,msg=%@",code,errMsg];
+    [AlertHelp alertWith:@"开始测速失败" message:string cancelBtn:@"明白了" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+}
+
+//测速进度回调
+- (void)onILiveSpeedTestProgress:(SpeedTestProgressItem *)item
+{
+    if (_alert)
+    {
+        _alert.message = [NSString stringWithFormat:@"%d/%d", item.recvPkgNum, item.totalPkgNum];
+    }
+}
+
+//测速完成(超时时间30s)
+- (void)onILiveSpeedTestCompleted:(SpeedTestResult *)result code:(int)code msg:(NSString *)msg
+{
+    if (code == 0)
+    {
+        //        [_alert dismissViewControllerAnimated:YES completion:nil];
+        
+        NSMutableString *text = [NSMutableString string];
+        //测试信息
+        //测速id
+        [text appendFormat:@"测速Id：%llu\n", result.testId];
+        //测速结束时间
+        [text appendFormat:@"测速结束时间：%llu\n", result.testTime];
+        //客户端类型
+        [text appendFormat:@"客户端类型：%llu.(3:iphone 4:ipad)\n", result.clientType];
+        //网络类型
+        [text appendFormat:@"网络类型：%d.(1:wifi 2,3,4(G))\n", result.netType];
+        //网络变换次数
+        [text appendFormat:@"网络变换次数：%d.\n", result.netChangeCnt];
+        //客户端ip
+        [text appendFormat:@"客户端IP：%d(%@)\n", result.clientIp,[self ip4FromUInt:result.clientIp]];
+        //通话类型
+        [text appendFormat:@"通话类型：%d(0:纯音频，1:音视频)\n", result.callType];
+        //sdkappid
+        [text appendFormat:@"SDKAPPID：%d\n", result.sdkAppid];
+        //测试结果列表
+        for (SpeedTestResultItem *item in result.results)
+        {
+            //接口机端口、ip
+            NSString *accInfo = [NSString stringWithFormat:@"%d:%u(%@)\n",item.accessPort,item.accessIp,[self ip4FromUInt:item.accessIp]];
+            [text appendString:accInfo];
+            //运营商 测试次数
+            [text appendFormat:@"%@:%@:%@; 测试次数:%d\n",item.accessCountry,item.accessProv,item.accessIsp,item.testCnt];
+            //上行、下行丢包率，平均延时
+            [text appendFormat:@"upLoss:%d,dwLoss:%d,延时:%dms.\n",item.upLoss,item.dwLoss,item.avgRtt];
+        }
+        AlertActionHandle copyBlock = ^(UIAlertAction * _Nonnull action){
+            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+            [pasteboard setString:text];
+        };
+        [AlertHelp alertWith:@"测速结果" message:text funBtns:@{@"复制":copyBlock} cancelBtn:@"关闭" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+    }
+    else
+    {
+        //测速失败
+        NSString *str = [NSString stringWithFormat:@"%d,%@",code,msg];
+        [AlertHelp alertWith:@"测速失败" message:str cancelBtn:@"关闭" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+    }
+}
+
+- (NSString *)ip4FromUInt:(unsigned int)ipNumber
+{
+    if (sizeof (unsigned int) != 4)
+    {
+        NSLog(@"Unkown type!");
+        return @"";
+    }
+    unsigned int mask = 0xFF000000;
+    unsigned int array[sizeof(unsigned int)];
+    int steps = 8;
+    int counter;
+    for (counter = 0; counter < 4 ; counter++)
+    {
+        array[counter] = ((ipNumber & mask) >> (32-steps*(counter+1)));
+        mask >>= steps;
+    }
+    NSMutableString *mutableString = [NSMutableString string];
+    for (int index = counter-1; index >=0; index--)
+    {
+        [mutableString appendString:[NSString stringWithFormat:@"%d",array[index]]];
+        if (index != 0)
+        {
+            [mutableString appendString:@"."];
+        }
+    }
+    
+    return mutableString;
 }
 
 //获取当前屏幕显示的viewcontroller

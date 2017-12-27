@@ -28,5 +28,8 @@
 //美颜
 @property (nonatomic, strong) TXCVideoPreprocessor *preProcessor;
 @property (nonatomic, assign) Byte  *processorBytes;
+
+@property (nonatomic, copy) NSTimer *logTimer;
+
 - (void)onClose;
 @end

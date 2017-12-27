@@ -407,6 +407,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UWL4UWZ95B;
+				GCC_PREFIX_HEADER = "Util/TILLiveSDKShow-Prefix.pch";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/COS_SDK",
@@ -423,6 +424,7 @@
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = UWL4UWZ95B;
+				GCC_PREFIX_HEADER = "Util/TILLiveSDKShow-Prefix.pch";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/COS_SDK",
