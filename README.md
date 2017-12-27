@@ -138,7 +138,10 @@ RtcEngine.eventEmitter({
   onToggleCamera: data => {},
   onToggleMic: data => {},
   onRoomDisconnect: data => {},
-  onError: data => {}
+  onNetSpeedTest: data => {},
+  onParOn: data => {},
+  onParOff: data => {},
+  onError: data => {}
 })
 ```
 
@@ -161,6 +164,9 @@ RtcEngine.eventEmitter({
 | onToggleCamera            | 开关摄像头回调  |
 | onToggleMic            | 开关声麦回调  |
 | onRoomDisconnect            | 房间失去联系回调 |
+| onNetSpeedTest            | 网络测速结果回调 |
+| onParOn            | 实时采集房间信息回调 |
+| onParOff            | 结束采集房间信息回调 |
 | onError            | 错误提示|
 
 ##### ILiveView 组件
