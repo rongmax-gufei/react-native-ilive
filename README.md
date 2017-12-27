@@ -20,13 +20,8 @@ Then link with:
 
 #### Android
 
-* 将android/react-native-ilive拷贝到自己项目的android目录下
-
-* 在android/settings.gradle文件中新增：':react-native-ilive'依赖
-
-* 在android/app/build.gradle文件的dependencies中添加：compile project(path: ':react-native-ilive')
-
-* 在android/app/src/main/AndroidMainfest.xml中添加权限：
+Add following to `AndroidManifest.xml`
+    
 ```
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -54,29 +49,14 @@ Then link with:
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 ```
-*  application下添加：
-```
-    <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.tencent.qcloud.suixinbo.fileProvider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths" />
-    </provider>
-```
-* MainApplication.java文件：
-  *  extends QavsdkApplication
-  *  getPackages()方法中添加new ILivePackage()
+* 将项目的MainApplication.java类继承QavsdkApplication.java类
 
 #### iOS
 
-* 将ios/RCTILive拷贝到自己项目中
-* 运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，仅保留AVSDK、ILiveSDK、IMSDK三个文件夹（！！多余的文件/文件夹删除）
+* 运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，仅保留AVSDK、ILiveSDK、IMSDK三个文件夹（！！其余的文件/文件夹删除）
 * 下载美颜插件：http://dldir1.qq.com/hudongzhibo/ILiveSDK/TXMVideoPreprocessor_3.3.0.zip
   解压至ios/RCTILive/Frameworks/文件夹下，保留basic文件夹（基础美颜，免费），删除advance文件夹（高级美颜需付费）
-* iOS编译过程中若出现错误，请联系我发ILiveSDK.framework的最新库，此库腾讯官方可能尚未更新上去。
+* iOS编译过程中若出现重复定义变量的错误，请联系我发ILiveSDK.framework的最新库，此库腾讯官方可能尚未更新上去。
 
 * 修改工程配置
 
