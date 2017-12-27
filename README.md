@@ -3,16 +3,22 @@
 | ------------- |:---------------:|
 | gufei         | 799170694@qq.com|
 
-*  不断更新优化中<br>
-iOS编译过程中若出现错误，请联系我发ILiveSDK.framework的最新库，此库腾讯官方可能尚未更新上去。
+# react-native-ilive 
 
-# react-native-ilive
-*  基于腾讯互动直播封装成react-native组件
-*  封装android、iOS两大平台
-*  目前实现功能：创建房间、加入房间、切换角色、上下麦、切换摄像头、开关摄像头、开关声麦、录视频流、录屏幕、基础美颜
-*  待实现功能：屏幕分享、连麦窗口可定制化
+## 功能介绍
 
-### Android
+- 支持 iOS Android  腾讯互动直播iLive SDK
+- 支持 创建房间、加入房间、切换角色、上下麦、切换摄像头、开关摄像头、开关声麦、录视频流、录屏幕、基础美颜功能
+
+## 安装使用
+
+ `npm install --save react-native-ilive`
+
+Then link with:
+
+ `react-native link react-native-ilive`
+
+#### Android
 
 * 将android/react-native-ilive拷贝到自己项目的android目录下
 
@@ -64,13 +70,14 @@ iOS编译过程中若出现错误，请联系我发ILiveSDK.framework的最新�
   *  extends QavsdkApplication
   *  getPackages()方法中添加new ILivePackage()
 
-### iOS
+#### iOS
 
 * 将ios/RCTILive拷贝到自己项目中
-
 * 运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，仅保留AVSDK、ILiveSDK、IMSDK三个文件夹（！！多余的文件/文件夹删除）
 * 下载美颜插件：http://dldir1.qq.com/hudongzhibo/ILiveSDK/TXMVideoPreprocessor_3.3.0.zip
-  解压至ios/RCTILive/Frameworks/文件夹下，保留basic文件夹（基础美颜，免费），删除advance文件夹（高级美颜需付费）。
+  解压至ios/RCTILive/Frameworks/文件夹下，保留basic文件夹（基础美颜，免费），删除advance文件夹（高级美颜需付费）
+* iOS编译过程中若出现错误，请联系我发ILiveSDK.framework的最新库，此库腾讯官方可能尚未更新上去。
+
 * 修改工程配置
 
   *  将下载好的SDK复制到工程目录下，工程目录右键，Add Files to " you projectname"
@@ -127,7 +134,7 @@ iOS编译过程中若出现错误，请联系我发ILiveSDK.framework的最新�
 }
  ```
 
-### react-native代码配置如下：
+#### react-native代码配置如下：
 
 *   将react-native-ilive.git/src下的ILiveView、index、RtcEngine三个文件拷贝到你的项目相应目录下
 
