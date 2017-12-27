@@ -1,0 +1,461 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		18A0B5961FF34DFA00935D28 /* LoadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B5691FF34DF900935D28 /* LoadView.m */; };
+		18A0B5971FF34DFA00935D28 /* AlertHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B56C1FF34DF900935D28 /* AlertHelp.m */; };
+		18A0B5981FF34DFA00935D28 /* UIColor+MLPFlatColors.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B5701FF34DF900935D28 /* UIColor+MLPFlatColors.m */; };
+		18A0B5991FF34DFA00935D28 /* UIImage+TintColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B5711FF34DF900935D28 /* UIImage+TintColor.m */; };
+		18A0B59A1FF34DFA00935D28 /* UIView+ShakeAnimation.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B5721FF34DF900935D28 /* UIView+ShakeAnimation.m */; };
+		18A0B59B1FF34DFA00935D28 /* UIView+CustomAutoLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B5761FF34DF900935D28 /* UIView+CustomAutoLayout.m */; };
+		18A0B59C1FF34DFA00935D28 /* UIImage+Common.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B5781FF34DF900935D28 /* UIImage+Common.m */; };
+		18A0B59D1FF34DFA00935D28 /* ILiveConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B57E1FF34DF900935D28 /* ILiveConst.m */; };
+		18A0B59E1FF34DFA00935D28 /* LiveCallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B5811FF34DF900935D28 /* LiveCallView.m */; };
+		18A0B59F1FF34DFA00935D28 /* libCOSClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 18A0B5851FF34DF900935D28 /* libCOSClient.a */; };
+		18A0B5A01FF34DFA00935D28 /* RCTILiveVideoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B5871FF34DF900935D28 /* RCTILiveVideoView.m */; };
+		18A0B5A11FF34DFA00935D28 /* RCTILiveViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B5881FF34DF900935D28 /* RCTILiveViewManager.m */; };
+		18A0B5A21FF34DFA00935D28 /* RCTILive+Audio.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B58C1FF34DF900935D28 /* RCTILive+Audio.m */; };
+		18A0B5A31FF34DFA00935D28 /* RCTILive.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B58D1FF34DF900935D28 /* RCTILive.m */; };
+		18A0B5A41FF34DFA00935D28 /* UserViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B58E1FF34DF900935D28 /* UserViewManager.m */; };
+		18A0B5A51FF34DFA00935D28 /* RCTILive+AVListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B58F1FF34DF900935D28 /* RCTILive+AVListener.m */; };
+		18A0B5A61FF34DFA00935D28 /* RCTILive+ImListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 18A0B5951FF34DF900935D28 /* RCTILive+ImListener.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		18A0B5551FF34D7F00935D28 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		18A0B5571FF34D7F00935D28 /* libRCTILive.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRCTILive.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		18A0B5681FF34DF900935D28 /* CustomUIHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomUIHeader.h; sourceTree = "<group>"; };
+		18A0B5691FF34DF900935D28 /* LoadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadView.m; sourceTree = "<group>"; };
+		18A0B56B1FF34DF900935D28 /* AlertHelp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AlertHelp.h; sourceTree = "<group>"; };
+		18A0B56C1FF34DF900935D28 /* AlertHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AlertHelp.m; sourceTree = "<group>"; };
+		18A0B56D1FF34DF900935D28 /* LoadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadView.h; sourceTree = "<group>"; };
+		18A0B56F1FF34DF900935D28 /* UIView+CustomAutoLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+CustomAutoLayout.h"; sourceTree = "<group>"; };
+		18A0B5701FF34DF900935D28 /* UIColor+MLPFlatColors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+MLPFlatColors.m"; sourceTree = "<group>"; };
+		18A0B5711FF34DF900935D28 /* UIImage+TintColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+TintColor.m"; sourceTree = "<group>"; };
+		18A0B5721FF34DF900935D28 /* UIView+ShakeAnimation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+ShakeAnimation.m"; sourceTree = "<group>"; };
+		18A0B5731FF34DF900935D28 /* CategoryHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CategoryHeader.h; sourceTree = "<group>"; };
+		18A0B5741FF34DF900935D28 /* UIImage+Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Common.h"; sourceTree = "<group>"; };
+		18A0B5751FF34DF900935D28 /* UIColor+MLPFlatColors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+MLPFlatColors.h"; sourceTree = "<group>"; };
+		18A0B5761FF34DF900935D28 /* UIView+CustomAutoLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+CustomAutoLayout.m"; sourceTree = "<group>"; };
+		18A0B5771FF34DF900935D28 /* UIImage+TintColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+TintColor.h"; sourceTree = "<group>"; };
+		18A0B5781FF34DF900935D28 /* UIImage+Common.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Common.m"; sourceTree = "<group>"; };
+		18A0B5791FF34DF900935D28 /* UIView+ShakeAnimation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+ShakeAnimation.h"; sourceTree = "<group>"; };
+		18A0B57B1FF34DF900935D28 /* TILLiveSDKShow-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TILLiveSDKShow-Prefix.pch"; sourceTree = "<group>"; };
+		18A0B57C1FF34DF900935D28 /* ILiveConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ILiveConst.h; sourceTree = "<group>"; };
+		18A0B57D1FF34DF900935D28 /* ConstHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConstHeader.h; sourceTree = "<group>"; };
+		18A0B57E1FF34DF900935D28 /* ILiveConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ILiveConst.m; sourceTree = "<group>"; };
+		18A0B5801FF34DF900935D28 /* LiveCallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LiveCallView.h; sourceTree = "<group>"; };
+		18A0B5811FF34DF900935D28 /* LiveCallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LiveCallView.m; sourceTree = "<group>"; };
+		18A0B5831FF34DF900935D28 /* COSTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSTask.h; sourceTree = "<group>"; };
+		18A0B5841FF34DF900935D28 /* COSClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = COSClient.h; sourceTree = "<group>"; };
+		18A0B5851FF34DF900935D28 /* libCOSClient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libCOSClient.a; sourceTree = "<group>"; };
+		18A0B5871FF34DF900935D28 /* RCTILiveVideoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTILiveVideoView.m; sourceTree = "<group>"; };
+		18A0B5881FF34DF900935D28 /* RCTILiveViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTILiveViewManager.m; sourceTree = "<group>"; };
+		18A0B5891FF34DF900935D28 /* RCTILiveViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTILiveViewManager.h; sourceTree = "<group>"; };
+		18A0B58A1FF34DF900935D28 /* RCTILiveVideoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTILiveVideoView.h; sourceTree = "<group>"; };
+		18A0B58C1FF34DF900935D28 /* RCTILive+Audio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTILive+Audio.m"; sourceTree = "<group>"; };
+		18A0B58D1FF34DF900935D28 /* RCTILive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTILive.m; sourceTree = "<group>"; };
+		18A0B58E1FF34DF900935D28 /* UserViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserViewManager.m; sourceTree = "<group>"; };
+		18A0B58F1FF34DF900935D28 /* RCTILive+AVListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTILive+AVListener.m"; sourceTree = "<group>"; };
+		18A0B5901FF34DF900935D28 /* RCTILive+ImListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTILive+ImListener.h"; sourceTree = "<group>"; };
+		18A0B5911FF34DF900935D28 /* RCTILive+AVListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTILive+AVListener.h"; sourceTree = "<group>"; };
+		18A0B5921FF34DF900935D28 /* UserViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewManager.h; sourceTree = "<group>"; };
+		18A0B5931FF34DF900935D28 /* RCTILive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTILive.h; sourceTree = "<group>"; };
+		18A0B5941FF34DF900935D28 /* RCTILive+Audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTILive+Audio.h"; sourceTree = "<group>"; };
+		18A0B5951FF34DF900935D28 /* RCTILive+ImListener.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTILive+ImListener.m"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		18A0B5541FF34D7F00935D28 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				18A0B59F1FF34DFA00935D28 /* libCOSClient.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		18A0B54E1FF34D7F00935D28 = {
+			isa = PBXGroup;
+			children = (
+				18A0B5631FF34DF900935D28 /* RCTILive */,
+				18A0B5581FF34D7F00935D28 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		18A0B5581FF34D7F00935D28 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				18A0B5571FF34D7F00935D28 /* libRCTILive.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		18A0B5631FF34DF900935D28 /* RCTILive */ = {
+			isa = PBXGroup;
+			children = (
+				18A0B5671FF34DF900935D28 /* CustomUI */,
+				18A0B56E1FF34DF900935D28 /* Category */,
+				18A0B57A1FF34DF900935D28 /* Util */,
+				18A0B57F1FF34DF900935D28 /* TableCell */,
+				18A0B5821FF34DF900935D28 /* COS_SDK */,
+				18A0B5861FF34DF900935D28 /* RCTModule */,
+				18A0B58B1FF34DF900935D28 /* ILIve */,
+			);
+			name = RCTILive;
+			sourceTree = "<group>";
+		};
+		18A0B5671FF34DF900935D28 /* CustomUI */ = {
+			isa = PBXGroup;
+			children = (
+				18A0B5681FF34DF900935D28 /* CustomUIHeader.h */,
+				18A0B5691FF34DF900935D28 /* LoadView.m */,
+				18A0B56A1FF34DF900935D28 /* AlertHelp */,
+				18A0B56D1FF34DF900935D28 /* LoadView.h */,
+			);
+			path = CustomUI;
+			sourceTree = "<group>";
+		};
+		18A0B56A1FF34DF900935D28 /* AlertHelp */ = {
+			isa = PBXGroup;
+			children = (
+				18A0B56B1FF34DF900935D28 /* AlertHelp.h */,
+				18A0B56C1FF34DF900935D28 /* AlertHelp.m */,
+			);
+			path = AlertHelp;
+			sourceTree = "<group>";
+		};
+		18A0B56E1FF34DF900935D28 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				18A0B56F1FF34DF900935D28 /* UIView+CustomAutoLayout.h */,
+				18A0B5701FF34DF900935D28 /* UIColor+MLPFlatColors.m */,
+				18A0B5711FF34DF900935D28 /* UIImage+TintColor.m */,
+				18A0B5721FF34DF900935D28 /* UIView+ShakeAnimation.m */,
+				18A0B5731FF34DF900935D28 /* CategoryHeader.h */,
+				18A0B5741FF34DF900935D28 /* UIImage+Common.h */,
+				18A0B5751FF34DF900935D28 /* UIColor+MLPFlatColors.h */,
+				18A0B5761FF34DF900935D28 /* UIView+CustomAutoLayout.m */,
+				18A0B5771FF34DF900935D28 /* UIImage+TintColor.h */,
+				18A0B5781FF34DF900935D28 /* UIImage+Common.m */,
+				18A0B5791FF34DF900935D28 /* UIView+ShakeAnimation.h */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		18A0B57A1FF34DF900935D28 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				18A0B57B1FF34DF900935D28 /* TILLiveSDKShow-Prefix.pch */,
+				18A0B57C1FF34DF900935D28 /* ILiveConst.h */,
+				18A0B57D1FF34DF900935D28 /* ConstHeader.h */,
+				18A0B57E1FF34DF900935D28 /* ILiveConst.m */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		18A0B57F1FF34DF900935D28 /* TableCell */ = {
+			isa = PBXGroup;
+			children = (
+				18A0B5801FF34DF900935D28 /* LiveCallView.h */,
+				18A0B5811FF34DF900935D28 /* LiveCallView.m */,
+			);
+			path = TableCell;
+			sourceTree = "<group>";
+		};
+		18A0B5821FF34DF900935D28 /* COS_SDK */ = {
+			isa = PBXGroup;
+			children = (
+				18A0B5831FF34DF900935D28 /* COSTask.h */,
+				18A0B5841FF34DF900935D28 /* COSClient.h */,
+				18A0B5851FF34DF900935D28 /* libCOSClient.a */,
+			);
+			path = COS_SDK;
+			sourceTree = "<group>";
+		};
+		18A0B5861FF34DF900935D28 /* RCTModule */ = {
+			isa = PBXGroup;
+			children = (
+				18A0B5871FF34DF900935D28 /* RCTILiveVideoView.m */,
+				18A0B5881FF34DF900935D28 /* RCTILiveViewManager.m */,
+				18A0B5891FF34DF900935D28 /* RCTILiveViewManager.h */,
+				18A0B58A1FF34DF900935D28 /* RCTILiveVideoView.h */,
+			);
+			path = RCTModule;
+			sourceTree = "<group>";
+		};
+		18A0B58B1FF34DF900935D28 /* ILIve */ = {
+			isa = PBXGroup;
+			children = (
+				18A0B5931FF34DF900935D28 /* RCTILive.h */,
+				18A0B58D1FF34DF900935D28 /* RCTILive.m */,
+				18A0B5941FF34DF900935D28 /* RCTILive+Audio.h */,
+				18A0B58C1FF34DF900935D28 /* RCTILive+Audio.m */,
+				18A0B5911FF34DF900935D28 /* RCTILive+AVListener.h */,
+				18A0B58F1FF34DF900935D28 /* RCTILive+AVListener.m */,
+				18A0B5901FF34DF900935D28 /* RCTILive+ImListener.h */,
+				18A0B5951FF34DF900935D28 /* RCTILive+ImListener.m */,
+				18A0B5921FF34DF900935D28 /* UserViewManager.h */,
+				18A0B58E1FF34DF900935D28 /* UserViewManager.m */,
+			);
+			path = ILIve;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		18A0B5561FF34D7F00935D28 /* RCTILive */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 18A0B5601FF34D7F00935D28 /* Build configuration list for PBXNativeTarget "RCTILive" */;
+			buildPhases = (
+				18A0B5531FF34D7F00935D28 /* Sources */,
+				18A0B5541FF34D7F00935D28 /* Frameworks */,
+				18A0B5551FF34D7F00935D28 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RCTILive;
+			productName = RCTILive;
+			productReference = 18A0B5571FF34D7F00935D28 /* libRCTILive.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		18A0B54F1FF34D7F00935D28 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0910;
+				ORGANIZATIONNAME = "Learnta Inc.";
+				TargetAttributes = {
+					18A0B5561FF34D7F00935D28 = {
+						CreatedOnToolsVersion = 9.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 18A0B5521FF34D7F00935D28 /* Build configuration list for PBXProject "RCTILive" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 18A0B54E1FF34D7F00935D28;
+			productRefGroup = 18A0B5581FF34D7F00935D28 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				18A0B5561FF34D7F00935D28 /* RCTILive */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		18A0B5531FF34D7F00935D28 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				18A0B5A51FF34DFA00935D28 /* RCTILive+AVListener.m in Sources */,
+				18A0B5991FF34DFA00935D28 /* UIImage+TintColor.m in Sources */,
+				18A0B5961FF34DFA00935D28 /* LoadView.m in Sources */,
+				18A0B5A21FF34DFA00935D28 /* RCTILive+Audio.m in Sources */,
+				18A0B59B1FF34DFA00935D28 /* UIView+CustomAutoLayout.m in Sources */,
+				18A0B59A1FF34DFA00935D28 /* UIView+ShakeAnimation.m in Sources */,
+				18A0B5A11FF34DFA00935D28 /* RCTILiveViewManager.m in Sources */,
+				18A0B59C1FF34DFA00935D28 /* UIImage+Common.m in Sources */,
+				18A0B5971FF34DFA00935D28 /* AlertHelp.m in Sources */,
+				18A0B5A61FF34DFA00935D28 /* RCTILive+ImListener.m in Sources */,
+				18A0B5981FF34DFA00935D28 /* UIColor+MLPFlatColors.m in Sources */,
+				18A0B59D1FF34DFA00935D28 /* ILiveConst.m in Sources */,
+				18A0B5A01FF34DFA00935D28 /* RCTILiveVideoView.m in Sources */,
+				18A0B5A41FF34DFA00935D28 /* UserViewManager.m in Sources */,
+				18A0B5A31FF34DFA00935D28 /* RCTILive.m in Sources */,
+				18A0B59E1FF34DFA00935D28 /* LiveCallView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		18A0B55E1FF34D7F00935D28 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		18A0B55F1FF34D7F00935D28 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		18A0B5611FF34D7F00935D28 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UWL4UWZ95B;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/COS_SDK",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		18A0B5621FF34D7F00935D28 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UWL4UWZ95B;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/COS_SDK",
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		18A0B5521FF34D7F00935D28 /* Build configuration list for PBXProject "RCTILive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				18A0B55E1FF34D7F00935D28 /* Debug */,
+				18A0B55F1FF34D7F00935D28 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		18A0B5601FF34D7F00935D28 /* Build configuration list for PBXNativeTarget "RCTILive" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				18A0B5611FF34D7F00935D28 /* Debug */,
+				18A0B5621FF34D7F00935D28 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 18A0B54F1FF34D7F00935D28 /* Project object */;
+}

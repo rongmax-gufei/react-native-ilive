@@ -1,23 +1,19 @@
 {
-  "name": "ReactNativeILive",
-  "version": "0.0.1",
-  "private": true,
+  "name": "react-native-ilive",
+  "version": "1.0.1",
+  "description": "腾讯互动直播 iLive",
+  "main": "index.js",
   "scripts": {
-    "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest"
+    "test": "echo \\\\\\\"Error: no test specified\\\\\\\" && exit 1"
   },
-  "dependencies": {
-    "react": "16.0.0-alpha.12",
-    "react-native": "0.47.2",
-    "react-native-vector-icons": "^4.0.1"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/midas-gufei/react-native-ilive.git"
   },
-  "devDependencies": {
-    "babel-jest": "20.0.3",
-    "babel-preset-react-native": "3.0.1",
-    "jest": "20.0.4",
-    "react-test-renderer": "16.0.0-alpha.12"
+  "author": "gufei",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/midas-gufei/react-native-ilive/issues"
   },
-  "jest": {
-    "preset": "react-native"
-  }
+  "homepage": "https://github.com/midas-gufei/react-native-ilive#readme"
 }
