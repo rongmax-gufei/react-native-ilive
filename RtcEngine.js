@@ -76,12 +76,24 @@ export default {
         ILive.switchCamera();
     },
     // 打开or关闭摄像头
-    iLiveToggleCamera() {
-        ILive.toggleCamera();
+    iLiveToggleCamera(bCameraOn) {
+        ILive.toggleCamera(bCameraOn);
     },
     // 打卡or关闭声麦
-    iLiveToggleMic() {
-        ILive.toggleMic();
+    iLiveToggleMic(bMicOn) {
+        ILive.toggleMic(bMicOn);
+    },
+    // 开始采集房间信息
+    iLiveParOn() {
+        ILive.onParOn();
+    },
+    // 结束采集房间信息
+    iLiveParOff() {
+        ILive.onParOff();
+    },
+    // 测网速
+    iLiveNetSpeedTest() {
+        ILive.netSpeedTest();
     },
     eventEmitter(fnConf) {
         //there are no `removeListener` for NativeAppEventEmitter & DeviceEventEmitter

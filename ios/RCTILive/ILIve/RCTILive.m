@@ -345,6 +345,7 @@ RCT_EXPORT_METHOD(onParon) {
 RCT_EXPORT_METHOD(onParOff) {
     [_logTimer invalidate];
     _logTimer = nil;
+    [self commentEvent:@"onParOff" code:kSuccess msg:@"结束采集房间信息"];
 }
 
 - (void)onLogTimer
@@ -414,7 +415,7 @@ UIAlertController *_alert;
 /**
  * 测网速
  */
-RCT_EXPORT_METHOD(onNetSpeedTest) {
+RCT_EXPORT_METHOD(netSpeedTest) {
     SpeedTestRequestParam *param = [[SpeedTestRequestParam alloc] init];
     [[ILiveSpeedTestManager shareInstance] requestSpeedTest:param succ:^{
         
@@ -637,11 +638,12 @@ RCT_EXPORT_METHOD(destroy) {
             //上行、下行丢包率，平均延时
             [text appendFormat:@"upLoss:%d,dwLoss:%d,延时:%dms.\n",item.upLoss,item.dwLoss,item.avgRtt];
         }
-        AlertActionHandle copyBlock = ^(UIAlertAction * _Nonnull action){
-            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-            [pasteboard setString:text];
-        };
-        [AlertHelp alertWith:@"测速结果" message:text funBtns:@{@"复制":copyBlock} cancelBtn:@"关闭" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+//        AlertActionHandle copyBlock = ^(UIAlertAction * _Nonnull action){
+//            UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+//            [pasteboard setString:text];
+//        };
+//        [AlertHelp alertWith:@"测速结果" message:text funBtns:@{@"复制":copyBlock} cancelBtn:@"关闭" alertStyle:UIAlertControllerStyleAlert cancelAction:nil];
+        [self commentEvent:@"onNetSpeedTest" code:kSuccess msg:text];
     }
     else
     {
