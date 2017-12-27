@@ -53,8 +53,8 @@ Add following to `AndroidManifest.xml`
 
 #### iOS
 
-* 运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，仅保留AVSDK、ILiveSDK、IMSDK三个文件夹（！！其余的文件/文件夹删除）
-* 下载美颜插件：http://dldir1.qq.com/hudongzhibo/ILiveSDK/TXMVideoPreprocessor_3.3.0.zip
+* 运行ios/RCTILive/Frameworks/LoadSDK.sh，下载工程需要的资源库，仅保留AVSDK、ILiveSDK、IMSDK三个文件夹
+* [下载美颜插件](http://dldir1.qq.com/hudongzhibo/ILiveSDK/TXMVideoPreprocessor_3.3.0.zip)
   解压至ios/RCTILive/Frameworks/文件夹下，保留basic文件夹（基础美颜，免费），删除advance文件夹（高级美颜需付费）
 * iOS编译过程中若出现重复定义变量的错误，请联系我发ILiveSDK.framework的最新库，此库腾讯官方可能尚未更新上去。
 
