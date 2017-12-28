@@ -35,5 +35,5 @@ dependencies {
     compile 'com.tencent.rtmpsdk:rtmpsdk:1.0.1'
     // 非 p图版
     compile 'com.tencent.ilivefilter:liteav_normal:1.1.18'
-    compile 'com.facebook.react:react-native:0.47.2'
+    compile 'com.facebook.react:react-native:+'
 }
