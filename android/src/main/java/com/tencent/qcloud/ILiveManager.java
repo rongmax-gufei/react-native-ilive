@@ -1,4 +1,4 @@
-package com.tencent.qcloud.nativemodule;
+package com.tencent.qcloud;
 
 import android.app.Activity;
 import android.content.Context;

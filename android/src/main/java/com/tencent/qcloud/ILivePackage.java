@@ -1,4 +1,4 @@
-package com.tencent.qcloud.nativemodule;
+package com.tencent.qcloud;
 
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.JavaScriptModule;
