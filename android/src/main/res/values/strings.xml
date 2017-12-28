@@ -1,4 +1,24 @@
 <resources>
     <string name="str_room_discuss">主播已离开房间，是否退出?</string>
     <string name="str_tips_force_exit">管理员已将房间解散或将您踢出房间!</string>
+
+    <string name="ping_ing">测速中</string>
+    <string name="ping_progress">测速进度</string>
+    <string name="ping_speed_test">网络测速</string>
+    <string name="ping_start">开始测速</string>
+    <string name="ping_no_server">获取测速列表失败，请稍后重试</string>
+    <string name="ping_time">平均时延</string>
+    <string name="ping_miss">丢包率</string>
+    <string name="ping_cancel">取消</string>
+    <string name="ping_TEL">电信</string>
+    <string name="ping_CMCC">移动</string>
+    <string name="ping_CNC">联通</string>
+    <string name="ping_SH">上海</string>
+    <string name="ping_SZ">深圳</string>
+    <string name="ping_CD">成都</string>
+    <string name="ping_TJ">天津</string>
+    <string name="ping_NJ">南京</string>
+    <string name="ping_HZ">杭州</string>
+    <string name="ping_GZ">广州</string>
+
 </resources>

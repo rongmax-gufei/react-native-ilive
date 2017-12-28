@@ -8,7 +8,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.DisplayMetrics;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SurfaceView;
@@ -37,6 +36,8 @@ import com.tencent.ilivesdk.core.ILiveLoginManager;
 import com.tencent.ilivesdk.core.ILiveRecordOption;
 import com.tencent.ilivesdk.core.ILiveRoomManager;
 import com.tencent.ilivesdk.core.ILiveRoomOption;
+import com.tencent.ilivesdk.tools.quality.ILiveQualityData;
+import com.tencent.ilivesdk.tools.quality.LiveInfo;
 import com.tencent.ilivesdk.view.AVRootView;
 import com.tencent.ilivesdk.view.AVVideoView;
 import com.tencent.liteav.basic.enums.TXEFrameFormat;
@@ -47,20 +48,24 @@ import com.tencent.livesdk.ILVLiveConstants;
 import com.tencent.livesdk.ILVLiveManager;
 import com.tencent.livesdk.ILVLiveRoomOption;
 import com.tencent.livesdk.ILVText;
-import com.tencent.qcloud.R;
 import com.tencent.qcloud.interfacev1.IRtcEngineEventHandler;
 import com.tencent.qcloud.screenrecorder.ScreenRecordService;
 import com.tencent.qcloud.utils.Constants;
+import com.tencent.qcloud.utils.DeviceInfo;
 import com.tencent.qcloud.utils.LogConstants;
 import com.tencent.qcloud.utils.MessageEvent;
 import com.tencent.qcloud.utils.SxbLog;
+import com.tencent.qcloud.view.SpeedTestDialog;
 
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import static com.facebook.react.bridge.UiThreadUtil.runOnUiThread;
 import static com.tencent.qcloud.utils.Constants.HD_GUEST_ROLE;
@@ -73,8 +78,8 @@ import static com.tencent.qcloud.utils.Constants.SD_GUEST_ROLE;
 public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, Observer, ActivityEventListener {
 
     private static final String TAG = "ILiveManager";
-    private static final String SUCCESS_CODE = "1000";
-    private static final String FAIL_CODE = "1001";
+    public static final String SUCCESS_CODE = "1000";
+    public static final String FAIL_CODE = "1001";
     private static final int TIMEOUT_INVITE = 1;
     private static final int REQUEST_CODE = 1000;
 
@@ -100,9 +105,8 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     private final String[] values = new String[]{Constants.HD_ROLE, Constants.SD_ROLE, Constants.LD_ROLE};
     private final String[] guestValues = new String[]{HD_GUEST_ROLE, SD_GUEST_ROLE, Constants.LD_GUEST_ROLE};
 
-    private int screenWidth;
-    private int screenHeight;
-    private int screenDensity;
+    // 测试获取测试参数
+    private boolean showTips = false;
 
     public static ILiveManager getInstance() {
         return sILiveManager;
@@ -123,6 +127,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
         if (options.hasKey(KEY_ACCOUNT_TYPE)) {
             Constants.ACCOUNT_TYPE = Integer.valueOf(options.getString(KEY_ACCOUNT_TYPE));
         }
+        paramTimer.schedule(task, 1000, 1000);
     }
 
     /**
@@ -464,7 +469,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
             rtcEventHandler.onStartScreenRecord(FAIL_CODE, "Activity doesn't exist");
             return;
         }
-        getScreenBaseInfo();
+        DeviceInfo.getScreenBaseInfo(activity);
         /**
          * 获取屏幕录制的权限
          */
@@ -504,6 +509,98 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     public void toggleMic(boolean bMicOn) {
         ILiveRoomManager.getInstance().enableMic(bMicOn);
         rtcEventHandler.onToggleMic(SUCCESS_CODE, "打开/关闭声麦，操作成功");
+    }
+
+    /**
+     * 开始实时采集房间信息
+     */
+    public void onParOn() {
+        showTips = true;
+    }
+
+    /**
+     * 结束采集房间信息
+     */
+    public void onParOff() {
+        showTips = false;
+    }
+
+    Timer paramTimer = new Timer();
+    TimerTask task = new TimerTask() {
+        public void run() {
+            runOnUiThread(new Runnable() {
+                public void run() {
+                    if (showTips) {
+                        if (ILiveSDK.getInstance().getAVContext() != null &&
+                                ILiveSDK.getInstance().getAVContext().getRoom() != null) {
+                            String tips = "";
+                            ILiveQualityData qData = ILiveRoomManager.getInstance().getQualityData();
+                            if (null != qData) {
+                                tips += "FPS:\t" + qData.getUpFPS() + "\n";
+                                tips += "Send:\t" + qData.getSendKbps() + "Kbps\t";
+                                tips += "Recv:\t" + qData.getRecvKbps() + "Kbps\n";
+                                tips += "SendLossRate:\t" + qData.getSendLossRate() + "%\t";
+                                tips += "RecvLossRate:\t" + qData.getRecvLossRate() + "%\n";
+                                tips += "AppCPURate:\t" + qData.getAppCPURate() + "%\t";
+                                tips += "SysCPURate:\t" + qData.getSysCPURate() + "%\n";
+                                Map<String, LiveInfo> userMaps = qData.getLives();
+                                for (Map.Entry<String, LiveInfo> entry : userMaps.entrySet()) {
+                                    tips += "\t" + entry.getKey() + "-" + entry.getValue().getWidth() + "*" + entry.getValue().getHeight() + "\n";
+                                }
+                            }
+                            tips += '\n';
+                            tips += getQualityTips(ILiveSDK.getInstance().getAVContext().getRoom().getQualityTips());
+                            if (null != rtcEventHandler)
+                                rtcEventHandler.onParOn(SUCCESS_CODE, tips);
+                        }
+                    } else {
+                        if (null != rtcEventHandler)
+                            rtcEventHandler.onParOn(FAIL_CODE, "获取房间信息失败");
+                    }
+                }
+            });
+        }
+    };
+
+    public String getQualityTips(String qualityTips) {
+        String strTips = "";
+        String sep = "[](),\n";
+
+        strTips += "AVSDK版本号: " + getValue(qualityTips, "sdk_version", sep) + "\n";
+        strTips += "房间号: " + getValue(qualityTips, "RoomID", sep) + "\n";
+        strTips += "角色: " + getValue(qualityTips, "ControlRole", sep) + "\n";
+        strTips += "权限: " + getValue(qualityTips, "Authority", sep) + "\n";
+        String tmpStr = getValue(qualityTips, "视频采集", "\n");
+        if (!TextUtils.isEmpty(tmpStr))
+            strTips += "采集信息: " + getValue(qualityTips, "视频采集", "\n") + "\n";
+        strTips += "麦克风: " + getValue(qualityTips, "Mic", sep) + "\n";
+        strTips += "扬声器: " + getValue(qualityTips, "Spk", sep) + "\n";
+
+        return strTips;
+    }
+
+    private static String getValue(String src, String param, String sep) {
+        int idx = src.indexOf(param);
+        if (-1 != idx) {
+            idx += param.length() + 1;
+            if (-1 != sep.indexOf(src.charAt(idx))) {
+                idx++;
+            }
+            for (int i = idx; i < src.length(); i++) {
+                if (-1 != sep.indexOf(src.charAt(i))) {
+                    return src.substring(idx, i).trim();
+                }
+            }
+        }
+        return "";
+    }
+
+    /**
+     * 测网速
+     */
+    public void netSpeedTest() {
+        SpeedTestDialog speedTestDialog = new SpeedTestDialog(context, rtcEventHandler);
+        speedTestDialog.start();
     }
 
     @Override
@@ -805,14 +902,15 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
+                DeviceInfo.getScreenBaseInfo(activity);
                 // 获得权限，启动Service开始录制
                 Intent service = new Intent(activity, ScreenRecordService.class);
                 service.putExtra("code", resultCode);
                 service.putExtra("data", data);
                 service.putExtra("audio", true);
-                service.putExtra("width", screenWidth);
-                service.putExtra("height", screenHeight);
-                service.putExtra("density", screenDensity);
+                service.putExtra("width", DeviceInfo.screenWidth);
+                service.putExtra("height", DeviceInfo.screenHeight);
+                service.putExtra("density", DeviceInfo.screenDensity);
                 service.putExtra("quality", false);
                 activity.startService(service);
                 SxbLog.i(TAG, "Started screen recording");
@@ -829,14 +927,4 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
 
     }
 
-    /**
-     * 获取屏幕相关数据
-     */
-    private void getScreenBaseInfo() {
-        DisplayMetrics metrics = new DisplayMetrics();
-        activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-        screenWidth = metrics.widthPixels;
-        screenHeight = metrics.heightPixels;
-        screenDensity = metrics.densityDpi;
-    }
 }

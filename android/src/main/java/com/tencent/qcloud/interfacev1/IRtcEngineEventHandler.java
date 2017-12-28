@@ -20,4 +20,7 @@ public interface IRtcEngineEventHandler {
     void onUpVideo(String code, String msg);
     void onDownVideo(String code, String msg);
     void onChangeRole(String code, String msg);
+    void onParOn(String code, String msg);
+    void onParOff(String code, String msg);
+    void onNetSpeedTest(String code, String msg);
 }

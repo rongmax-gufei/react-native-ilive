@@ -302,6 +302,48 @@ public class ILiveModule extends ReactContextBaseJavaModule {
                 }
             });
         }
+
+        @Override
+        public void onParOn(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onParOn");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
+
+        @Override
+        public void onParOff(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onParOff");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
+
+        @Override
+        public void onNetSpeedTest(final String code, final String msg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    WritableMap map = Arguments.createMap();
+                    map.putString(TYPE, "onNetSpeedTest");
+                    map.putString(CODE, code);
+                    map.putString(MSG, msg);
+                    commonEvent(map);
+                }
+            });
+        }
     };
 
     /**
@@ -478,6 +520,36 @@ public class ILiveModule extends ReactContextBaseJavaModule {
             @Override
             public void run() {
                 ILiveManager.getInstance().toggleMic(bMicOn);
+            }
+        });
+    }
+
+    @ReactMethod
+    public void onParOn() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().onParOn();
+            }
+        });
+    }
+
+    @ReactMethod
+    public void onParOff() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().onParOff();
+            }
+        });
+    }
+
+    @ReactMethod
+    public void netSpeedTest() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ILiveManager.getInstance().netSpeedTest();
             }
         });
     }
