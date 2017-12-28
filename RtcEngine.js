@@ -6,17 +6,15 @@
 import {
     NativeModules,
     findNodeHandle,
-    NativeEventEmitter,
     NativeAppEventEmitter
 } from 'react-native';
 
 const { ILive } = NativeModules;
-const iLiveEmitter = new NativeEventEmitter(ILive);
 
 export default {
     ...ILive,
     init(options = {}) {
-        this.listener && this.listener.remove();
+        this.removeEmitter();
         ILive.init(options);
     },
     // 登录腾讯互动直播TLS系统
@@ -96,12 +94,8 @@ export default {
         ILive.netSpeedTest();
     },
     eventEmitter(fnConf) {
-        //there are no `removeListener` for NativeAppEventEmitter & DeviceEventEmitter
-        this.listener && this.listener.remove();
-        // this.listener = NativeAppEventEmitter.addListener('iLiveEvent', event => {
-        //     fnConf[event['type']] && fnConf[event['type']](event);
-        // });
-        this.listener = iLiveEmitter.addListener(
+        this.removeEmitter();
+        this.listener = NativeAppEventEmitter.addListener(
           'iLiveEvent',
           (event) => {
             fnConf[event['type']] && fnConf[event['type']](event);
