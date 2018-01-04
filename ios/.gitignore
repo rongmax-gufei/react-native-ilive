@@ -15,7 +15,8 @@ UserInterface.xcuserstate
 /build/
 *.bin
 /Frameworks/AVSDK
-/Frameworks/ILIVESDK
+/Frameworks/BeautySDK
+/Frameworks/ILiveSDK
 /Frameworks/IMSDK
 /Frameworks/QAVEffect
 /Frameworks/TXMVideoPreprocessor
