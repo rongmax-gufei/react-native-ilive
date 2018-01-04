@@ -636,6 +636,7 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
     private void upMemberVideo() {
         if (!ILiveRoomManager.getInstance().isEnterRoom()) {
             SxbLog.e(TAG, "upMemberVideo->with not in room");
+            rtcEventHandler.onUpVideo(FAIL_CODE, "连麦用户不在房间");
         }
         ILVLiveManager.getInstance().upToVideoMember(Constants.HD_GUEST_ROLE, true, true, new ILiveCallBack<ILVChangeRoleRes>() {
             @Override
