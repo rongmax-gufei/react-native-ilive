@@ -182,6 +182,14 @@ RtcEngine.eventEmitter({
 
 
 ## 更新信息
+
+- [腾讯Android更新日志](https://github.com/zhaoyang21cn/iLiveSDK_Android_Suixinbo/blob/master/doc/ILiveSDK/release%20note.md)
+- [腾讯iOS更新日志](https://github.com/zhaoyang21cn/iLiveSDK_iOS_Suixinbo/blob/master/doc/ILiveSDK_ChangeList.md)
+
+#### 2018-01-04
+- 更新iOS iLiveSDK 版本号至 V1.8.1.12629(2017-12-18)
+- 更新Android iLiveSDK 版本号至 V1.8.0
+
 #### 2017-12-27
 - 新增获取视频房间信息数据
 - 新增网络测速功能
