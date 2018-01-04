@@ -1,6 +1,6 @@
 {
   "name": "react-native-ilive",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "腾讯互动直播 iLive",
   "main": "index.js",
   "scripts": {
