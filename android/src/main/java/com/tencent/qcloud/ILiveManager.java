@@ -698,11 +698,17 @@ public class ILiveManager implements ILiveRoomOption.onRoomDisconnectListener, O
             @Override
             public void onSuccess(Object data) {
                 SxbLog.i(TAG, "sendCmd->success:" + cmd.getCmd() + "|" + cmd.getParam());
+                // 主播给观众上麦后给自己一个回调，返回给RN端
+                if (cmd.getCmd() == Constants.AVIMCMD_MUlTI_HOST_INVITE)
+                    rtcEventHandler.onUpVideo(SUCCESS_CODE, "上麦成功");
             }
 
             @Override
             public void onError(String module, int errCode, String errMsg) {
                 SxbLog.i(TAG, "sendCmd->failed:" + module + "|" + errCode + "|" + errMsg);
+                // 主播给观众上麦后给自己一个回调，返回给RN端
+                if (cmd.getCmd() == Constants.AVIMCMD_MUlTI_HOST_INVITE)
+                    rtcEventHandler.onUpVideo(FAIL_CODE, "上麦失败");
             }
         });
     }
