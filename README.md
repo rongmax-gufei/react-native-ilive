@@ -183,6 +183,10 @@ RtcEngine.eventEmitter({
 - [腾讯Android更新日志](https://github.com/zhaoyang21cn/iLiveSDK_Android_Suixinbo/blob/master/doc/ILiveSDK/release%20note.md)
 - [腾讯iOS更新日志](https://github.com/zhaoyang21cn/iLiveSDK_iOS_Suixinbo/blob/master/doc/ILiveSDK_ChangeList.md)
 
+
+#### 2018-01-23
+- 主播给观众上麦后给自己一个回调，并通知给ReactNative页面
+
 #### 2018-01-04
 - 更新iOS iLiveSDK 版本号至 V1.8.1.12629(2017-12-18)
 - 更新Android iLiveSDK 版本号至 V1.8.0
