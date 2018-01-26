@@ -1,9 +1,14 @@
-# README
+# react-native-ilive
+
+[![npm version](https://badge.fury.io/js/react-native-ilive.svg)](https://badge.fury.io/js/react-native-ilive)
+[![npm](https://img.shields.io/npm/dt/react-native-ilive.svg)](https://www.npmjs.com/package/react-native-ilive)
+![Platform - Android and iOS](https://img.shields.io/badge/platform-Android%20%7C%20iOS-yellow.svg)
+![MIT](https://img.shields.io/dub/l/vibe-d.svg)
+
 | Author        |     E-mail      |
 | ------------- |:---------------:|
 | gufei         | 799170694@qq.com|
 
-# react-native-ilive 
 
 ## 功能介绍
 
